@@ -24,11 +24,6 @@ To get started with this project, you will need to have Node.js and npm (or yarn
     ```bash
     npm install
     ```
-
-    Or using yarn:
-    ```bash
-    yarn install
-    ```
    
 3. **Create environment variables:**
 
@@ -45,9 +40,15 @@ Using:
 ```bash
 npm:
 npm run dev
+```
 
-yarn:
-yarn dev
+### Running the project using Docker
+
+To start the using Docker, run:
+
+Using:
+```bash
+docker-compose up
 ```
 
 After the server starts, open your web browser and navigate to:
