@@ -1,3 +1,12 @@
+# Don't ignore .vite/deps/
+!node_modules/.vite/
+!node_modules/.vite/deps/
+
+# Ignore everything in .vite/deps/ by default
+node_modules/.vite/deps/*
+
+# Don't ignore the specific file
+!node_modules/.vite/deps/chunk-REFQX4J5.js
 node_modules
 build
 .git
