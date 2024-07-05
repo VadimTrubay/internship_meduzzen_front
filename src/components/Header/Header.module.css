@@ -1,0 +1,20 @@
+.app_bar {
+  background-color: var(--brand-color-contactbook);
+  display: flex;
+  justify-content: space-between;
+  min-width: 100%;
+
+}
+
+.nav_link {
+  text-decoration: none;
+}
+
+.circular_progress {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: red;
+  z-index: 9999
+}
