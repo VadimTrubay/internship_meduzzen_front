@@ -6,11 +6,10 @@ import styles from "./AuthNav.module.css";
 const AuthNav: React.FC = () => {
   return (
     <div className={styles.container}>
-      <Breadcrumbs aria-label="breadcrumb">
+      <Breadcrumbs sx={{"& .MuiBreadcrumbs-separator": {color: "white"}}} aria-label="breadcrumb">
         <NavLink className={styles.nav_link} to={"/register"}>
           Register
         </NavLink>
-        /
         <NavLink className={styles.nav_link} to={"/login"}>
           Login
         </NavLink>

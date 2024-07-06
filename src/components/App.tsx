@@ -1,5 +1,5 @@
 import "modern-normalize";
-import {lazy} from "react";
+import React, {lazy} from "react";
 import styles from "./App.module.css"
 import {Route, Routes} from "react-router-dom";
 import {Layout} from "./Layout/Layout";
@@ -18,7 +18,7 @@ const TermsPage = lazy(() => import("../pages/TermsPage/TermsPage"))
 const NotFoundPage = lazy(() => import("../pages/NotFoundPage/NotFoundPage"))
 
 
-const App = () => {
+const App: React.FC = () => {
 
   return (
     <Layout className={styles.container}>

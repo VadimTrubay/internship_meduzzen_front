@@ -7,8 +7,8 @@ import styles from "./Logo.module.css";
 const Logo: React.FC = () => {
   return (
     <div className={styles.container}>
-      <NavLink className={styles.nav_link} to='/'>
-        <AdbIcon sx={{fontSize: "15px"}}/>
+      <AdbIcon className={styles.icon}/>
+      <NavLink className={styles.nav_link} to="/">
         <Typography className={styles.typography}>
           MEDUZZEN
         </Typography>

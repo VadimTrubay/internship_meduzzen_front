@@ -14,3 +14,7 @@
 .container {
 
 }
+
+.separator_color {
+  color: var(--link);
+}

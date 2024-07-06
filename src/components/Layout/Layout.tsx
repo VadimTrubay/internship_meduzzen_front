@@ -3,14 +3,10 @@ import {Outlet} from "react-router-dom";
 import LinearProgress from "@mui/material/LinearProgress";
 import Header from "../Header/Header.jsx";
 import Box from "@mui/material/Box";
-import Navigation from '../Navigation/Navigation.jsx';
+import Navigation from "../Navigation/Navigation";
 import styles from "../Layout/Layout.module.css";
+import {LayoutProps} from "../../types/layoutTypes";
 
-
-interface LayoutProps {
-  children: React.ReactNode;
-  className: string;
-}
 
 export const Layout = ({children}: LayoutProps) => {
   return (
@@ -20,7 +16,7 @@ export const Layout = ({children}: LayoutProps) => {
       <Suspense
         fallback={
           <Box className={styles.fullWidth}>
-            <LinearProgress color="success"/>
+            <LinearProgress color="primary"/>
           </Box>
         }
       >

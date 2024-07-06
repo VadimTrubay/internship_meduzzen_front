@@ -1,10 +1,7 @@
 import React, {useState} from "react";
 import {Navigate} from "react-router-dom";
+import {PrivateRouteProps} from "../../types/routePropsTypes";
 
-interface PrivateRouteProps {
-  component: React.ReactNode;
-  redirectTo?: string;
-}
 
 export const PrivateRoute = ({component: Component, redirectTo = "/login"}: PrivateRouteProps) => {
   const [isLoggedIn] = useState<boolean>(false);
