@@ -13,14 +13,14 @@ export const Layout = ({children}: LayoutProps) => {
     <div className={styles.container}>
       <Header/>
       <Navigation/>
-      <Suspense
-        fallback={
-          <Box className={styles.fullWidth}>
-            <LinearProgress color="primary"/>
-          </Box>
-        }
+      <Suspense fallback={
+        <Box>
+          <LinearProgress color="primary"/>
+        </Box>}
       >
-        {children}
+        <div className={styles.fullWidth}>
+          {children}
+        </div>
         <Outlet/>
       </Suspense>
     </div>
