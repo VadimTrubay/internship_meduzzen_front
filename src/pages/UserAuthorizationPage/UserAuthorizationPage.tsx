@@ -49,7 +49,7 @@ const UserAuthorizationPage = () => {
               fullWidth
               id="email"
               label="Email Address"
-              color="success"
+              color="primary"
               name="email"
               autoComplete="email"
               autoFocus
@@ -65,7 +65,7 @@ const UserAuthorizationPage = () => {
               fullWidth
               name="password"
               label="Password"
-              color="success"
+              color="primary"
               type="password"
               id="password"
               autoComplete="current-password"
@@ -79,7 +79,7 @@ const UserAuthorizationPage = () => {
             />
             <Button
               type="submit"
-              color="success"
+              color="primary"
               fullWidth
               variant="contained"
               className={styles.success}

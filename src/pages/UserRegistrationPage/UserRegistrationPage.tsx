@@ -65,7 +65,7 @@ const RegistrationForm = () => {
                   fullWidth
                   id="name"
                   label="Username"
-                  color="success"
+                  color="primary"
                   autoFocus
                   value={formik.values.name}
                   onChange={formik.handleChange}
@@ -80,7 +80,7 @@ const RegistrationForm = () => {
                   fullWidth
                   id="email"
                   label="Email Address"
-                  color="success"
+                  color="primary"
                   name="email"
                   autoComplete="email"
                   value={formik.values.email}
@@ -96,7 +96,7 @@ const RegistrationForm = () => {
                   fullWidth
                   name="password"
                   label="Password"
-                  color="success"
+                  color="primary"
                   type="password"
                   id="password"
                   autoComplete="new-password"
@@ -121,7 +121,7 @@ const RegistrationForm = () => {
             />
             <Button
               type="submit"
-              color="success"
+              color="primary"
               fullWidth
               variant="contained"
               className={styles.success}

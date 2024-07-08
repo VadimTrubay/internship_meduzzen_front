@@ -4,7 +4,8 @@
   left: 50%;
   transform: translate(-50%, -50%);
   width: 400px;
-  background-color: #fff;
-  border: 2px solid #000;
+  background-color: var(--brand-background-color);
+  border: 2px solid var(--brand-color-contactbook);
+  border-radius: 5px;
   padding: 4em;
 }
