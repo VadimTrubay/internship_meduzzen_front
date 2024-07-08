@@ -1,14 +1,14 @@
 import {useState} from "react";
 import {AppBar, CircularProgress, Toolbar} from "@mui/material";
 import Logo from "../Logo/Logo";
-import UserMenu from "../UserMenu/UserMenu";
-import AuthNav from "../AuthNav/AuthNav";
-import styles from "./Header.module.css";
 import {useSelector} from "react-redux";
-import {selectIsLoggedIn} from "../../redux/auth/selectors";
+import {selectIsToggleLogged} from "../../redux/auth/selectors";
+import styles from "./Header.module.css";
+import {RegisterBase} from "../RegisterBase/RegisterBase";
+import {RegisterAuth0} from "../RegisterAuth0/RegisterAuth0";
 
 const Header = () => {
-  const isLoggedIn = useSelector(selectIsLoggedIn);
+  const isToggleLogged = useSelector(selectIsToggleLogged);
   const error = useState<boolean>(false);
   const isLoading = useState<boolean>(false);
 
@@ -17,7 +17,7 @@ const Header = () => {
       <AppBar className={styles.app_bar} position="static">
         <Toolbar className={styles.app_bar}>
           <Logo/>
-          {isLoggedIn ? <UserMenu/> : <AuthNav/>}
+          {isToggleLogged ? <RegisterBase/>: <RegisterAuth0/>}
         </Toolbar>
       </AppBar>
       {isLoading && !error && (
