@@ -14,11 +14,9 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import {useFormik} from "formik";
 import {validationSchemaRegistration} from "../../validate/validationSchemaRegistration.js";
 import {useState} from "react";
-import commonStyles from '../UserAuthorizationPage/commonStyles';
-
+import styles from "../UserAuthorizationPage/UserAuthorizationPage.module.css";
 
 const defaultTheme = createTheme();
-  const styles: any = commonStyles;
 
 const RegistrationForm = () => {
   const [terms] = useState(true);
