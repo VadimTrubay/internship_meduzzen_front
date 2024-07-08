@@ -1,0 +1,34 @@
+.button {
+  background-color: var(--brand-color-contactbook);
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.button:hover {
+  background-color: var(--brand-color-contactbook-hover);
+}
+
+.span {
+  margin-right: 4px;
+}
+
+.box {
+  margin-top: 8rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.avatar {
+  margin: 8px;
+  background-color: var(--brand-color-contactbook-hover);;
+}
+
+.box_submit {
+  margin-top: 1em;
+  border-color: red
+}
+
+.success {
+  background-color: var(--brand-color-contactbook);
+}
