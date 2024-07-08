@@ -13,8 +13,8 @@ const UserMenuBase: React.FC = () => {
     <div className={styles.container}>
       <Avatar className={styles.avatar}/>
       <div className={styles.userinfo}>
-        <Text className={styles.username + ' ' + styles.nav_link}>{user.username}</Text>
-        <Text className={styles.username + ' ' + styles.nav_link}>{user.email}</Text>
+        <Text className={styles.username + ' ' + styles.nav_link}>{user?.username}</Text>
+        <Text className={styles.username + ' ' + styles.nav_link}>{user?.email}</Text>
       </div>
       <LogoutButtonBase/>
     </div>
