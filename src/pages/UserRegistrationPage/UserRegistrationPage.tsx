@@ -14,7 +14,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import {useFormik} from "formik";
 import {validationSchemaRegistration} from "../../validate/validationSchemaRegistration.js";
 import React, {SyntheticEvent, useState} from "react";
-import styles from "../UserAuthorizationPage/UserAuthorizationPage.module.css";
+import styles from "../UserRegistrationPage/UserRegistrationPage.module.css";
 
 const defaultTheme = createTheme();
 
