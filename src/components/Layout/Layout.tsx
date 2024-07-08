@@ -1,6 +1,6 @@
 import React, {Suspense} from "react";
 import {Outlet} from "react-router-dom";
-import LinearProgress from "@mui/material/LinearProgress";
+import CircularProgress from "@mui/material/LinearProgress";
 import Header from "../Header/Header.jsx";
 import Box from "@mui/material/Box";
 import Navigation from "../Navigation/Navigation";
@@ -15,10 +15,10 @@ export const Layout = ({children}: LayoutProps) => {
       <Header/>
       <Navigation/>
       <Suspense fallback={
-        <Box>
-          <LinearProgress color="primary"/>
-        </Box>}
-      >
+        <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+          <CircularProgress/>
+        </Box>
+      }>
         <div className={styles.fullWidth}>
           {children}
         </div>
