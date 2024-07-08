@@ -5,6 +5,7 @@ import {Route, Routes} from "react-router-dom";
 import {Layout} from "./Layout/Layout";
 import {RestrictedRoute} from "./RestrictedRoute/RestrictedRoute";
 import {PrivateRoute} from "./PrivateRoute/PrivateRoute";
+import HealthCheck from "./HealthCheck/HealthCheck";
 
 const HomePage = lazy(() => import("../pages/HomePage/HomePage"));
 const AboutPage = lazy(() => import("../pages/AboutPage/AboutPage"));
@@ -25,6 +26,7 @@ const App: React.FC = () => {
       <Routes>
         <Route path="/" element={<HomePage/>}/>
         <Route path="about" element={<AboutPage/>}/>
+        <Route path="healthcheck" element={<HealthCheck/>}/>
         <Route
           path="register"
           element={
