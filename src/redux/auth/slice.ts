@@ -9,7 +9,7 @@ const initialAuth: authType = {
     email: null,
   },
   token: null,
-  isLoggedIn: true,
+  isLoggedIn: false,
   isRefreshing: false,
 }
 
