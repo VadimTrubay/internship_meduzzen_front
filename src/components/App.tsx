@@ -1,11 +1,18 @@
 import "modern-normalize";
-import React, {lazy} from "react";
+import React, {lazy, useEffect} from "react";
 import styles from "./App.module.css"
 import {Route, Routes} from "react-router-dom";
 import {Layout} from "./Layout/Layout";
 import {RestrictedRoute} from "./RestrictedRoute/RestrictedRoute";
 import {PrivateRoute} from "./PrivateRoute/PrivateRoute";
 import HealthCheck from "./HealthCheck/HealthCheck";
+import {useDispatch, useSelector} from "react-redux";
+import {Box} from "@mui/material";
+import CircularProgress from "@mui/material/LinearProgress";
+import {selectIsRefreshing} from "../redux/auth/selectors.js";
+import {refreshUser} from "../redux/auth/operations.js";
+import {AppDispatch} from "../redux/store";
+
 
 const HomePage = lazy(() => import("../pages/HomePage/HomePage"));
 const AboutPage = lazy(() => import("../pages/AboutPage/AboutPage"));
@@ -20,8 +27,18 @@ const NotFoundPage = lazy(() => import("../pages/NotFoundPage/NotFoundPage"))
 
 
 const App: React.FC = () => {
+  const dispatch = useDispatch<AppDispatch>();
+  const isRefreshing = useSelector<boolean>(selectIsRefreshing);
 
-  return (
+  useEffect(() => {
+    dispatch(refreshUser());
+  }, [dispatch]);
+
+  return isRefreshing ? (
+    <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+      <CircularProgress/>
+    </Box>
+  ) : (
     <Layout className={styles.container}>
       <Routes>
         <Route path="/" element={<HomePage/>}/>
