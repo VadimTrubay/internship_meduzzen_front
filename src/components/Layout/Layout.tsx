@@ -6,6 +6,7 @@ import Box from "@mui/material/Box";
 import Navigation from "../Navigation/Navigation";
 import styles from "../Layout/Layout.module.css";
 import {LayoutProps} from "../../types/layoutTypes";
+import Footer from "../Footer/Footer";
 
 
 export const Layout = ({children}: LayoutProps) => {
@@ -23,6 +24,9 @@ export const Layout = ({children}: LayoutProps) => {
         </div>
         <Outlet/>
       </Suspense>
+      <div className={styles.footer}>
+        <Footer/>
+      </div>
     </div>
   );
 };

@@ -13,31 +13,35 @@ import {Checkbox} from "@mui/material";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import {useFormik} from "formik";
 import {validationSchemaRegistration} from "../../validate/validationSchemaRegistration.js";
-import {useState} from "react";
-import commonStyles from '../UserAuthorizationPage/commonStyles';
-
+import React, {SyntheticEvent, useState} from "react";
+import styles from "../UserAuthorizationPage/UserAuthorizationPage.module.css";
 
 const defaultTheme = createTheme();
-  const styles: any = commonStyles;
 
 const RegistrationForm = () => {
-  const [terms] = useState(true);
+  const [terms, setTerms] = useState<boolean>(false);
 
   const formik = useFormik({
     initialValues: {
-      name: "",
+      username: "",
       email: "",
       password: "",
+      confirmPassword: "",
     },
     validationSchema: validationSchemaRegistration,
-    onSubmit: () => {}
+    onSubmit: (values) => {
+      // Add your form submission logic here
+      console.log('Form values:', values);
+    }
   });
 
-  const handleTermsCheck = () => {
+  const handleTermsCheck = (event: SyntheticEvent) => {
+    const target = event.target as HTMLInputElement;
+    setTerms(target.checked);
   };
 
   const termsCheckboxLabel = (
-    <div>
+    <div className={styles.checkbox}>
       I accept <a href="/terms">terms of service</a>
     </div>
   );
@@ -62,18 +66,18 @@ const RegistrationForm = () => {
               <Grid item xs={12}>
                 <TextField
                   autoComplete="given-name"
-                  name="name"
+                  name="username"
                   required
                   fullWidth
-                  id="name"
+                  id="username"
                   label="Username"
                   color="primary"
                   autoFocus
-                  value={formik.values.name}
+                  value={formik.values.username}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  error={formik.touched.name && Boolean(formik.errors.name)}
-                  helperText={formik.touched.name && formik.errors.name}
+                  error={formik.touched.username && Boolean(formik.errors.username)}
+                  helperText={formik.touched.username && formik.errors.username}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -105,10 +109,25 @@ const RegistrationForm = () => {
                   value={formik.values.password}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  error={
-                    formik.touched.password && Boolean(formik.errors.password)
-                  }
+                  error={formik.touched.password && Boolean(formik.errors.password)}
                   helperText={formik.touched.password && formik.errors.password}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  name="confirmPassword"
+                  label="Confirm Password"
+                  color="primary"
+                  type="password"
+                  id="confirmPassword"
+                  autoComplete="confirm-password"
+                  value={formik.values.confirmPassword}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  error={formik.touched.confirmPassword && Boolean(formik.errors.confirmPassword)}
+                  helperText={formik.touched.confirmPassword && formik.errors.confirmPassword}
                 />
               </Grid>
             </Grid>

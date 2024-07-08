@@ -1,6 +1,7 @@
 .fullWidth {
   width: 100%;
   margin-top: 50px;
+  min-height: 500px;
   /*background-color: #3c71b0;*/
 }
 
@@ -9,3 +10,25 @@
   margin: 0 auto;
   padding: 0 15px;
 }
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.footer {
+  position: relative;
+  /*bottom: 0;*/
+  /*left: 0;*/
+  /*right: 0;*/
+  /*height: auto;*/
+}
+
+/*@media (min-width: 500px) {*/
+/*  .footer {*/
+/*    position: relative; !* or any other position you prefer *!*/
+/*    height: 100px; !* fixed height *!*/
+/*  }*/
+/*}*/
