@@ -11,11 +11,12 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import {createTheme, ThemeProvider} from "@mui/material/styles";
 import {validationSchemaAuthorization} from "../../validate/validationSchemaAuthorization.js";
-import styles from "./UserAuthorizationPage.module.css";
+import commonStyles from './commonStyles';
 
 const defaultTheme = createTheme();
 
 const UserAuthorizationPage = () => {
+  const styles: any = commonStyles;
 
   const formik = useFormik({
     initialValues: {
