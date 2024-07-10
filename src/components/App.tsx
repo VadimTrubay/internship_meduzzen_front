@@ -12,15 +12,21 @@ import CircularProgress from "@mui/material/CircularProgress";
 import {selectIsRefreshing} from "../redux/auth/selectors.js";
 import {refreshUser} from "../redux/auth/operations.js";
 import {AppDispatch} from "../redux/store";
+import UserRegistrationPage from "../pages/UserRegistrationPage/UserRegistrationPage";
+import UserAuthorizationPage from "../pages/UserAuthorizationPage/UserAuthorizationPage";
+import ListOfUsersPage from "../pages/ListOfUsersPage/ListOfUsersPage";
+import UserProfilePage from "../pages/UserProfilePage/UserProfilePage";
+import ListOfCompaniesPage from "../pages/ListOfCompaniesPage/ListOfCompaniesPage";
+import CompanyProfilePage from "../pages/CompanyProfilePage/CompanyProfilePage";
 
 const HomePage = lazy(() => import("../pages/HomePage/HomePage"));
 const AboutPage = lazy(() => import("../pages/AboutPage/AboutPage"));
-const UserRegistrationPage = lazy(() => import("../pages/UserRegistrationPage/UserRegistrationPage"));
-const UserAuthorizationPage = lazy(() => import("../pages/UserAuthorizationPage/UserAuthorizationPage"));
-const ListOfUsersPage = lazy(() => import("../pages/ListOfUsersPage/ListOfUsersPage"));
-const UserProfilePage = lazy(() => import("../pages/UserProfilePage/UserProfilePage"));
-const ListOfCompaniesPage = lazy(() => import("../pages/ListOfCompaniesPage/ListOfCompaniesPage"));
-const CompanyProfilePage = lazy(() => import("../pages/CompanyProfilePage/CompanyProfilePage"));
+// const UserRegistrationPage = lazy(() => import("../pages/UserRegistrationPage/UserRegistrationPage"));
+// const UserAuthorizationPage = lazy(() => import("../pages/UserAuthorizationPage/UserAuthorizationPage"));
+// const ListOfUsersPage = lazy(() => import("../pages/ListOfUsersPage/ListOfUsersPage"));
+// const UserProfilePage = lazy(() => import("../pages/UserProfilePage/UserProfilePage"));
+// const ListOfCompaniesPage = lazy(() => import("../pages/ListOfCompaniesPage/ListOfCompaniesPage"));
+// const CompanyProfilePage = lazy(() => import("../pages/CompanyProfilePage/CompanyProfilePage"));
 const TermsPage = lazy(() => import("../pages/TermsPage/TermsPage"));
 const NotFoundPage = lazy(() => import("../pages/NotFoundPage/NotFoundPage"));
 

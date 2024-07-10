@@ -9,7 +9,7 @@ const initialAuth: authType = {
     email: "vadnet@gmail.com",
   },
   token: null,
-  toggleLogged: false,
+  toggleLogged: true,
   isLoggedInBase: false,
   isLoggedInAuth0: false,
   isRefreshing: false,
