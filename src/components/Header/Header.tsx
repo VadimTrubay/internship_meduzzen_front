@@ -18,7 +18,7 @@ const Header = () => {
       <AppBar className={styles.app_bar} position="static">
         <Toolbar className={styles.app_bar}>
           <Logo/>
-          {isLoggedIn ? <UserMenu/>: <AuthNav/>}
+          {isLoggedIn ? <UserMenu/> : <AuthNav/>}
         </Toolbar>
       </AppBar>
       {isLoading && !error && (

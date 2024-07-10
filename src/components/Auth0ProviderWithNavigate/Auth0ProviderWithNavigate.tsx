@@ -1,5 +1,6 @@
 import {Auth0Provider} from '@auth0/auth0-react';
 import {useNavigate} from 'react-router-dom';
+// @ts-ignore
 import {Children} from 'types';
 
 const domain = process.env.REACT_APP_AUTH0_DOMAIN as string;

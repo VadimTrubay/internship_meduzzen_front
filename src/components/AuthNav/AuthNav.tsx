@@ -1,9 +1,8 @@
 import React from "react";
 import {NavLink} from "react-router-dom";
-import styles from "./AuthNav.module.css";
 import {LoginButton} from "../LoginButton/LoginButton";
 import {RegisterButton} from "../RegisterButton/RegisterButton";
-import {LogoutButton} from "../LogoutButton/LogoutButton";
+import styles from "./AuthNav.module.css";
 
 const AuthNav: React.FC = () => {
   return (
@@ -14,7 +13,6 @@ const AuthNav: React.FC = () => {
       <NavLink className={styles.nav_link} to={"/login"}>
         <LoginButton/>
       </NavLink>
-      {/*<LogoutButton/>*/}
     </div>
   );
 };

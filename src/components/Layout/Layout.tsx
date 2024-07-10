@@ -4,9 +4,9 @@ import CircularProgress from "@mui/material/LinearProgress";
 import Header from "../Header/Header.jsx";
 import Box from "@mui/material/Box";
 import Navigation from "../Navigation/Navigation";
-import styles from "../Layout/Layout.module.css";
 import {LayoutProps} from "../../types/layoutTypes";
 import Footer from "../Footer/Footer";
+import styles from "../Layout/Layout.module.css";
 
 
 export const Layout = ({children}: LayoutProps) => {
