@@ -13,6 +13,7 @@ import {createTheme, ThemeProvider} from "@mui/material/styles";
 import {validationSchemaAuthorization} from "../../validate/validationSchemaAuthorization.js";
 import styles from "../UserRegistrationPage/UserRegistrationPage.module.css";
 import React from "react";
+import {LoginButtonAuth0} from "../../components/LoginButtonAuth0/LoginButtonAuth0";
 
 const defaultTheme = createTheme();
 
@@ -96,6 +97,7 @@ const UserAuthorizationPage = () => {
               </Grid>
             </Grid>
           </Box>
+          <LoginButtonAuth0/>
         </Box>
       </Container>
     </ThemeProvider>

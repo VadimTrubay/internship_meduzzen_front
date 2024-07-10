@@ -5,43 +5,45 @@ import {authType} from "../../types/authTypes";
 
 const initialAuth: authType = {
   user: {
-    username: "vadnet",
-    email: "vadnet@gmail.com",
+    username: "",
+    email: "",
   },
   token: null,
-  toggleLogged: true,
-  isLoggedInBase: false,
-  isLoggedInAuth0: false,
+  isLoggedIn: false,
   isRefreshing: false,
 }
 
 const authSlice = createSlice({
   name: "auth",
   initialState: initialAuth,
-  reducers: {},
+  reducers: {
+    loginAuth0(state, action) {
+      state.isLoggedIn = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(register.fulfilled, (state, action) => {
         state.user = action.payload.user;
         state.token = action.payload.token;
-        state.isLoggedInBase = true;
+        state.isLoggedIn = true;
       })
       .addCase(logIn.fulfilled, (state, action) => {
         state.user = action.payload.user;
         state.token = action.payload.token;
-        state.isLoggedInBase = true;
+        state.isLoggedIn = true;
       })
       .addCase(logOut.fulfilled, (state) => {
         state.user = {username: null, email: null};
         state.token = null;
-        state.isLoggedInBase = false;
+        state.isLoggedIn = false;
       })
       .addCase(refreshUser.pending, (state) => {
         state.isRefreshing = true;
       })
       .addCase(refreshUser.fulfilled, (state, action) => {
         state.user = action.payload;
-        state.isLoggedInBase = true;
+        state.isLoggedIn = true;
         state.isRefreshing = false;
       })
       .addCase(refreshUser.rejected, (state) => {
@@ -50,4 +52,5 @@ const authSlice = createSlice({
   },
 });
 
+export const {loginAuth0} = authSlice.actions;
 export const authReducer = authSlice.reducer;

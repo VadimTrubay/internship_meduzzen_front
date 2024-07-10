@@ -1,8 +1,4 @@
-export const selectIsLoggedInBase = (state) => state.auth.isLoggedInBase;
-
-export const selectIsLoggedInAuth0 = (state) => state.auth.isLoggedInAuth0;
-
-export const selectIsToggleLogged= (state) => state.auth.toggleLogged;
+export const selectIsLoggedIn = (state) => state.auth.isLoggedIn;
 
 export const selectUser = (state) => state.auth.user;
 

@@ -21,12 +21,6 @@ import CompanyProfilePage from "../pages/CompanyProfilePage/CompanyProfilePage";
 
 const HomePage = lazy(() => import("../pages/HomePage/HomePage"));
 const AboutPage = lazy(() => import("../pages/AboutPage/AboutPage"));
-// const UserRegistrationPage = lazy(() => import("../pages/UserRegistrationPage/UserRegistrationPage"));
-// const UserAuthorizationPage = lazy(() => import("../pages/UserAuthorizationPage/UserAuthorizationPage"));
-// const ListOfUsersPage = lazy(() => import("../pages/ListOfUsersPage/ListOfUsersPage"));
-// const UserProfilePage = lazy(() => import("../pages/UserProfilePage/UserProfilePage"));
-// const ListOfCompaniesPage = lazy(() => import("../pages/ListOfCompaniesPage/ListOfCompaniesPage"));
-// const CompanyProfilePage = lazy(() => import("../pages/CompanyProfilePage/CompanyProfilePage"));
 const TermsPage = lazy(() => import("../pages/TermsPage/TermsPage"));
 const NotFoundPage = lazy(() => import("../pages/NotFoundPage/NotFoundPage"));
 

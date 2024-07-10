@@ -2,7 +2,7 @@ import React from "react";
 import Button from "@mui/material/Button";
 
 
-export const RegisterButtonBase = () => {
+export const RegisterButton = () => {
 
   return (
     <Button variant="contained">Register</Button>

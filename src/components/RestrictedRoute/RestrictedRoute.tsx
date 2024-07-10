@@ -1,7 +1,7 @@
 import React from "react";
 import {Navigate} from "react-router-dom";
 import {useSelector} from "react-redux";
-import {selectIsLoggedInBase} from "../../redux/auth/selectors";
+import {selectIsLoggedIn} from "../../redux/auth/selectors";
 
 interface RestrictedRouteProps {
   component: React.ReactNode;
@@ -9,7 +9,7 @@ interface RestrictedRouteProps {
 }
 
 export const RestrictedRoute = ({component: Component, redirectTo = "/"}: RestrictedRouteProps) => {
-  const isLoggedInBase = useSelector(selectIsLoggedInBase);
+  const isLoggedIn = useSelector(selectIsLoggedIn);
 
-  return isLoggedInBase ? <Navigate to={redirectTo}/> : Component;
+  return isLoggedIn ? <Navigate to={redirectTo}/> : Component;
 };

@@ -15,6 +15,7 @@ import {useFormik} from "formik";
 import {validationSchemaRegistration} from "../../validate/validationSchemaRegistration.js";
 import React, {SyntheticEvent, useState} from "react";
 import styles from "../UserRegistrationPage/UserRegistrationPage.module.css";
+import {LoginButtonAuth0} from "../../components/LoginButtonAuth0/LoginButtonAuth0";
 
 const defaultTheme = createTheme();
 
@@ -159,6 +160,7 @@ const RegistrationForm = () => {
               </Grid>
             </Grid>
           </Box>
+          <LoginButtonAuth0/>
         </Box>
       </Container>
     </ThemeProvider>

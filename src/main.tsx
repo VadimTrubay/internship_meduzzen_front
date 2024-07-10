@@ -7,21 +7,21 @@ import {HelmetProvider} from "react-helmet-async";
 import {PersistGate} from "redux-persist/integration/react";
 import {Provider} from "react-redux";
 import App from "./components/App";
-import Auth0ProviderWithNavigate from "./components/RegisterAuth0/Auth0ProviderWithNavigate/Auth0ProviderWithNavigate";
+import Auth0ProviderWithNavigate from "./components/Auth0ProviderWithNavigate/Auth0ProviderWithNavigate";
 import "./index.css";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <BrowserRouter>
-      <Auth0ProviderWithNavigate>
-        <Provider store={store}>
+      <Provider store={store}>
+        <Auth0ProviderWithNavigate>
           <PersistGate loading={null} persistor={persistor}>
             <HelmetProvider>
               <App/>
             </HelmetProvider>
           </PersistGate>
-        </Provider>
-      </Auth0ProviderWithNavigate>
+        </Auth0ProviderWithNavigate>
+      </Provider>
     </BrowserRouter>
   </React.StrictMode>
 );
