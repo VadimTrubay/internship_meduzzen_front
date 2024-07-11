@@ -1,3 +1,4 @@
+import {useState} from "react";
 import {Link} from "react-router-dom";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
@@ -13,7 +14,7 @@ import {Checkbox} from "@mui/material";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import {useFormik} from "formik";
 import {validationSchemaRegistration} from "../../validate/validationSchemaRegistration.js";
-import React, {useState} from "react";
+import React from "react";
 import styles from "../UserRegistrationPage/UserRegistrationPage.module.css";
 import {LoginButtonAuth0} from "../../components/LoginButtonAuth0/LoginButtonAuth0";
 
@@ -36,7 +37,7 @@ const RegistrationForm = () => {
     }
   });
 
-  const handleTermsCheck = (event) => {
+  const handleTermsCheck = (event: { target: HTMLInputElement; }) => {
     const target = event.target as HTMLInputElement;
     setTerms(target.checked);
   };
@@ -47,6 +48,7 @@ const RegistrationForm = () => {
     </div>
   );
 
+  // @ts-ignore
   return (
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">

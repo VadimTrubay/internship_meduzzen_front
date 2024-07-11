@@ -10,7 +10,7 @@ const UserMenu: React.FC = () => {
 
   return (
     <div className={styles.container}>
-      <Avatar className={styles.avatar}/>
+      <Avatar className={styles.avatar} alt="avatar" src={user?.picture}/>
       <div className={styles.userinfo}>
         <Text className={styles.username + ' ' + styles.nav_link}>{user?.name}</Text>
         <Text className={styles.username + ' ' + styles.nav_link}>{user?.email}</Text>
