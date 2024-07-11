@@ -1,7 +1,6 @@
 .container {
   display: flex;
   justify-content: center;
-  /*margin-top: 4px;*/
   margin-bottom: 2px;
   background-color: #c5c5c5;
   border-radius: 5px;

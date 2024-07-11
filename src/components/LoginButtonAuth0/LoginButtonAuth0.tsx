@@ -20,7 +20,6 @@ export const LoginButtonAuth0 = () => {
     dispatch(loginAuth0(true));
   };
 
-  // @ts-ignore
   return (
     <Box className={styles.container}>
       <Button className='auth login'

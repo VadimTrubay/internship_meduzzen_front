@@ -48,7 +48,6 @@ const RegistrationForm = () => {
     </div>
   );
 
-  // @ts-ignore
   return (
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">
