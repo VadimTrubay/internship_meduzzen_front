@@ -1,56 +1,57 @@
-import {createSlice} from "@reduxjs/toolkit";
-import {register, logIn, logOut, refreshUser} from "./operations";
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {signUp, signIn, logOut, getMyInfo} from "./operations";
 import {authType} from "../../types/authTypes";
-
 
 const initialAuth: authType = {
   user: {
     username: "",
     email: "",
+    password: "",
+    is_admin: false
   },
-  token: null,
+  access_token: null,
   isLoggedIn: false,
-  isRefreshing: false,
 }
 
 const authSlice = createSlice({
   name: "auth",
   initialState: initialAuth,
   reducers: {
-    loginAuth0(state, action) {
+    loginAuth0(state, action: PayloadAction<boolean>) {
+      state.isLoggedIn = action.payload;
+    },
+    refreshUser(state, action: PayloadAction<boolean>) {
       state.isLoggedIn = action.payload;
     },
   },
   extraReducers: (builder) => {
     builder
-      .addCase(register.fulfilled, (state, action) => {
-        state.user = action.payload.user;
-        state.token = action.payload.token;
+      .addCase(signUp.fulfilled, (state, action) => {
+        state.user.username = action.payload.username;
+        state.user.email = action.payload.email;
+        state.access_token = action.payload.access_token;
         state.isLoggedIn = true;
       })
-      .addCase(logIn.fulfilled, (state, action) => {
-        state.user = action.payload.user;
-        state.token = action.payload.token;
+      .addCase(signIn.fulfilled, (state, action) => {
+        state.user.username = action.payload.username;
+        state.user.email = action.payload.email;
+        state.access_token = action.payload.access_token;
         state.isLoggedIn = true;
+      })
+      .addCase(getMyInfo.fulfilled, (state, action) => {
+        state.user.username = action.payload.username;
+        state.user.email = action.payload.email;
+        state.user.password = action.payload.password;
+        state.user.is_admin = action.payload.is_admin;
       })
       .addCase(logOut.fulfilled, (state) => {
-        state.user = {username: null, email: null};
-        state.token = null;
+        state.access_token = null;
         state.isLoggedIn = false;
+        state.user = {username: "", email: "", password: "", is_admin: false};
       })
-      .addCase(refreshUser.pending, (state) => {
-        state.isRefreshing = true;
-      })
-      .addCase(refreshUser.fulfilled, (state, action) => {
-        state.user = action.payload;
-        state.isLoggedIn = true;
-        state.isRefreshing = false;
-      })
-      .addCase(refreshUser.rejected, (state) => {
-        state.isRefreshing = false;
-      });
-  },
+  }
 });
 
+export  const {refreshUser} = authSlice.actions;
 export const {loginAuth0} = authSlice.actions;
 export const authReducer = authSlice.reducer;

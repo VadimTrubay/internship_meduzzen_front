@@ -1,14 +1,14 @@
 import * as Yup from "yup";
 
 export const validationSchemaRegistration = Yup.object({
-  name: Yup.string()
+  username: Yup.string()
     .matches(/^[a-zA-Z0-9_\s!@#$%^&*()\-+=?]+$/, "Invalid name format")
-    // .required("Name is required")
+    .required()
     .min(4, "Name must be at least 4 characters")
     .max(50, "Name must not exceed 50 characters"),
   email: Yup.string()
     .email("Enter a valid email")
-    // .required("Email is required")
+    .required()
     .min(4, "Email must be at least 4 characters")
     .max(50, "Email must not exceed 50 characters"),
   password: Yup.string()
@@ -20,5 +20,5 @@ export const validationSchemaRegistration = Yup.object({
     ),
   confirmPassword: Yup.string()
     .oneOf([Yup.ref('password'), null], 'Passwords must match')
-    // .required('Confirm Password is required'),
+    .required(),
 });
