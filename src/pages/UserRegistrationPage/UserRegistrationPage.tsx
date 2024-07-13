@@ -1,3 +1,4 @@
+import React from "react";
 import {useState} from "react";
 import {Link} from "react-router-dom";
 import Avatar from "@mui/material/Avatar";
@@ -14,13 +15,16 @@ import {Checkbox} from "@mui/material";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import {useFormik} from "formik";
 import {validationSchemaRegistration} from "../../validate/validationSchemaRegistration.js";
-import React from "react";
-import styles from "../UserRegistrationPage/UserRegistrationPage.module.css";
 import {LoginButtonAuth0} from "../../components/LoginButtonAuth0/LoginButtonAuth0";
+import {signUp} from "../../redux/auth/operations";
+import {useDispatch} from "react-redux";
+import {AppDispatch} from "../../redux/store";
+import styles from "../UserRegistrationPage/UserRegistrationPage.module.css";
 
 const defaultTheme = createTheme();
 
 const RegistrationForm = () => {
+  const dispatch = useDispatch<AppDispatch>();
   const [terms, setTerms] = useState<boolean>(false);
 
   const formik = useFormik({
@@ -32,9 +36,10 @@ const RegistrationForm = () => {
     },
     validationSchema: validationSchemaRegistration,
     onSubmit: (values) => {
-      // Add your form submission logic here
-      console.log('Form values:', values);
-    }
+      if (formik.isValid) {
+        dispatch(signUp(values));
+      }
+    },
   });
 
   const handleTermsCheck = (event: { target: HTMLInputElement; }) => {
