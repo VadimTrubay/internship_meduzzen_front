@@ -6,10 +6,11 @@ import {LogoutButton} from "../LogoutButton/LogoutButton";
 import {useAuth0} from "@auth0/auth0-react";
 import { useSelector} from "react-redux";
 import {selectUser} from "../../redux/auth/selectors";
+import {authType} from "../../types/authTypes";
 
 const UserMenu: React.FC = () => {
   const {user} = useAuth0();
-  const selectedUser = useSelector(selectUser);
+  const selectedUser: authType = useSelector(selectUser);
 
   return (
     <div className={styles.container}>

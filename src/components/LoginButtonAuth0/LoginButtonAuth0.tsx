@@ -4,12 +4,12 @@ import Button from "@mui/material/Button";
 import {Box} from "@mui/material";
 import {useAuth0} from "@auth0/auth0-react";
 import {loginAuth0} from "../../redux/auth/slice";
-import styles from "./LoginButtonAuth0.module.css";
 import {setAuthHeader} from "../../redux/auth/operations";
+import styles from "./LoginButtonAuth0.module.css";
 
 export const LoginButtonAuth0 = () => {
   const dispatch = useDispatch();
-  const { loginWithRedirect, isAuthenticated, getAccessTokenSilently } = useAuth0();
+  const {loginWithRedirect, isAuthenticated, getAccessTokenSilently} = useAuth0();
 
   useEffect(() => {
     const fetchToken = async () => {

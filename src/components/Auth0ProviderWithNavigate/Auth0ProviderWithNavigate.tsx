@@ -10,7 +10,7 @@ const Auth0ProviderWithNavigate = ({children}: Children) => {
   const navigate = useNavigate();
 
   const onRedirectCallback = (appState: { returnTo?: string }) => {
-    navigate(appState?.returnTo || window.location.pathname);
+    navigate(appState?.returnTo || '/user-profile');
   };
 
 

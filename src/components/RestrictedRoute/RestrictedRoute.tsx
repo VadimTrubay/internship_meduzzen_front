@@ -8,7 +8,7 @@ interface RestrictedRouteProps {
   redirectTo?: string;
 }
 
-export const RestrictedRoute = ({component: Component, redirectTo = "/"}: RestrictedRouteProps) => {
+export const RestrictedRoute = ({component: Component, redirectTo = "/user-profile"}: RestrictedRouteProps) => {
   const isLoggedIn = useSelector(selectIsLoggedIn);
 
   return isLoggedIn ? <Navigate to={redirectTo}/> : Component;

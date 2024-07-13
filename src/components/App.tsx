@@ -1,5 +1,5 @@
-import "modern-normalize";
 import React, {lazy, useEffect} from "react";
+import "modern-normalize";
 import styles from "./App.module.css";
 import {Route, Routes} from "react-router-dom";
 import {Layout} from "./Layout/Layout";
@@ -28,11 +28,10 @@ const App: React.FC = () => {
   const selectedIsLoggedIn = useSelector<boolean>(selectIsLoggedIn);
 
   useEffect(() => {
-    // @ts-ignore
     dispatch(getMe());
   }, [dispatch, selectedIsLoggedIn]);
 
-  return selectedLoading && selectedIsLoggedIn ? (
+  return selectedLoading ? (
     <Box sx={{width: "100%", marginTop: 4}}>
       <LinearProgress color="success"/>
     </Box>
@@ -45,13 +44,13 @@ const App: React.FC = () => {
         <Route
           path="signup"
           element={
-            <RestrictedRoute redirectTo="/login" component={<UserRegistrationPage/>}/>
+            <RestrictedRoute redirectTo="/user-profile" component={<UserRegistrationPage/>}/>
           }
         />
         <Route
           path="login"
           element={
-            <RestrictedRoute redirectTo="/" component={<UserAuthorizationPage/>}/>
+            <RestrictedRoute redirectTo="/user-profile" component={<UserAuthorizationPage/>}/>
           }
         />
         <Route
