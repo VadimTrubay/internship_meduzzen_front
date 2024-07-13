@@ -30,13 +30,11 @@ const handleRejected = (state: initialAuthType, action: PayloadAction<any>) => {
 const handleSignUpFulfilled = (state: initialAuthType, action: PayloadAction<authType>) => {
   state.access_token = action.payload.access_token;
   state.isLoggedIn = true;
-  state.loading = false;
 };
 
 const handleSignInFulfilled = (state: initialAuthType, action: PayloadAction<authType>) => {
   state.access_token = action.payload.access_token;
   state.isLoggedIn = true;
-  state.loading = false;
 };
 
 const handleGetMeFulfilled = (state: initialAuthType, action: PayloadAction<authType>) => {
@@ -45,14 +43,13 @@ const handleGetMeFulfilled = (state: initialAuthType, action: PayloadAction<auth
   state.user.email = action.payload.email;
   state.user.password = action.payload.password;
   state.user.is_admin = action.payload.is_admin;
-  state.loading = false;
+  state.isLoggedIn = true;
 };
 
 const handleLogOutFulfilled = (state: initialAuthType) => {
   state.user = {id: "", username: "", email: "", password: "", is_admin: false};
   state.access_token = null;
   state.isLoggedIn = false;
-  state.loading = false;
 };
 
 const authSlice = createSlice({

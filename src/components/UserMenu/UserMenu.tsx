@@ -4,13 +4,12 @@ import Avatar from "@mui/material/Avatar";
 import styles from "./UserMenu.module.css";
 import {LogoutButton} from "../LogoutButton/LogoutButton";
 import {useAuth0} from "@auth0/auth0-react";
-import {useSelector} from "react-redux";
+import { useSelector} from "react-redux";
 import {selectUser} from "../../redux/auth/selectors";
 
 const UserMenu: React.FC = () => {
   const {user} = useAuth0();
   const selectedUser = useSelector(selectUser);
-
 
   return (
     <div className={styles.container}>

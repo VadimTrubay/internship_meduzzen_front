@@ -5,10 +5,13 @@ import {baseURL} from "../../utils/process_base_url"
 
 axios.defaults.baseURL = baseURL;
 
-const setAuthHeader = (access_token: string) => {
-  axios.defaults.headers.common.Authorization = `Bearer ${access_token}`;
+export const setAuthHeader = (access_token: string | null) => {
+  if (access_token) {
+    axios.defaults.headers.common.Authorization = `Bearer ${access_token}`;
+  } else {
+    delete axios.defaults.headers.common.Authorization;
+  }
 };
-
 const clearAuthHeader = () => {
   axios.defaults.headers.common.Authorization = "";
 };
