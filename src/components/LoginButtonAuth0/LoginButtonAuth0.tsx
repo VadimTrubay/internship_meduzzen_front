@@ -1,14 +1,14 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import Button from "@mui/material/Button";
-import {Box} from "@mui/material";
-import {useAuth0} from "@auth0/auth0-react";
-import {useDispatch} from "react-redux";
-import {loginAuth0} from "../../redux/auth/slice";
+import { Box } from "@mui/material";
+import { useAuth0 } from "@auth0/auth0-react";
+import { loginAuth0 } from "../../redux/auth/slice";
 import styles from "./LoginButtonAuth0.module.css";
 
 export const LoginButtonAuth0 = () => {
   const dispatch = useDispatch();
-  const {loginWithRedirect, isAuthenticated} = useAuth0();
+  const { loginWithRedirect, isAuthenticated } = useAuth0();
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -20,15 +20,21 @@ export const LoginButtonAuth0 = () => {
     dispatch(loginAuth0(true));
   };
 
+  const handleLogin = () => {
+    loginWithRedirect();
+  };
+
   return (
-    <Box className={styles.container}>
-      <Button className='auth login'
-              onClick={loginWithRedirect}
-              variant="contained"
-      >
-        Auth0 login
-      </Button>
-    </Box>
+    <div>
+      <Box className={styles.container}>
+        <Button
+          className="auth login"
+          onClick={handleLogin}
+          variant="contained"
+        >
+          Auth0 login
+        </Button>
+      </Box>
+    </div>
   );
 };
-

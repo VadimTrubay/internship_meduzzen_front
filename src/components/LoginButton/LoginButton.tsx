@@ -6,6 +6,5 @@ export const LoginButton = () => {
 
   return (
     <Button variant="contained">Login</Button>
-
   )
 }

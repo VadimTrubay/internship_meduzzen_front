@@ -9,8 +9,6 @@ import styles from "./Header.module.css"
 
 const Header = () => {
   const isLoggedIn = useSelector(selectIsLoggedIn);
-  const error = useState<boolean>(false);
-  const isLoading = useState<boolean>(false);
 
   return (
     <div>
@@ -20,9 +18,6 @@ const Header = () => {
           <AuthNav/>
         </Toolbar>
       </AppBar>
-      {isLoading && !error && (
-        <CircularProgress className={styles.circular_progress}/>
-      )}
     </div>
   );
 };

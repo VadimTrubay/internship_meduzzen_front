@@ -39,11 +39,21 @@ export const signIn = createAsyncThunk(
   }
 );
 
-export const getMyInfo = createAsyncThunk(
-  "auth/user-profile",
-  async (credentials: { token: string }, thunkAPI) => {
+export const getMe = createAsyncThunk(
+  'auth/me',
+  async (_, thunkAPI) => {
+    const state = thunkAPI.getState();
+    // @ts-ignore
+    const access_token = state.auth.access_token;
+    if (access_token === null) {
+      return thunkAPI.rejectWithValue("Unable to fetch user");
+    }
     try {
-      const response = await axios.post("/auth/user-profile", credentials);
+      const response = await axios.get('/auth/me', {
+        headers: {
+          Authorization: `Bearer ${access_token}`
+        }
+      });
       return response.data;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.message);
@@ -55,7 +65,6 @@ export const logOut = createAsyncThunk(
   "auth/logout",
   async (_, thunkAPI) => {
     try {
-      await axios.post("/users/logout");
       clearAuthHeader();
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.message);

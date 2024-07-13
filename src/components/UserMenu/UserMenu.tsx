@@ -9,14 +9,15 @@ import {selectUser} from "../../redux/auth/selectors";
 
 const UserMenu: React.FC = () => {
   const {user} = useAuth0();
-  const userBase = useSelector(selectUser);
+  const selectedUser = useSelector(selectUser);
+
 
   return (
     <div className={styles.container}>
       <Avatar className={styles.avatar} alt="avatar" src={user?.picture}/>
       <div className={styles.userinfo}>
-        <Text className={styles.username}>{user ? user.name : userBase?.username}</Text>
-        <Text className={styles.username}>{user ? user.email : userBase?.email}</Text>
+        <Text className={styles.username}>{user ? user.name : selectedUser?.username}</Text>
+        <Text className={styles.email}>{user ? user.email : selectedUser?.email}</Text>
       </div>
       <LogoutButton/>
     </div>

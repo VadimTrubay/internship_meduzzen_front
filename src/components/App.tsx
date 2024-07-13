@@ -12,10 +12,10 @@ import ListOfUsersPage from "../pages/ListOfUsersPage/ListOfUsersPage";
 import UserProfilePage from "../pages/UserProfilePage/UserProfilePage";
 import ListOfCompaniesPage from "../pages/ListOfCompaniesPage/ListOfCompaniesPage";
 import CompanyProfilePage from "../pages/CompanyProfilePage/CompanyProfilePage";
-import {useDispatch, useSelector} from "react-redux";
-import {selectAccessToken} from "../redux/auth/selectors";
 import {Box, LinearProgress} from "@mui/material";
-import {refreshUser} from "../redux/auth/slice";
+import {selectIsLoggedIn, selectLoading} from "../redux/auth/selectors";
+import {useDispatch, useSelector} from "react-redux";
+import {getMe} from "../redux/auth/operations";
 
 const HomePage = lazy(() => import("../pages/HomePage/HomePage"));
 const AboutPage = lazy(() => import("../pages/AboutPage/AboutPage"));
@@ -23,16 +23,16 @@ const TermsPage = lazy(() => import("../pages/TermsPage/TermsPage"));
 const NotFoundPage = lazy(() => import("../pages/NotFoundPage/NotFoundPage"));
 
 const App: React.FC = () => {
+  const selectedLoading = useSelector<boolean>(selectLoading);
   const dispatch = useDispatch();
-  const selectedAccessToken = useSelector(selectAccessToken);
+  const selectedIsLoggedIn = useSelector<boolean>(selectIsLoggedIn);
 
   useEffect(() => {
-    if (selectedAccessToken) {
-      dispatch(refreshUser(false));
-    }
-  }, [dispatch]);
+    // @ts-ignore
+    dispatch(getMe());
+  }, [dispatch, selectedIsLoggedIn]);
 
-  return selectedAccessToken ? (
+  return selectedLoading && selectedIsLoggedIn ? (
     <Box sx={{width: "100%", marginTop: 4}}>
       <LinearProgress color="success"/>
     </Box>
@@ -59,7 +59,7 @@ const App: React.FC = () => {
           element={<PrivateRoute redirectTo="/login" component={<ListOfUsersPage/>}/>}
         />
         <Route
-          path="auth/user-profile"
+          path="user-profile"
           element={<PrivateRoute redirectTo="/login" component={<UserProfilePage/>}/>}
         />
         <Route

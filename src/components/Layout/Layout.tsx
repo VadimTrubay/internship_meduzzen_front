@@ -1,10 +1,10 @@
 import React, {Suspense} from "react";
 import {Outlet} from "react-router-dom";
+import {LayoutProps} from "../../types/layoutTypes";
 import CircularProgress from "@mui/material/LinearProgress";
-import Header from "../Header/Header.jsx";
 import Box from "@mui/material/Box";
 import Navigation from "../Navigation/Navigation";
-import {LayoutProps} from "../../types/layoutTypes";
+import Header from "../Header/Header.jsx";
 import Footer from "../Footer/Footer";
 import styles from "../Layout/Layout.module.css";
 
@@ -19,7 +19,7 @@ export const Layout = ({children}: LayoutProps) => {
           <CircularProgress/>
         </Box>
       }>
-        <div className={styles.fullWidth}>
+        <div className={styles.children}>
           {children}
         </div>
         <Outlet/>
