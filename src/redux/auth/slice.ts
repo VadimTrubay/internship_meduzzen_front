@@ -1,7 +1,6 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {signUp, signIn, logOut, getMe} from "./operations";
 import {authType, initialAuthType} from "../../types/authTypes";
-import toast from "react-hot-toast";
 
 const initialAuth: initialAuthType = {
   user: {
@@ -24,26 +23,28 @@ const handlePending = (state: initialAuthType) => {
 const handleRejected = (state: initialAuthType, action: PayloadAction<any>) => {
   state.loading = false;
   state.error = action.payload;
-  toast.error(`Error: ${action.payload}`);
 };
 
 const handleSignUpFulfilled = (state: initialAuthType, action: PayloadAction<authType>) => {
   state.access_token = action.payload.access_token;
   state.isLoggedIn = true;
+  state.loading = false;
 };
 
 const handleSignInFulfilled = (state: initialAuthType, action: PayloadAction<authType>) => {
   state.access_token = action.payload.access_token;
   state.isLoggedIn = true;
+  state.loading = false;
 };
 
 const handleGetMeFulfilled = (state: initialAuthType, action: PayloadAction<authType>) => {
+  state.isLoggedIn = true;
   state.user.id = action.payload.id;
   state.user.username = action.payload.username;
   state.user.email = action.payload.email;
   state.user.password = action.payload.password;
   state.user.is_admin = action.payload.is_admin;
-  state.isLoggedIn = true;
+  state.loading = false;
 };
 
 const handleLogOutFulfilled = (state: initialAuthType) => {

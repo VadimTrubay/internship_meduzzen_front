@@ -1,0 +1,12 @@
+.box > * {
+  padding-top: 20px;
+}
+
+.title {
+  text-align: center;
+}
+
+.avatar {
+  display: flex;
+  justify-content: center;
+}

@@ -12,6 +12,7 @@ export const setAuthHeader = (access_token: string | null) => {
     delete axios.defaults.headers.common.Authorization;
   }
 };
+
 const clearAuthHeader = () => {
   axios.defaults.headers.common.Authorization = "";
 };
