@@ -53,7 +53,6 @@ const RegistrationForm = () => {
     </div>
   );
 
-  // @ts-ignore
   return (
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">
@@ -83,7 +82,6 @@ const RegistrationForm = () => {
                   autoFocus
                   value={formik.values.username}
                   onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
                   error={formik.touched.username && Boolean(formik.errors.username)}
                   helperText={formik.touched.username && formik.errors.username}
                 />
@@ -99,7 +97,6 @@ const RegistrationForm = () => {
                   autoComplete="email"
                   value={formik.values.email}
                   onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
                   error={formik.touched.email && Boolean(formik.errors.email)}
                   helperText={formik.touched.email && formik.errors.email}
                 />
@@ -116,7 +113,6 @@ const RegistrationForm = () => {
                   autoComplete="new-password"
                   value={formik.values.password}
                   onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
                   error={formik.touched.password && Boolean(formik.errors.password)}
                   helperText={formik.touched.password && formik.errors.password}
                 />
@@ -133,7 +129,6 @@ const RegistrationForm = () => {
                   autoComplete="confirm-password"
                   value={formik.values.confirmPassword}
                   onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
                   error={formik.touched.confirmPassword && Boolean(formik.errors.confirmPassword)}
                   helperText={formik.touched.confirmPassword && formik.errors.confirmPassword}
                 />
