@@ -17,6 +17,7 @@ const Header = () => {
         <Toolbar className={styles.app_bar}>
           <Logo/>
           {isLoggedIn ? <UserMenu/> : <AuthNav/>}
+          <AuthNav/>
         </Toolbar>
       </AppBar>
     </div>
