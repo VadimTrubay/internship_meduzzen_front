@@ -20,7 +20,7 @@ const UserMenu: React.FC = () => {
 
   return (
     <div className={styles.container}>
-      <Avatar className={styles.avatar} alt="avatar" src={user?.picture}/>
+      {/*<Avatar className={styles.avatar} alt="avatar" src={user?.picture}/>*/}
       <div className={styles.userinfo}>
         <Text className={styles.username}>{user ? user.name : selectedUser?.username}</Text>
         <Text className={styles.email}>{user ? user.email : selectedUser?.email}</Text>

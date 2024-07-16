@@ -16,10 +16,12 @@ import {logOut} from "../../redux/auth/operations";
 import {useFormik} from "formik";
 import {UsernameUpdateType} from "../../types/usersTypes";
 import {validationSchemaUpdateUsername} from "../../validate/validationSchemaUpdateUsername.js";
+import {useAuth0} from "@auth0/auth0-react";
 
 const MyProfilePage = () => {
   const dispatch: AppDispatch = useDispatch();
   const user = useSelector(selectUser);
+  const userAuth0 = useAuth0();
   const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
   const [openEditUsernameModal, setOpenEditUsernameModal] = useState<boolean>(false);
   const [updatedUsername, setUpdatedUsername] = useState<string>(user?.username);
@@ -73,14 +75,14 @@ const MyProfilePage = () => {
           </Typography>
         </Grid>
         <Grid item xs={12}>
-          <Avatar/>
+          <Avatar src={userAuth0?.user?.picture}/>
         </Grid>
         <Grid item xs={12}>
           <Typography variant="h6" fontWeight="bold">
             Username:
           </Typography>
           <Typography variant="h6" color="textSecondary">
-            {updatedUsername}
+            {userAuth0?.user?.name  || updatedUsername}
           </Typography>
         </Grid>
         <Grid item xs={12}>
@@ -88,7 +90,7 @@ const MyProfilePage = () => {
             Email:
           </Typography>
           <Typography variant="h6" color="textSecondary">
-            {user?.email}
+            {userAuth0?.user?.email || user?.email}
           </Typography>
         </Grid>
         <Grid item xs={12}>
