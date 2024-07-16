@@ -11,12 +11,17 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import {createTheme, ThemeProvider} from "@mui/material/styles";
 import {validationSchemaAuthorization} from "../../validate/validationSchemaAuthorization.js";
-import commonStyles from './commonStyles';
+import styles from "../UserRegistrationPage/UserRegistrationPage.module.css";
+import React from "react";
+import {LoginButtonAuth0} from "../../components/LoginButtonAuth0/LoginButtonAuth0";
+import {signIn} from "../../redux/auth/operations";
+import {useDispatch} from "react-redux";
+import {AppDispatch} from "../../redux/store";
 
 const defaultTheme = createTheme();
 
 const UserAuthorizationPage = () => {
-  const styles: any = commonStyles;
+  const dispatch = useDispatch<AppDispatch>();
 
   const formik = useFormik({
     initialValues: {
@@ -24,7 +29,10 @@ const UserAuthorizationPage = () => {
       password: "",
     },
     validationSchema: validationSchemaAuthorization,
-    onSubmit: () => {
+    onSubmit: (values) => {
+      if (formik.isValid) {
+        dispatch(signIn(values));
+      }
     },
   });
 
@@ -90,12 +98,13 @@ const UserAuthorizationPage = () => {
             <Grid container justifyContent="flex-end">
               <Grid item>
                 <span className={styles.span}>Don&apos;t have an account?</span>
-                <Link to="/register">
+                <Link to="/signup">
                   Register
                 </Link>
               </Grid>
             </Grid>
           </Box>
+          <LoginButtonAuth0/>
         </Box>
       </Container>
     </ThemeProvider>

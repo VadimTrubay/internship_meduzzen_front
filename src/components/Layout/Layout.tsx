@@ -1,11 +1,12 @@
 import React, {Suspense} from "react";
 import {Outlet} from "react-router-dom";
-import LinearProgress from "@mui/material/LinearProgress";
-import Header from "../Header/Header.jsx";
+import {LayoutProps} from "../../types/layoutTypes";
+import CircularProgress from "@mui/material/LinearProgress";
 import Box from "@mui/material/Box";
 import Navigation from "../Navigation/Navigation";
+import Header from "../Header/Header.jsx";
+import Footer from "../Footer/Footer";
 import styles from "../Layout/Layout.module.css";
-import {LayoutProps} from "../../types/layoutTypes";
 
 
 export const Layout = ({children}: LayoutProps) => {
@@ -14,15 +15,18 @@ export const Layout = ({children}: LayoutProps) => {
       <Header/>
       <Navigation/>
       <Suspense fallback={
-        <Box>
-          <LinearProgress color="primary"/>
-        </Box>}
-      >
-        <div className={styles.fullWidth}>
+        <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+          <CircularProgress/>
+        </Box>
+      }>
+        <div className={styles.children}>
           {children}
         </div>
         <Outlet/>
       </Suspense>
+      <div className={styles.footer}>
+        <Footer/>
+      </div>
     </div>
   );
 };

@@ -32,8 +32,11 @@ const HomePage: React.FC = () => {
     <div className={styles.container}>
       <ModalWindow testString={testString} openModal={openModal} handleCloseModal={handleCloseModal}/>
       <h1>Home</h1>
+      <br/>
       <p>Welcome to App</p>
-      <p>This is my best project</p>
+      <br/>
+      <br/>
+      <br/>
       <br/>
       <h2>{testString}</h2>
       <br/>

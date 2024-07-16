@@ -1,24 +1,25 @@
 import {useState} from "react";
-import {AppBar, CircularProgress, Toolbar} from "@mui/material";
+import {AppBar, Toolbar} from "@mui/material";
 import Logo from "../Logo/Logo";
+import {useSelector} from "react-redux";
+import {selectIsLoggedIn} from "../../redux/auth/selectors";
 import AuthNav from "../AuthNav/AuthNav";
-import styles from "./Header.module.css";
+import styles from "./Header.module.css"
+import UserMenu from "../UserMenu/UserMenu";
+
 
 const Header = () => {
-  const error = useState<boolean>(true);
-  const isLoading = useState<boolean>(true);
+  const isLoggedIn = useSelector(selectIsLoggedIn);
 
   return (
     <div>
       <AppBar className={styles.app_bar} position="static">
         <Toolbar className={styles.app_bar}>
           <Logo/>
+          {isLoggedIn ? <UserMenu/> : <AuthNav/>}
           <AuthNav/>
         </Toolbar>
       </AppBar>
-      {isLoading && !error && (
-        <CircularProgress className={styles.circular_progress}/>
-      )}
     </div>
   );
 };

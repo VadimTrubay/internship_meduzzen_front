@@ -1,10 +1,9 @@
 :root {
-  --brand-color-contactbook: #6d94f8;
-  --brand-color-contactbook-hover: #3c71b0;
+  --brand-color-contactbook: #5781ff;
+  --brand-color-contactbook-hover: #2e5b8f;
   --link: #ffffff;
   --link-hover: #000000;
-  --brand-background-color: #efefef;
-
+  --brand-background-color: #d2d2d2;
 }
 
 @media (max-width: 425px) {

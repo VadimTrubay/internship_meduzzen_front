@@ -1,11 +1,25 @@
-.fullWidth {
+.children {
   width: 100%;
-  margin-top: 50px;
-  /*background-color: #3c71b0;*/
+  margin-top: 0;
+  min-height: 600px;
+  background-color: var(--brand-background-color);
+  border-radius: 5px;
+  padding-top: 0.5rem;
 }
 
 .container {
   max-width: 1240px;
   margin: 0 auto;
   padding: 0 15px;
+}
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.footer {
+  position: relative;
 }
