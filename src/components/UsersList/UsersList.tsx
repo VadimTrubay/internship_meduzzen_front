@@ -54,8 +54,8 @@ const UsersList = () => {
             <Table stickyHeader aria-label="sticky table">
               <TableHead>
                 <TableRow>
-                  {columns.map((column) => (
-                    <TableCell
+                  {columns?.map((column) => (
+                    <TableCell sx={{ backgroundColor: "#a4a4a4" }}
                       key={column.id}
                       align={column.align}
                       style={{minWidth: column.minWidth}}
@@ -65,16 +65,16 @@ const UsersList = () => {
                   ))}
                 </TableRow>
               </TableHead>
-              <TableBody>
-                {users.map((user) => (
-                  <TableRow key={user.id}>
+              <TableBody className={styles.tableHead}>
+                {users?.map((user) => (
+                  <TableRow key={user.id} className={styles.tableRow}>
                     <User user={user}/>
                   </TableRow>
                 ))}
               </TableBody>
             </Table>
           </TableContainer>
-          <Box sx={{display: "flex", justifyContent: "center", marginTop: 10 }}>
+          <Box sx={{display: "flex", justifyContent: "center", marginTop: 4 }}>
             <Pagination
               count={countPage}
                         page={skip}

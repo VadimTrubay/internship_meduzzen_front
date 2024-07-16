@@ -1,6 +1,6 @@
 export const selectUsers = (state) => state.users.items.users || [];
 
-export const selectUserById = (state) => state.users.userById;
+export const selectUserById = (state) => state.users.userById || null;
 
 export const selectTotalCount = (state) => state.users.totalCount || null;
 

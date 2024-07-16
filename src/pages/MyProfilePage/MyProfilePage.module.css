@@ -1,5 +1,6 @@
-.box > * {
-  padding-top: 20px;
+.container > * {
+  display: flex;
+  justify-content: center;
 }
 
 .title {
@@ -7,6 +8,12 @@
 }
 
 .avatar {
+
+}
+
+.changePassword {
   display: flex;
   justify-content: center;
+  margin-top: 20px;
+  max-width: 300px;
 }

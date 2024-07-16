@@ -23,11 +23,11 @@ const User = ({ user }: { user: UserType }) => {
       </TableCell>
       <TableCell sx={{ padding: "3px" }} align="center">
         <span className={styles.link} onClick={() => handleGetUser(user.id)}>
-          {user.username}
+          {user?.username}
         </span>
       </TableCell>
       <TableCell sx={{ padding: "3px" }} align="center">
-        {user.email}
+        {user?.email}
       </TableCell>
     </>
   );
