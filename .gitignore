@@ -44,3 +44,6 @@ dist-ssr
 node_modules/.vite/deps/package.json
 node_modules/.vite/deps/package.json
 /node_modules/.vite/deps
+node_modules/.vite/deps/package.json
+node_modules/.vite/deps/react.js.map
+node_modules/.vite/deps/react_jsx-runtime.js
