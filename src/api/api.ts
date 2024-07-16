@@ -13,3 +13,7 @@ export const getHealthCheck = async (): Promise<AxiosResponse<HealthCheckTypes>>
 export const getUsers = async (skip: number, limit: number): Promise<AxiosResponse<UserType[]>> => {
   return await axios.get(`/users?skip=${skip}&limit=${limit}`);
 };
+
+export const getUserById = async (userId: number): Promise<AxiosResponse<HealthCheckTypes>> => {
+  return await axios.get(`/users/${userId}`);
+}

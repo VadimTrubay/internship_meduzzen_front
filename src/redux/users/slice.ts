@@ -1,9 +1,10 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {fetchUsers} from "./operations";
-import {initialUsersType, UserType} from "../../types/usersTypes";
+import {fetchUserById, fetchUsers} from "./operations";
+import {initialUsersType} from "../../types/usersTypes";
 
 const initialUsers: initialUsersType = {
   items: [],
+  userById: null,
   totalCount: null,
   loading: false,
   error: null,
@@ -23,12 +24,19 @@ const handleRejected = (
 
 const handleFetchUsersFulfilled = (
   state: initialUsersType,
-  action: PayloadAction<UserType[]>
+  action: PayloadAction<any>
 ) => {
-  state.loading = false;
-  state.error = null;
   state.items = action.payload;
   state.totalCount = action.payload.total_count;
+  state.loading = false;
+};
+
+const getUserByIdFulfilled = (
+  state: initialUsersType,
+  action: PayloadAction<any>
+) => {
+  state.userById = action.payload;
+  state.loading = false;
 };
 
 
@@ -41,6 +49,9 @@ const usersSlice = createSlice({
       .addCase(fetchUsers.pending, handlePending)
       .addCase(fetchUsers.fulfilled, handleFetchUsersFulfilled)
       .addCase(fetchUsers.rejected, handleRejected)
+      .addCase(fetchUserById.pending, handlePending)
+      .addCase(fetchUserById.fulfilled, getUserByIdFulfilled)
+      .addCase(fetchUserById.rejected, handleRejected)
 });
 
 export const usersReducer = usersSlice.reducer;

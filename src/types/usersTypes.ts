@@ -1,5 +1,6 @@
 export interface initialUsersType {
   items: Array<UserType> | [];
+  userById: UserType | null;
   totalCount: number | null;
   loading: boolean;
   error: string | null;
@@ -11,8 +12,4 @@ export interface UserType {
   email: string | null,
   password: string | null,
   is_admin: boolean,
-}
-
-export type idUserType = {
-  id: string;
 }

@@ -1,5 +1,5 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
-import {getUsers} from "../../api/api";
+import {getUserById, getUsers} from "../../api/api";
 
 
 export const fetchUsers = createAsyncThunk(
@@ -13,3 +13,15 @@ export const fetchUsers = createAsyncThunk(
     }
   }
 );
+
+export const fetchUserById = createAsyncThunk(
+  "users/userId",
+  async (userId: number, thunkAPI) => {
+    try {
+      const response = await getUserById(userId);
+      return response.data;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+)

@@ -15,7 +15,8 @@ import CompanyProfilePage from "../pages/CompanyProfilePage/CompanyProfilePage";
 import {selectIsLoading, selectIsLoggedIn} from "../redux/auth/selectors";
 import {useDispatch, useSelector} from "react-redux";
 import {getMe} from "../redux/auth/operations";
-import {CircularProgress} from "@mui/material";
+import {Box, CircularProgress} from "@mui/material";
+import UserProfile from "./UserProfile/UserProfile";
 
 const HomePage = lazy(() => import("../pages/HomePage/HomePage"));
 const AboutPage = lazy(() => import("../pages/AboutPage/AboutPage"));
@@ -33,51 +34,54 @@ const App: React.FC = () => {
   }, [dispatch, selectedIsLoggedIn, selectedLoading]);
 
   return (
-    selectedLoading ? <div>
-        <CircularProgress className={styles.circular_progress}/></div>
-      : <Layout className={styles.container}>
-        <Routes>
-          <Route path="/" element={<HomePage/>}/>
-          <Route path="about" element={<AboutPage/>}/>
-          <Route path="healthcheck" element={<HealthCheck/>}/>
-          <Route
-            path="signup"
-            element={
-              <RestrictedRoute redirectTo="/" component={<UserRegistrationPage/>}/>
-            }
-          />
-          <Route
-            path="login"
-            element={
-              <RestrictedRoute redirectTo="/" component={<UserAuthorizationPage/>}/>
-            }
-          />
-          <Route
-            path="users"
-            element={<PrivateRoute redirectTo="" component={<ListOfUsersPage/>}/>}
-          />
-          <Route
-            path="my-profile"
-            element={<PrivateRoute redirectTo="/login" component={<MyProfilePage/>}/>}
-          />
-          <Route
-            path="companies"
-            element={<PrivateRoute redirectTo="/login" component={<ListOfCompaniesPage/>}/>}
-          />
-          <Route
-            path="company-profile"
-            element={<PrivateRoute redirectTo="/login" component={<CompanyProfilePage/>}/>}
-          />
-          <Route path="terms" element={<TermsPage/>}/>
-          <Route path="*" element={<NotFoundPage/>}/>
-        </Routes>
-      </Layout>
-
+    selectedLoading && selectedIsLoggedIn ?
+      (
+        <Box>
+          <CircularProgress className={styles.circular_progress}/>
+        </Box>
+      ) : (
+        <Layout className={styles.container}>
+          <Routes>
+            <Route path="/" element={<HomePage/>}/>
+            <Route path="about" element={<AboutPage/>}/>
+            <Route path="healthcheck" element={<HealthCheck/>}/>
+            <Route
+              path="signup"
+              element={
+                <RestrictedRoute redirectTo="/" component={<UserRegistrationPage/>}/>
+              }
+            />
+            <Route
+              path="login"
+              element={
+                <RestrictedRoute redirectTo="/" component={<UserAuthorizationPage/>}/>
+              }
+            />
+            <Route
+              path="users"
+              element={<PrivateRoute redirectTo="" component={<ListOfUsersPage/>}/>}
+            />
+            <Route
+              path="my-profile"
+              element={<PrivateRoute redirectTo="/login" component={<MyProfilePage/>}/>}
+            />
+            <Route
+              path="user/:userId"
+              element={<PrivateRoute redirectTo="/login" component={<UserProfile/>}/>}
+            />
+            <Route
+              path="companies"
+              element={<PrivateRoute redirectTo="/login" component={<ListOfCompaniesPage/>}/>}
+            />
+            <Route
+              path="company-profile"
+              element={<PrivateRoute redirectTo="/login" component={<CompanyProfilePage/>}/>}
+            />
+            <Route path="terms" element={<TermsPage/>}/>
+            <Route path="*" element={<NotFoundPage/>}/>
+          </Routes>
+        </Layout>)
   )
 };
 
 export default App;
-
-// <Box sx={{width: "100%", marginTop: 4}}>
-//   <LinearProgress color="success"/>
-// </Box>

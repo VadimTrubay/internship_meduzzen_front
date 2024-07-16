@@ -17,7 +17,7 @@ const Navigation = () => {
           USERS
         </NavLink>
         <NavLink className={styles.nav_link_breadcrumb} to={"/my-profile"}>
-          USER-PROFILE
+          MY-PROFILE
         </NavLink>
         <NavLink className={styles.nav_link_breadcrumb} to={"/companies"}>
           COMPANIES
