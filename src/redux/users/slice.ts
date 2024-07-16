@@ -1,5 +1,5 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {fetchUserById, fetchUsers} from "./operations";
+import {deleteUserById, fetchUserById, fetchUsers} from "./operations";
 import {initialUsersType} from "../../types/usersTypes";
 
 const initialUsers: initialUsersType = {
@@ -31,11 +31,19 @@ const handleFetchUsersFulfilled = (
   state.loading = false;
 };
 
-const getUserByIdFulfilled = (
+const handleGetUserByIdFulfilled = (
   state: initialUsersType,
   action: PayloadAction<any>
 ) => {
   state.userById = action.payload;
+  state.loading = false;
+};
+
+const handleDeleteUserByIdFulfilled = (
+  state: initialUsersType,
+  action: PayloadAction<any>
+) => {
+  state.items = state.items.filter((user) => user.id !== action.payload);
   state.loading = false;
 };
 
@@ -50,8 +58,11 @@ const usersSlice = createSlice({
       .addCase(fetchUsers.fulfilled, handleFetchUsersFulfilled)
       .addCase(fetchUsers.rejected, handleRejected)
       .addCase(fetchUserById.pending, handlePending)
-      .addCase(fetchUserById.fulfilled, getUserByIdFulfilled)
+      .addCase(fetchUserById.fulfilled, handleGetUserByIdFulfilled)
       .addCase(fetchUserById.rejected, handleRejected)
+      .addCase(deleteUserById.pending, handlePending)
+      .addCase(deleteUserById.fulfilled, handleDeleteUserByIdFulfilled)
+      .addCase(deleteUserById.rejected, handleRejected)
 });
 
 export const usersReducer = usersSlice.reducer;

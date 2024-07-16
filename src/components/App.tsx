@@ -25,16 +25,16 @@ const NotFoundPage = lazy(() => import("../pages/NotFoundPage/NotFoundPage"));
 
 const App: React.FC = () => {
   const dispatch = useDispatch();
-  const selectedIsLoggedIn = useSelector<boolean>(selectIsLoggedIn);
-  const selectedLoading = useSelector(selectIsLoading);
+  const isLoggedIn = useSelector<boolean>(selectIsLoggedIn);
+  const loading = useSelector(selectIsLoading);
 
 
   useEffect(() => {
     dispatch(getMe());
-  }, [dispatch, selectedIsLoggedIn, selectedLoading]);
+  }, [dispatch, isLoggedIn, loading]);
 
   return (
-    selectedLoading && selectedIsLoggedIn ?
+    loading && isLoggedIn ?
       (
         <Box>
           <CircularProgress className={styles.circular_progress}/>
@@ -59,7 +59,7 @@ const App: React.FC = () => {
             />
             <Route
               path="users"
-              element={<PrivateRoute redirectTo="" component={<ListOfUsersPage/>}/>}
+              element={<PrivateRoute redirectTo="/login" component={<ListOfUsersPage/>}/>}
             />
             <Route
               path="my-profile"

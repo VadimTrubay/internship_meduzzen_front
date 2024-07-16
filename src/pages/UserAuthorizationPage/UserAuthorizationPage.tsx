@@ -14,7 +14,7 @@ import {validationSchemaAuthorization} from "../../validate/validationSchemaAuth
 import styles from "../UserRegistrationPage/UserRegistrationPage.module.css";
 import React from "react";
 import {LoginButtonAuth0} from "../../components/LoginButtonAuth0/LoginButtonAuth0";
-import {signIn} from "../../redux/auth/operations";
+import {getMe, signIn} from "../../redux/auth/operations";
 import {useDispatch} from "react-redux";
 import {AppDispatch} from "../../redux/store";
 

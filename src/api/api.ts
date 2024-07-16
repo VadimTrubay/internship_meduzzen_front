@@ -1,7 +1,7 @@
 import axios, {AxiosResponse} from "axios";
 import {HealthCheckTypes} from "../types/healthCheckTypes";
 import {baseURL} from "../utils/process_base_url"
-import {UserType} from "../types/usersTypes";
+import {UsernameUpdateType, UserType} from "../types/usersTypes";
 
 
 axios.defaults.baseURL = baseURL;
@@ -14,6 +14,14 @@ export const getUsers = async (skip: number, limit: number): Promise<AxiosRespon
   return await axios.get(`/users?skip=${skip}&limit=${limit}`);
 };
 
-export const getUserById = async (userId: number): Promise<AxiosResponse<HealthCheckTypes>> => {
+export const getUserById = async (userId: string): Promise<AxiosResponse<HealthCheckTypes>> => {
   return await axios.get(`/users/${userId}`);
-}
+};
+
+export const editUsername = async ({userId, username}: UsernameUpdateType): Promise<AxiosResponse<UsernameUpdateType>> => {
+  return await axios.patch(`/users/${userId}`, {username});
+};
+
+export const removeUserById = async (userId: string): Promise<AxiosResponse<HealthCheckTypes>> => {
+  return await axios.delete(`/users/${userId}`);
+};
