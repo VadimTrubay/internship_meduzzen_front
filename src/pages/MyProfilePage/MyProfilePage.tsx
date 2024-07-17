@@ -107,7 +107,7 @@ const MyProfilePage = () => {
           <Typography variant="h6" fontWeight="bold">
             Username:
           </Typography>
-          <Typography variant="h6" color="textSecondary">
+          <Typography color="textSecondary">
             {userAuth0?.user?.name || updatedUsername}
           </Typography>
         </Grid>
@@ -115,7 +115,7 @@ const MyProfilePage = () => {
           <Typography variant="h6" fontWeight="bold">
             Email:
           </Typography>
-          <Typography variant="h6" color="textSecondary">
+          <Typography color="textSecondary">
             {userAuth0?.user?.email || user?.email}
           </Typography>
         </Grid>
@@ -123,7 +123,7 @@ const MyProfilePage = () => {
           <Typography variant="h6" fontWeight="bold">
             Role:
           </Typography>
-          <Typography variant="h6" color="textSecondary">
+          <Typography color="textSecondary">
             {user.is_admin ? "admin" : "user"}
           </Typography>
         </Grid>

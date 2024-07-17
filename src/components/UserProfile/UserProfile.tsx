@@ -22,7 +22,7 @@ const UserProfile: React.FC = () => {
           <Typography variant="h6" fontWeight="bold">
             Username:
           </Typography>
-          <Typography variant="h6" color="textSecondary">
+          <Typography color="textSecondary">
             {user?.username}
           </Typography>
         </Grid>
@@ -30,12 +30,12 @@ const UserProfile: React.FC = () => {
           <Typography variant="h6" fontWeight="bold">
             Email:
           </Typography>
-          <Typography variant="h6" color="textSecondary">
+          <Typography color="textSecondary">
             {user?.email}
           </Typography>
         </Grid>
         <Grid item xs={12}>
-          <Typography variant="h6" fontWeight="bold">
+          <Typography fontWeight="bold">
             Role:
           </Typography>
           <Typography variant="h6" color="textSecondary">

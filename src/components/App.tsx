@@ -15,7 +15,7 @@ import CompanyProfilePage from "../pages/CompanyProfilePage/CompanyProfilePage";
 import {selectLoading, selectIsLoggedIn} from "../redux/auth/selectors";
 import {useDispatch, useSelector} from "react-redux";
 import {getMe} from "../redux/auth/operations";
-import {Box, CircularProgress} from "@mui/material";
+import {Box, LinearProgress} from "@mui/material";
 import UserProfile from "./UserProfile/UserProfile";
 
 const HomePage = lazy(() => import("../pages/HomePage/HomePage"));
@@ -36,8 +36,8 @@ const App: React.FC = () => {
   return (
     loading && isLoggedIn ?
       (
-        <Box>
-          <CircularProgress className={styles.circular_progress}/>
+        <Box className={styles.linear_progress}>
+          <LinearProgress/>
         </Box>
       ) : (
         <Layout className={styles.container}>

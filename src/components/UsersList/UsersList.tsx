@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {
-  Box, CircularProgress,
+  Box, LinearProgress,
   Pagination,
   Table,
   TableBody,
@@ -47,7 +47,7 @@ const UsersList = () => {
     loading ?
       (
         <Box>
-          <CircularProgress className={styles.circular_progress}/>
+          <LinearProgress className={styles.circular_progress}/>
         </Box>
       ) : (
         <Paper>
