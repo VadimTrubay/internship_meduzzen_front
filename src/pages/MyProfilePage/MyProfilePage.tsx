@@ -1,23 +1,23 @@
 import React, {useState, useEffect} from "react";
+import styles from "./MyProfilePage.module.css";
+import {useDispatch, useSelector} from "react-redux";
+import {useFormik} from "formik";
+import {useAuth0} from "@auth0/auth0-react";
 import Avatar from "@mui/material/Avatar";
 import {Grid, Typography, Button, Box, Modal, TextField} from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DoneIcon from "@mui/icons-material/Done";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
-import {style, StyledBox, Text} from "./MyProfile.styled";
-import {useDispatch, useSelector} from "react-redux";
 import {selectUser} from "../../redux/auth/selectors";
 import toast, {Toaster} from "react-hot-toast";
 import {AppDispatch} from "../../redux/store";
 import {deleteUserById, updatePassword, updateUsername} from "../../redux/users/operations";
-import styles from "./MyProfilePage.module.css";
 import {getMe, logOut} from "../../redux/auth/operations";
-import {useFormik} from "formik";
-import {PasswordUpdateBackType, PasswordUpdateType, UsernameUpdateType} from "../../types/authTypes";
+import {PasswordUpdateType, UsernameUpdateType} from "../../types/authTypes";
 import {validationSchemaUpdateUsername} from "../../validate/validationSchemaUpdateUsername.js";
-import {useAuth0} from "@auth0/auth0-react";
 import {validationSchemaUpdatePassword} from "../../validate/validationSchemaUpdatePassword";
+import {style, StyledBox, Text} from "./MyProfile.styled";
 
 const MyProfilePage = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -68,7 +68,7 @@ const MyProfilePage = () => {
     validationSchema: validationSchemaUpdatePassword,
     onSubmit: (values) => {
       if (formikEditUsername.isValid) {
-        dispatch(updatePassword<PasswordUpdateBackType>(values))
+        dispatch(updatePassword(values))
         dispatch(getMe())
       }
       handleCloseEditPasswordModal();
@@ -197,7 +197,7 @@ const MyProfilePage = () => {
           <Typography id="modal-modal-title" variant="h6" component="h2">
             <Text className={styles.title_edit}>Edit username</Text>
           </Typography>
-          <StyledBox component="form" onSubmit={formikEditUsername.handleSubmit}>
+          <StyledBox component="form" onSubmit={formikEditUsername.handleSubmit as any}>
             <TextField
               id="username"
               name="username"
@@ -233,7 +233,7 @@ const MyProfilePage = () => {
           <Typography variant="h6">
             <Text>password:</Text>
           </Typography>
-          <StyledBox component="form" onSubmit={formikEditPassword.handleSubmit}>
+          <StyledBox component="form" onSubmit={formikEditPassword.handleSubmit as any}>
             <TextField
               id="password"
               name="password"

@@ -34,7 +34,6 @@ const handleSignUpFulfilled = (state: initialAuthType, action: PayloadAction<aut
   state.error = null;
   state.access_token = action.payload.access_token;
   state.isLoggedIn = true;
-  toast.success(`SignUp successfully`);
 };
 
 const handleSignInFulfilled = (state: initialAuthType, action: PayloadAction<authType>) => {
@@ -42,7 +41,6 @@ const handleSignInFulfilled = (state: initialAuthType, action: PayloadAction<aut
   state.error = null;
   state.access_token = action.payload.access_token;
   state.isLoggedIn = true;
-  toast.success(`SignIn successfully`);
 };
 
 const handleGetMeFulfilled = (state: initialAuthType, action: PayloadAction<authType>) => {
@@ -52,7 +50,6 @@ const handleGetMeFulfilled = (state: initialAuthType, action: PayloadAction<auth
   state.user.id = action.payload.id;
   state.user.username = action.payload.username;
   state.user.email = action.payload.email;
-  // state.user.password = action.payload.password;
   state.user.is_admin = action.payload.is_admin;
 };
 

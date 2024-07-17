@@ -1,4 +1,5 @@
 import React from "react";
+import {useFormik} from "formik";
 import {useState} from "react";
 import {Link} from "react-router-dom";
 import Avatar from "@mui/material/Avatar";
@@ -13,15 +14,14 @@ import Container from "@mui/material/Container";
 import {createTheme, ThemeProvider} from "@mui/material/styles";
 import {Checkbox} from "@mui/material";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import {useFormik} from "formik";
 import {validationSchemaRegistration} from "../../validate/validationSchemaRegistration.js";
 import {LoginButtonAuth0} from "../../components/LoginButtonAuth0/LoginButtonAuth0";
 import {signUp} from "../../redux/auth/operations";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch} from "../../redux/store";
-import styles from "../UserRegistrationPage/UserRegistrationPage.module.css";
 import {selectError} from "../../redux/auth/selectors";
 import toast from "react-hot-toast";
+import styles from "../UserRegistrationPage/UserRegistrationPage.module.css";
 
 const defaultTheme = createTheme();
 
@@ -146,7 +146,7 @@ const RegistrationForm = () => {
                 id="termsCheck"
                 name="termsCheck"
                 label={termsCheckboxLabel}
-                onChange={handleTermsCheck}
+                onChange={handleTermsCheck as any}
               />
               <Button
                 type="submit"

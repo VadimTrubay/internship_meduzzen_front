@@ -1,8 +1,7 @@
 import React from "react";
 import {useSelector} from "react-redux";
 import Avatar from "@mui/material/Avatar";
-import {Box, Grid, Paper, Typography} from "@mui/material";
-import styles from "./UserProfile.module.css";
+import {Grid, Typography} from "@mui/material";
 import {selectUserById} from "../../redux/users/selectors";
 
 const UserProfile: React.FC = () => {

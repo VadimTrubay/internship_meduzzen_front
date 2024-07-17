@@ -30,7 +30,7 @@ const App: React.FC = () => {
 
 
   useEffect(() => {
-    dispatch(getMe());
+    dispatch(getMe() as any);
   }, [dispatch, isLoggedIn, loading]);
 
   return (

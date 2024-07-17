@@ -20,19 +20,20 @@ import styles from "./UsersList.module.css";
 const UsersList = () => {
   const dispatch = useDispatch();
   const users = useSelector(selectUsers);
-  const totalCount = useSelector(selectTotalCount);
-  const loading = useSelector(selectLoading);
-  const [skip, setSkip] = useState(1);
+  const totalCount: number = useSelector(selectTotalCount);
+  const loading = useSelector<boolean>(selectLoading);
+  const [skip, setSkip] = useState<number>(1);
   const limit = 10;
 
   const countPage = Math.ceil(totalCount / limit);
 
-  const handleChangePage = (event, newPage) => {
+  const handleChangePage = (event: any, newPage: React.SetStateAction<number>) => {
     setSkip(newPage)
   };
 
 
   useEffect(() => {
+    // @ts-ignore
     dispatch(fetchUsers({skip, limit}));
   }, [dispatch, skip]);
 
@@ -57,7 +58,7 @@ const UsersList = () => {
                   {columns?.map((column) => (
                     <TableCell sx={{ backgroundColor: "#a4a4a4" }}
                       key={column.id}
-                      align={column.align}
+                      align={column.align as any}
                       style={{minWidth: column.minWidth}}
                     >
                       {column.label}
@@ -66,7 +67,7 @@ const UsersList = () => {
                 </TableRow>
               </TableHead>
               <TableBody className={styles.tableHead}>
-                {users?.map((user) => (
+                {users?.map((user: { id: React.Key | null | undefined; }) => (
                   <TableRow key={user.id} className={styles.tableRow}>
                     <User user={user}/>
                   </TableRow>
