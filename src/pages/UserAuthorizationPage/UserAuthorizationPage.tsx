@@ -37,6 +37,7 @@ const UserAuthorizationPage = () => {
   });
 
   return (
+    <>
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">
         <CssBaseline/>
@@ -106,6 +107,7 @@ const UserAuthorizationPage = () => {
         </Box>
       </Container>
     </ThemeProvider>
+    </>
   );
 };
 

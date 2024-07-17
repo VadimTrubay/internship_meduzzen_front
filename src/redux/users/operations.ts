@@ -2,7 +2,7 @@ import axios from "axios";
 import {createAsyncThunk} from "@reduxjs/toolkit";
 
 import {baseURL} from "../../utils/process_base_url"
-import {UsernameUpdateType} from "../../types/authTypes";
+import {PasswordUpdateType, UsernameUpdateType} from "../../types/authTypes";
 
 axios.defaults.baseURL = baseURL;
 
@@ -42,6 +42,28 @@ export const updateUsername = createAsyncThunk(
     }
     try {
       const res = await axios.patch(`/users/${id}`, {username}, {
+        headers: {
+          Authorization: `Bearer ${access_token}`
+        }
+      });
+      return res.data;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+export const updatePassword = createAsyncThunk(
+  "users/editPassword",
+  async ({id, password, new_password}: PasswordUpdateType, thunkAPI) => {
+    const state = thunkAPI.getState();
+    // @ts-ignore
+    const access_token = state.auth.access_token;
+    if (access_token === null) {
+      return thunkAPI.rejectWithValue("Unable to edit user");
+    }
+    try {
+      const res = await axios.patch(`/users/${id}`, {password, new_password}, {
         headers: {
           Authorization: `Bearer ${access_token}`
         }
