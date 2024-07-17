@@ -8,13 +8,13 @@ import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import {style, StyledBox, Text} from "./MyProfile.styled";
 import {useDispatch, useSelector} from "react-redux";
 import {selectUser} from "../../redux/auth/selectors";
-import toast from "react-hot-toast";
+import toast, {Toaster} from "react-hot-toast";
 import {AppDispatch} from "../../redux/store";
 import {deleteUserById, updateUsername} from "../../redux/users/operations";
 import styles from "./MyProfilePage.module.css";
-import {logOut} from "../../redux/auth/operations";
+import {getMe, logOut} from "../../redux/auth/operations";
 import {useFormik} from "formik";
-import {UsernameUpdateType} from "../../types/usersTypes";
+import {UsernameUpdateType} from "../../types/authTypes";
 import {validationSchemaUpdateUsername} from "../../validate/validationSchemaUpdateUsername.js";
 import {useAuth0} from "@auth0/auth0-react";
 
@@ -32,7 +32,7 @@ const MyProfilePage = () => {
   const handleCloseDeleteModal = () => setOpenDeleteModal(false);
 
   const initialValueUpdateUsername: UsernameUpdateType = {
-    userId: user.id,
+    id: user.id,
     username: user.username,
   };
 
@@ -41,12 +41,11 @@ const MyProfilePage = () => {
     validationSchema: validationSchemaUpdateUsername,
     onSubmit: (values) => {
       if (formik.isValid) {
-        dispatch(updateUsername(values)).then(() => {
-          setUpdatedUsername(values.username);
-          toast.success(`Username updated successfully`);
-          handleCloseEditUsernameModal();
-        });
+        dispatch(updateUsername(values))
       }
+      handleCloseEditUsernameModal();
+      dispatch(getMe())
+      toast.success(`Username updated successfully`);
     },
   });
 
@@ -82,7 +81,7 @@ const MyProfilePage = () => {
             Username:
           </Typography>
           <Typography variant="h6" color="textSecondary">
-            {userAuth0?.user?.name  || updatedUsername}
+            {userAuth0?.user?.name || updatedUsername}
           </Typography>
         </Grid>
         <Grid item xs={12}>
@@ -113,7 +112,7 @@ const MyProfilePage = () => {
         </Box>
         <Box marginTop={2}>
           <Button
-            onClick={""}
+            onClick={handleOpenEditUsernameModal}
             variant="outlined"
             startIcon={<EditIcon/>}
             color="success"
@@ -187,6 +186,7 @@ const MyProfilePage = () => {
           </StyledBox>
         </Box>
       </Modal>
+      <Toaster position="top-center"/>
     </>
   );
 };

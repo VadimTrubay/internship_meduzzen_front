@@ -26,25 +26,29 @@ const handleFetchUsersFulfilled = (
   state: initialUsersType,
   action: PayloadAction<any>
 ) => {
+  state.loading = false;
+  state.error = null;
   state.items = action.payload;
   state.totalCount = action.payload.total_count;
-  state.loading = false;
 };
 
 const handleGetUserByIdFulfilled = (
   state: initialUsersType,
   action: PayloadAction<any>
 ) => {
-  state.userById = action.payload;
   state.loading = false;
+  state.error = null;
+  state.userById = action.payload;
 };
+
 
 const handleDeleteUserByIdFulfilled = (
   state: initialUsersType,
   action: PayloadAction<any>
 ) => {
-  state.items = state.items.filter((user) => user.id !== action.payload);
   state.loading = false;
+  state.error = null;
+  state.items = state.items.filter((user) => user.id !== action.payload);
 };
 
 

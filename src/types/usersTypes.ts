@@ -13,8 +13,3 @@ export interface UserType {
   password: string | null,
   is_admin: boolean,
 }
-
-export interface UsernameUpdateType {
-  userId: string
-  username: string
-}

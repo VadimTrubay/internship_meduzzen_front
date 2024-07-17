@@ -1,23 +1,17 @@
 import axios from "axios";
 import {createAsyncThunk} from "@reduxjs/toolkit";
 
-import {editUsername, getUserById, getUsers, removeUserById} from "../../api/api";
 import {baseURL} from "../../utils/process_base_url"
-import {UsernameUpdateType} from "../../types/usersTypes";
-
+import {UsernameUpdateType} from "../../types/authTypes";
 
 axios.defaults.baseURL = baseURL;
 
-const setAuthHeader = (token) => {
-  console.log(token);
-  axios.defaults.headers.common.Authorization = `Bearer ${token}`;
-};
 
 export const fetchUsers = createAsyncThunk(
   "users/",
-  async ({ skip, limit}, thunkAPI) => {
+  async ({skip, limit}, thunkAPI) => {
     try {
-      const response = await getUsers(skip, limit);
+      const response = await axios.get(`/users?skip=${skip}&limit=${limit}`);
       return response.data;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.message);
@@ -27,9 +21,9 @@ export const fetchUsers = createAsyncThunk(
 
 export const fetchUserById = createAsyncThunk(
   "users/getUsers",
-  async (userId: string, thunkAPI) => {
+  async (id: string, thunkAPI) => {
     try {
-      const response = await getUserById(userId);
+      const response = await axios.get(`/users/${id}`);
       return response.data;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.message);
@@ -39,9 +33,19 @@ export const fetchUserById = createAsyncThunk(
 
 export const updateUsername = createAsyncThunk(
   "users/editUsername",
-  async ({userId, username}: UsernameUpdateType, thunkAPI) => {
+  async ({id, username}: UsernameUpdateType, thunkAPI) => {
+    const state = thunkAPI.getState();
+    // @ts-ignore
+    const access_token = state.auth.access_token;
+    if (access_token === null) {
+      return thunkAPI.rejectWithValue("Unable to edit user");
+    }
     try {
-      const res = await editUsername({userId, username});
+      const res = await axios.patch(`/users/${id}`, {username}, {
+        headers: {
+          Authorization: `Bearer ${access_token}`
+        }
+      });
       return res.data;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.message);
@@ -51,10 +55,19 @@ export const updateUsername = createAsyncThunk(
 
 export const deleteUserById = createAsyncThunk(
   "users/deleteUser",
-  async (userId: string, thunkAPI) => {
+  async (id: string, thunkAPI) => {
+    const state = thunkAPI.getState();
+    // @ts-ignore
+    const access_token = state.auth.access_token;
+    if (access_token === null) {
+      return thunkAPI.rejectWithValue("Unable to edit user");
+    }
     try {
-      // setAuthHeader(state.access_token);
-      const res = await removeUserById(userId);
+      const res = await axios.delete(`/users/${id}`, {
+        headers: {
+          Authorization: `Bearer ${access_token}`
+        }
+      });
       return res.data;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.message);

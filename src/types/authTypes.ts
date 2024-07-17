@@ -20,3 +20,8 @@ export interface authType {
   is_admin: boolean,
   access_token: string | null,
 }
+
+export interface UsernameUpdateType {
+  id: string
+  username: string
+}

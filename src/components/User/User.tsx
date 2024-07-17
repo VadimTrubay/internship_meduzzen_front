@@ -11,9 +11,9 @@ const User = ({ user }: { user: UserType }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const handleGetUser = (userId: number) => {
-    dispatch(fetchUserById(userId));
-    navigate(`/user/${userId}`);
+  const handleGetUser = (id: number) => {
+    dispatch(fetchUserById(id));
+    navigate(`/user/${id}`);
   };
 
   return (
