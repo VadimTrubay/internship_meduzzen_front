@@ -32,4 +32,11 @@ export interface PasswordUpdateType {
   id: string
   password: string | null
   new_password: string | null
+  confirmPassword: string | null
+}
+
+export interface PasswordUpdateBackType {
+  id: string
+  password: string | null
+  new_password: string | null
 }

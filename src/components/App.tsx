@@ -12,7 +12,7 @@ import ListOfUsersPage from "../pages/ListOfUsersPage/ListOfUsersPage";
 import MyProfilePage from "../pages/MyProfilePage/MyProfilePage";
 import ListOfCompaniesPage from "../pages/ListOfCompaniesPage/ListOfCompaniesPage";
 import CompanyProfilePage from "../pages/CompanyProfilePage/CompanyProfilePage";
-import {selectIsLoading, selectIsLoggedIn} from "../redux/auth/selectors";
+import {selectLoading, selectIsLoggedIn} from "../redux/auth/selectors";
 import {useDispatch, useSelector} from "react-redux";
 import {getMe} from "../redux/auth/operations";
 import {Box, CircularProgress} from "@mui/material";
@@ -26,7 +26,7 @@ const NotFoundPage = lazy(() => import("../pages/NotFoundPage/NotFoundPage"));
 const App: React.FC = () => {
   const dispatch = useDispatch();
   const isLoggedIn = useSelector<boolean>(selectIsLoggedIn);
-  const loading = useSelector(selectIsLoading);
+  const loading = useSelector(selectLoading);
 
 
   useEffect(() => {

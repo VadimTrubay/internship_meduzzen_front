@@ -17,14 +17,18 @@ import {useFormik} from "formik";
 import {validationSchemaRegistration} from "../../validate/validationSchemaRegistration.js";
 import {LoginButtonAuth0} from "../../components/LoginButtonAuth0/LoginButtonAuth0";
 import {signUp} from "../../redux/auth/operations";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch} from "../../redux/store";
 import styles from "../UserRegistrationPage/UserRegistrationPage.module.css";
+import {selectError} from "../../redux/auth/selectors";
+import toast from "react-hot-toast";
+
 const defaultTheme = createTheme();
 
 const RegistrationForm = () => {
   const dispatch = useDispatch<AppDispatch>();
   const [terms, setTerms] = useState<boolean>(false);
+  const error = useSelector(selectError)
 
   const formik = useFormik({
     initialValues: {
@@ -54,6 +58,7 @@ const RegistrationForm = () => {
 
   return (
     <>
+      {error && toast.error(`Error operation`)}
       <ThemeProvider theme={defaultTheme}>
         <Container component="main" maxWidth="xs">
           <CssBaseline/>

@@ -21,7 +21,7 @@ const handleRejected = (
 ) => {
   state.loading = false;
   state.error = action.payload;
-  toast.error(`Error: ${action.payload}`);
+  toast.error(`Error operation`);
 };
 
 const handleFetchUsersFulfilled = (

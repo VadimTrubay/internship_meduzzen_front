@@ -2,7 +2,7 @@ import axios from "axios";
 import {createAsyncThunk} from "@reduxjs/toolkit";
 
 import {baseURL} from "../../utils/process_base_url"
-import {PasswordUpdateType, UsernameUpdateType} from "../../types/authTypes";
+import {PasswordUpdateBackType, UsernameUpdateType} from "../../types/authTypes";
 
 axios.defaults.baseURL = baseURL;
 
@@ -55,7 +55,7 @@ export const updateUsername = createAsyncThunk(
 
 export const updatePassword = createAsyncThunk(
   "users/editPassword",
-  async ({id, password, new_password}: PasswordUpdateType, thunkAPI) => {
+  async ({id, password, new_password}: PasswordUpdateBackType, thunkAPI) => {
     const state = thunkAPI.getState();
     // @ts-ignore
     const access_token = state.auth.access_token;
