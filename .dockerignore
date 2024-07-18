@@ -1,3 +1,22 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+package-lock.json
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
 # Don't ignore .vite/deps/
 !node_modules/.vite/
 !node_modules/.vite/deps/
@@ -8,20 +27,6 @@ node_modules/.vite/deps/*
 # Don't ignore the specific file
 !node_modules/.vite/deps/chunk-REFQX4J5.js
 node_modules
-build
-.git
-.DS_Store
-
-# Logs
-logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
-
-.idea
 dist
 dist-ssr
 *.local
@@ -29,8 +34,14 @@ dist-ssr
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
+.idea
+.DS_Store
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
+node_modules/.vite/deps/package.json
+/node_modules/.vite/deps
+node_modules/.vite/deps/react.js.map
+node_modules/.vite/deps/react_jsx-runtime.js

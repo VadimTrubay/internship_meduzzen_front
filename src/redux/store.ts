@@ -1,4 +1,4 @@
-import { configureStore } from "@reduxjs/toolkit";
+import {configureStore} from "@reduxjs/toolkit";
 import {
   persistStore,
   persistReducer,
@@ -10,8 +10,9 @@ import {
   REGISTER,
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
-import { authReducer } from "./auth/slice";
+import {authReducer} from "./auth/slice";
 import testReducer from "./test_string/slice";
+import {usersReducer} from "./users/slice";
 
 const authPersistConfig = {
   key: "auth",
@@ -25,6 +26,7 @@ export const store = configureStore({
   reducer: {
     auth: persistReducer<AuthPersistedState>(authPersistConfig, authReducer),
     test: testReducer,
+    users: usersReducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

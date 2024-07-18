@@ -1,11 +1,10 @@
-import {useState} from "react";
-import {AppBar, Toolbar} from "@mui/material";
-import Logo from "../Logo/Logo";
 import {useSelector} from "react-redux";
 import {selectIsLoggedIn} from "../../redux/auth/selectors";
+import {AppBar, Toolbar} from "@mui/material";
+import Logo from "../Logo/Logo";
 import AuthNav from "../AuthNav/AuthNav";
-import styles from "./Header.module.css"
 import UserMenu from "../UserMenu/UserMenu";
+import styles from "./Header.module.css"
 
 
 const Header = () => {
@@ -17,7 +16,6 @@ const Header = () => {
         <Toolbar className={styles.app_bar}>
           <Logo/>
           {isLoggedIn ? <UserMenu/> : <AuthNav/>}
-          <AuthNav/>
         </Toolbar>
       </AppBar>
     </div>

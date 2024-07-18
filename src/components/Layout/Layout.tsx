@@ -1,7 +1,7 @@
 import React, {Suspense} from "react";
 import {Outlet} from "react-router-dom";
 import {LayoutProps} from "../../types/layoutTypes";
-import CircularProgress from "@mui/material/LinearProgress";
+import LinearProgress from "@mui/material/LinearProgress";
 import Box from "@mui/material/Box";
 import Navigation from "../Navigation/Navigation";
 import Header from "../Header/Header.jsx";
@@ -16,7 +16,7 @@ export const Layout = ({children}: LayoutProps) => {
       <Navigation/>
       <Suspense fallback={
         <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
-          <CircularProgress/>
+          <LinearProgress/>
         </Box>
       }>
         <div className={styles.children}>

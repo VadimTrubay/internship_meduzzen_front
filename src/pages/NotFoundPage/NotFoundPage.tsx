@@ -10,7 +10,7 @@ const NotFoundPage: React.FC = () => {
           <Grid xs={6}>
             <Typography variant="h1">404</Typography>
             <Typography variant="h6">
-              The page you’re looking for doesn’t exist.
+              The page you’re looking for does’t exist.
             </Typography>
             <Button className={styles.button} href="/" variant="contained">
               Back Home
