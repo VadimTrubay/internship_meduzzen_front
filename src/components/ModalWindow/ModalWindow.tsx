@@ -2,8 +2,8 @@ import React from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-import style from "./ModalWindow.module.css";
 import {testStringTypes} from "../../types/testStringTypes";
+import style from "./ModalWindow.module.css";
 
 
 const BasicModal: React.FC<testStringTypes> = ({testString, openModal, handleCloseModal}) => {

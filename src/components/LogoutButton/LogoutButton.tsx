@@ -4,17 +4,18 @@ import styles from "../UserMenu/UserMenu.module.css";
 import {useAuth0} from "@auth0/auth0-react";
 import {logOut} from "../../redux/auth/operations";
 import {useDispatch} from "react-redux";
+import {AppDispatch} from "../../redux/store";
 
 export const LogoutButton = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const {logout, isAuthenticated} = useAuth0();
 
   const handleAuth0Logout = () => {
-    logout({returnTo: window.location.origin} as any);
+    logout({returnTo: window.location.origin});
   };
 
   const handleBaseLogout = () => {
-    dispatch(logOut() as any)
+    dispatch(logOut())
   }
 
   return (
