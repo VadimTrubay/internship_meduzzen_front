@@ -8,7 +8,7 @@ import {setAuthHeader} from "../../redux/auth/operations";
 import styles from "./LoginButtonAuth0.module.css";
 
 export const LoginButtonAuth0 = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const {loginWithRedirect, isAuthenticated, getAccessTokenSilently} = useAuth0();
 
   useEffect(() => {

@@ -7,14 +7,15 @@ import {selectUser} from "../../redux/auth/selectors";
 import {authType} from "../../types/authTypes";
 import {getMe} from "../../redux/auth/operations";
 import styles from "./UserMenu.module.css";
+import {AppDispatch} from "../../redux/store";
 
 const UserMenu: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const {user} = useAuth0();
   const selectedUser: authType = useSelector(selectUser);
 
   useEffect(() => {
-    dispatch(getMe() as any);
+    dispatch(getMe());
   }, [selectedUser])
 
   return (

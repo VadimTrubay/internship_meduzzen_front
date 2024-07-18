@@ -17,6 +17,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {getMe} from "../redux/auth/operations";
 import {Box, LinearProgress} from "@mui/material";
 import UserProfile from "./UserProfile/UserProfile";
+import {AppDispatch} from "../redux/store";
 
 const HomePage = lazy(() => import("../pages/HomePage/HomePage"));
 const AboutPage = lazy(() => import("../pages/AboutPage/AboutPage"));
@@ -24,13 +25,13 @@ const TermsPage = lazy(() => import("../pages/TermsPage/TermsPage"));
 const NotFoundPage = lazy(() => import("../pages/NotFoundPage/NotFoundPage"));
 
 const App: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const isLoggedIn = useSelector<boolean>(selectIsLoggedIn);
   const loading = useSelector(selectLoading);
 
 
   useEffect(() => {
-    dispatch(getMe() as any);
+    dispatch(getMe());
   }, [dispatch, isLoggedIn, loading]);
 
   return (

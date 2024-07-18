@@ -20,7 +20,7 @@ import {validationSchemaUpdatePassword} from "../../validate/validationSchemaUpd
 import {style, StyledBox, Text} from "./MyProfile.styled";
 
 const MyProfilePage = () => {
-  const dispatch: AppDispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const user = useSelector(selectUser);
   const userAuth0 = useAuth0();
   const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
@@ -78,7 +78,6 @@ const MyProfilePage = () => {
   const handleDeleteContact = () => {
     dispatch(deleteUserById(user.id));
     dispatch(logOut());
-    toast.error(`User ${user.username} deleted successfully`);
     handleCloseDeleteModal();
   };
 
@@ -197,7 +196,7 @@ const MyProfilePage = () => {
           <Typography id="modal-modal-title" variant="h6" component="h2">
             <Text className={styles.title_edit}>Edit username</Text>
           </Typography>
-          <StyledBox component="form" onSubmit={formikEditUsername.handleSubmit as any}>
+          <StyledBox component="form" onSubmit={formikEditUsername.handleSubmit}>
             <TextField
               id="username"
               name="username"
@@ -233,7 +232,7 @@ const MyProfilePage = () => {
           <Typography variant="h6">
             <Text>password:</Text>
           </Typography>
-          <StyledBox component="form" onSubmit={formikEditPassword.handleSubmit as any}>
+          <StyledBox component="form" onSubmit={formikEditPassword.handleSubmit}>
             <TextField
               id="password"
               name="password"
@@ -282,8 +281,7 @@ const MyProfilePage = () => {
 
       <Toaster position="top-center"/>
     </>
-  )
-    ;
+  );
 };
 
 export default MyProfilePage;

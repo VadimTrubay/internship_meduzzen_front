@@ -3,17 +3,17 @@ import TableCell from "@mui/material/TableCell";
 import Avatar from "@mui/material/Avatar";
 import styles from "./User.module.css";
 import {useNavigate} from "react-router-dom";
-import {UserType} from "../../types/usersTypes";
 import {fetchUserById} from "../../redux/users/operations";
 import {useDispatch} from "react-redux";
+import {AppDispatch} from "../../redux/store";
+import {authType} from "../../types/authTypes";
 
-// @ts-ignore
-const User = ({user}) => {
+
+const User: React.FC<UserProps> = ({user}) => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
-  const handleGetUser = (id: number) => {
-    // @ts-ignore
+  const handleGetUser = (id: string) => {
     dispatch(fetchUserById(id));
     navigate(`/user/${id}`);
   };

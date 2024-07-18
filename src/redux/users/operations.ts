@@ -1,15 +1,16 @@
 import axios from "axios";
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import {baseURL} from "../../utils/process_base_url"
-import {PasswordUpdateBackType, UsernameUpdateType} from "../../types/authTypes";
+import {PasswordUpdateBackType, UserDeleteType, UsernameUpdateType} from "../../types/authTypes";
+import {FetchUsersParams} from "../../types/usersTypes";
+import {RootState} from "../store";
 
 axios.defaults.baseURL = baseURL;
 
 
-// @ts-ignore
 export const fetchUsers = createAsyncThunk(
   "users/",
-  async ({skip, limit}, thunkAPI) => {
+  async ({skip, limit}: FetchUsersParams, thunkAPI) => {
     try {
       const response = await axios.get(`/users?skip=${skip}&limit=${limit}`);
       return response.data;
@@ -31,11 +32,14 @@ export const fetchUserById = createAsyncThunk(
   }
 )
 
-export const updateUsername = createAsyncThunk(
+export const updateUsername = createAsyncThunk<
+  any,
+  UsernameUpdateType,
+  { state: RootState }
+>(
   "users/editUsername",
   async ({id, username}: UsernameUpdateType, thunkAPI) => {
     const state = thunkAPI.getState();
-    // @ts-ignore
     const access_token = state.auth.access_token;
     if (access_token === null) {
       return thunkAPI.rejectWithValue("Unable to edit user");
@@ -53,11 +57,14 @@ export const updateUsername = createAsyncThunk(
   }
 );
 
-export const updatePassword = createAsyncThunk(
+export const updatePassword = createAsyncThunk<
+  any,
+  PasswordUpdateBackType,
+  { state: RootState }
+>(
   "users/editPassword",
   async ({id, password, new_password}: PasswordUpdateBackType, thunkAPI) => {
     const state = thunkAPI.getState();
-    // @ts-ignore
     const access_token = state.auth.access_token;
     if (access_token === null) {
       return thunkAPI.rejectWithValue("Unable to edit user");
@@ -75,11 +82,14 @@ export const updatePassword = createAsyncThunk(
   }
 );
 
-export const deleteUserById = createAsyncThunk(
+export const deleteUserById = createAsyncThunk<
+  any,
+  UserDeleteType,
+  { state: RootState }
+>(
   "users/deleteUser",
-  async (id: string, thunkAPI) => {
+  async (id: UserDeleteType, thunkAPI) => {
     const state = thunkAPI.getState();
-    // @ts-ignore
     const access_token = state.auth.access_token;
     if (access_token === null) {
       return thunkAPI.rejectWithValue("Unable to edit user");

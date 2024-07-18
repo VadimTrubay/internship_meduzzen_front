@@ -16,7 +16,7 @@ const initialAuth: initialAuthType = {
   access_token: "",
   isLoggedIn: false,
   loading: false,
-  error: null,
+  error: "",
 };
 
 const handlePending = (state: initialAuthType) => {
@@ -31,21 +31,21 @@ const handleRejected = (state: initialAuthType, action: PayloadAction<any>) => {
 
 const handleSignUpFulfilled = (state: initialAuthType, action: PayloadAction<authType>) => {
   state.loading = false;
-  state.error = null;
+  state.error = "";
   state.access_token = action.payload.access_token;
   state.isLoggedIn = true;
 };
 
 const handleSignInFulfilled = (state: initialAuthType, action: PayloadAction<authType>) => {
   state.loading = false;
-  state.error = null;
+  state.error = "";
   state.access_token = action.payload.access_token;
   state.isLoggedIn = true;
 };
 
 const handleGetMeFulfilled = (state: initialAuthType, action: PayloadAction<authType>) => {
   state.loading = false;
-  state.error = null;
+  state.error = "";
   state.isLoggedIn = true;
   state.user.id = action.payload.id;
   state.user.username = action.payload.username;
@@ -55,7 +55,7 @@ const handleGetMeFulfilled = (state: initialAuthType, action: PayloadAction<auth
 
 const handleUpdateUsernameFulfilled = (state: initialAuthType, action: PayloadAction<UsernameUpdateType>) => {
   state.loading = false;
-  state.error = null;
+  state.error = "";
   state.user.id = action.payload.id;
   state.user.username = action.payload.username;
   toast.success(`Username updated successfully`);
@@ -63,7 +63,7 @@ const handleUpdateUsernameFulfilled = (state: initialAuthType, action: PayloadAc
 
 const handleUpdatePasswordFulfilled = (state: initialAuthType, action: PayloadAction<PasswordUpdateType>) => {
   state.loading = false;
-  state.error = null;
+  state.error = "";
   state.user.id = action.payload.id;
   state.user.password = "";
   state.user.new_password = "";
@@ -77,7 +77,7 @@ const handleLogOutFulfilled = (state: initialAuthType) => {
     new_password: "",
     is_admin: false
   };
-  state.access_token = null;
+  state.access_token = "";
   state.isLoggedIn = false;
 };
 

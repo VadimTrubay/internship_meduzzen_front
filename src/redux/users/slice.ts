@@ -1,6 +1,6 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {deleteUserById, fetchUserById, fetchUsers} from "./operations";
-import {initialUsersType} from "../../types/usersTypes";
+import {initialUsersType, UserType} from "../../types/usersTypes";
 import toast from "react-hot-toast";
 
 const initialUsers: initialUsersType = {
@@ -8,7 +8,7 @@ const initialUsers: initialUsersType = {
   userById: null,
   totalCount: null,
   loading: false,
-  error: null,
+  error: "",
 };
 
 const handlePending = (state: initialUsersType) => {
@@ -29,7 +29,7 @@ const handleFetchUsersFulfilled = (
   action: PayloadAction<any>
 ) => {
   state.loading = false;
-  state.error = null;
+  state.error = "";
   state.items = action.payload;
   state.totalCount = action.payload.total_count;
 };
@@ -39,7 +39,7 @@ const handleGetUserByIdFulfilled = (
   action: PayloadAction<any>
 ) => {
   state.loading = false;
-  state.error = null;
+  state.error = "";
   state.userById = action.payload;
 };
 
@@ -49,10 +49,9 @@ const handleDeleteUserByIdFulfilled = (
   action: PayloadAction<any>
 ) => {
   state.loading = false;
-  state.error = null;
+  state.error = "";
   state.items = state.items.filter((user) => user.id !== action.payload);
-  toast.success(`User deleted successfully`);
-
+  toast.error(`User deleted successfully`);
 };
 
 

@@ -7,7 +7,7 @@ import {selectTestString} from "../../redux/test_string/selectors";
 import {updateTestString} from "../../redux/test_string/slice";
 
 const HomePage: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const testString = useSelector(selectTestString);
 
   const [openModal, setOpenModal] = useState(false);
