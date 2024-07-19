@@ -26,11 +26,11 @@ const columns = [
 ];
 
 const CompaniesList = () => {
-  const dispatch = useDispatch<AppDispatch>();
   const {companies} = useSelector(selectCompanies);
   const totalCount: number = useSelector(selectTotalCount);
   const loading = useSelector<boolean>(selectLoading);
   const [skip, setSkip] = useState<number>(1);
+  const dispatch = useDispatch<AppDispatch>();
   const limit = 10;
 
   const countPage = Math.ceil(totalCount / limit);

@@ -10,7 +10,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import DoneIcon from "@mui/icons-material/Done";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import {selectUser} from "../../redux/auth/selectors";
-import toast, {Toaster} from "react-hot-toast";
+import {Toaster} from "react-hot-toast";
 import {AppDispatch} from "../../redux/store";
 import {deleteUserById, updatePassword, updateUsername} from "../../redux/users/operations";
 import {getMe, logOut} from "../../redux/auth/operations";
@@ -57,9 +57,9 @@ const MyProfilePage = () => {
     onSubmit: (values) => {
       if (formikEditUsername.isValid) {
         dispatch(updateUsername(values))
+        dispatch(getMe())
       }
       handleCloseEditUsernameModal();
-      dispatch(getMe())
     },
   });
 
@@ -85,7 +85,6 @@ const MyProfilePage = () => {
     setOpenEditUsernameModal(false);
     setOpenEditPasswordModal(false);
     setOpenDeleteModal(false);
-    setOpenEditPasswordModal(false);
   };
 
   useEffect(() => {

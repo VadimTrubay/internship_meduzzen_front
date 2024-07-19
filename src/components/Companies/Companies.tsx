@@ -3,19 +3,17 @@ import {useDispatch} from "react-redux";
 import {AppDispatch} from "../../redux/store";
 import TableCell from "@mui/material/TableCell";
 import Avatar from "@mui/material/Avatar";
-import {useNavigate} from "react-router-dom";
+import {NavLink} from "react-router-dom";
 import {fetchCompanyById} from "../../redux/companies/operations";
 import {CompanyProps} from "../../types/companiesTypes";
 import styles from "./Companies.module.css";
 
 
 const Companies: React.FC<CompanyProps> = ({company}) => {
-  const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
 
-  const handleGetCompany = (id: string) => {
-    dispatch(fetchCompanyById(id));
-    navigate(`/company/${id}`);
+  const handleGetCompany = () => {
+    dispatch(fetchCompanyById(company.id));
   };
 
   return (
@@ -23,10 +21,10 @@ const Companies: React.FC<CompanyProps> = ({company}) => {
       <TableCell component="th" scope="row" sx={{padding: "3px"}}>
         <Avatar className={styles.avatar}/>
       </TableCell>
-      <TableCell sx={{padding: "3px"}} align="center">
-        <span className={styles.link} onClick={() => handleGetCompany(company.id)}>
+      <TableCell  align="center">
+        <NavLink className={styles.link} to={company.id} onClick={() => handleGetCompany()}>
           {company?.name}
-        </span>
+        </NavLink>
       </TableCell>
       <TableCell sx={{padding: "3px"}} align="center">
         {company?.description}

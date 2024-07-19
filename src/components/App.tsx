@@ -32,10 +32,10 @@ const App: React.FC = () => {
 
   useEffect(() => {
     dispatch(getMe());
-  }, [dispatch, isLoggedIn, loading]);
+  }, [dispatch, isLoggedIn]);
 
   return (
-    loading && isLoggedIn ?
+    loading ?
       (
         <Box className={styles.linear_progress}>
           <LinearProgress/>
@@ -75,7 +75,7 @@ const App: React.FC = () => {
               element={<PrivateRoute redirectTo="/login" component={<ListOfCompaniesPage/>}/>}
             />
             <Route
-              path="company/:id"
+              path="companies/:id"
               element={<PrivateRoute redirectTo="/login" component={<CompanyProfilePage/>}/>}
             />
             <Route path="terms" element={<TermsPage/>}/>

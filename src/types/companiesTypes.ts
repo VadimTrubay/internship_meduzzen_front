@@ -22,8 +22,11 @@ export interface CompanyProps {
   company: CompanyType;
 }
 
-export interface CompanyUpdateType extends CompanyType {
-
+export interface CompanyUpdateType {
+  id: string;
+  name: string;
+  description: string;
+  visible: boolean,
 }
 
 export interface CompanyDeleteType {
@@ -31,6 +34,7 @@ export interface CompanyDeleteType {
 }
 
 export interface CompanyAddType {
+  id: string;
   name: string,
   description: string,
   visible: boolean,

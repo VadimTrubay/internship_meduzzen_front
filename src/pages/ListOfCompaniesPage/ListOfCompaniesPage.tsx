@@ -15,22 +15,25 @@ import {style, StyledBox, Text} from "./ListOfCompaniesPage.styled";
 import {addCompany} from "../../redux/companies/operations";
 
 const ListOfCompaniesPage: React.FC = () => {
-  const dispatch = useDispatch<AppDispatch>();
   const [openAddCompanyModal, setOpenAddCompanyModal] = useState<boolean>(false);
+  const dispatch = useDispatch<AppDispatch>();
 
   const initialValueAddCompany: CompanyAddType = {
+    id: "",
     name: "",
     description: "",
     visible: true,
   };
 
-  const handleOpenAddCompanyModal = () => setOpenAddCompanyModal(true);
+  const handleOpenAddCompanyModal = () => {
+    setOpenAddCompanyModal(true);
+    formikAddCompany.resetForm();
+  }
   const handleCloseAddCompanyModal = () => {
     setOpenAddCompanyModal(false);
     formikAddCompany.resetForm();
   }
 
-  // (e?: FormEvent<HTMLFormElement> | undefined) => void
   const formikAddCompany = useFormik({
     initialValues: initialValueAddCompany,
     validationSchema: validationSchemaAddCompany,
