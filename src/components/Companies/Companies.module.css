@@ -1,11 +1,3 @@
-.container > * {
-  display: flex;
-  justify-content: center;
-}
-
-.title {
-  text-align: center;
-}
 .avatar {
   background-color: #a1a1a1;
   border: 1px solid #ffffff;
@@ -14,7 +6,7 @@
   margin: 0 auto;
 }
 
-.contact {
+.user {
   flex: 0 0 calc(33.33% - 10px);
   display: flex;
   flex-direction: row;
@@ -43,11 +35,16 @@
   margin-right: 10px;
 }
 
-.close {
-  display: flex;
-  justify-content: flex-end;
-  color: var(--brand-color-contactbook);
+.link {
+  text-decoration: none;
+  font-size: 15px;
+}
+
+.link:hover {
+  color: var(--link-hover);
+  font-weight: bold;
   cursor: pointer;
+  /*font-size: 1.5em;*/
 }
 
 .title_edit {

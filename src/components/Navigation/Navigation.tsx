@@ -22,9 +22,6 @@ const Navigation = () => {
         <NavLink className={styles.nav_link_breadcrumb} to={"/companies"}>
           COMPANIES
         </NavLink>
-        <NavLink className={styles.nav_link_breadcrumb} to={"/company-profile"}>
-          COMPANY-PROFILE
-        </NavLink>
         <NavLink className={styles.nav_link_breadcrumb} to={"/healthcheck"}>
           HEALTHCHECK
         </NavLink>

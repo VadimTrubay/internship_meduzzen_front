@@ -63,20 +63,20 @@ const App: React.FC = () => {
               element={<PrivateRoute redirectTo="/login" component={<ListOfUsersPage/>}/>}
             />
             <Route
-              path="my-profile"
-              element={<PrivateRoute redirectTo="/login" component={<MyProfilePage/>}/>}
-            />
-            <Route
               path="user/:id"
               element={<PrivateRoute redirectTo="/login" component={<UserProfile/>}/>}
+            />
+            <Route
+              path="my-profile"
+              element={<PrivateRoute redirectTo="/login" component={<MyProfilePage/>}/>}
             />
             <Route
               path="companies"
               element={<PrivateRoute redirectTo="/login" component={<ListOfCompaniesPage/>}/>}
             />
             <Route
-              path="company-profile"
-              element={<PrivateRoute redirectTo="/login" component={<CompanyProfilePage/>}/>}
+              path="company/:id"
+              element={<PrivateRoute redirectTo="/login" component={<CompanyProfilePage company={company}/>}/>}
             />
             <Route path="terms" element={<TermsPage/>}/>
             <Route path="*" element={<NotFoundPage/>}/>
