@@ -1,15 +1,44 @@
 import axios from "axios";
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import {RootState} from "../store";
-import {baseURL} from "../../utils/process_base_url"
-import {CompanyDeleteType, CompanyUpdateType, FetchCompaniesParams} from "../../types/companiesTypes";
+import {baseURL} from "../../utils/process_base_url";
+import {
+  CompanyAddType,
+  CompanyType,
+  CompanyUpdateType,
+  FetchCompaniesParams
+} from "../../types/companiesTypes";
+import {get_access_token_from_state} from "../../utils/get_access_token_from_state";
 
 axios.defaults.baseURL = baseURL;
 
+export const addCompany = createAsyncThunk<
+  CompanyType,
+  CompanyAddType,
+  { state: RootState }
+>(
+  "companies/addCompany",
+  async ({name, description, visible}, thunkAPI) => {
+    const access_token = get_access_token_from_state(thunkAPI);
+    try {
+      const response = await axios.post("/companies", {name, description, visible}, {
+        headers: {
+          Authorization: `Bearer ${access_token}`
+        }
+      });
+      return response.data;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
 
-export const fetchCompanies = createAsyncThunk(
-  "companies/",
-  async ({skip, limit}: FetchCompaniesParams, thunkAPI) => {
+export const fetchCompanies = createAsyncThunk<
+  { items: CompanyType[], total_count: number },
+  FetchCompaniesParams
+>(
+  "companies/fetchCompanies",
+  async ({skip, limit}, thunkAPI) => {
     try {
       const response = await axios.get(`/companies?skip=${skip}&limit=${limit}`);
       return response.data;
@@ -20,71 +49,62 @@ export const fetchCompanies = createAsyncThunk(
 );
 
 export const fetchCompanyById = createAsyncThunk<
-  any,
-  CompanyUpdateType,
+  CompanyType,
+  string,
   { state: RootState }
 >(
   "companies/getCompanyById",
-  async (id: CompanyUpdateType, thunkAPI) => {
-    const state = thunkAPI.getState();
-    const access_token = state.auth.access_token;
-    if (access_token === null) {
-      return thunkAPI.rejectWithValue("Unable to edit company");
-    }
+  async (id: string, thunkAPI) => {
+    const access_token = get_access_token_from_state(thunkAPI);
     try {
-      const response = await axios.get(`/companies/${id}`);
-      return response.data;
-    } catch (error: any) {
-      return thunkAPI.rejectWithValue(error.message);
-    }
-  }
-)
-
-export const updateCompany = createAsyncThunk<
-  any,
-  CompanyUpdateType,
-  { state: RootState }
->(
-  "companies/editUsername",
-  async ({id, name, description, is_visible}: CompanyUpdateType, thunkAPI) => {
-    const state = thunkAPI.getState();
-    const access_token = state.auth.access_token;
-    if (access_token === null) {
-      return thunkAPI.rejectWithValue("Unable to edit company");
-    }
-    try {
-      const res = await axios.patch(`/companies/${id}`, {name, description, is_visible}, {
+      const response = await axios.get(`/companies/${id}`, {
         headers: {
           Authorization: `Bearer ${access_token}`
         }
       });
-      return res.data;
+      return response.data;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.message);
     }
   }
 );
 
-
-export const deleteCompanyById = createAsyncThunk<
-  any,
-  CompanyDeleteType,
+export const updateCompany = createAsyncThunk<
+  CompanyType,
+  CompanyUpdateType,
   { state: RootState }
 >(
-  "companies/deleteUser",
-  async (id: CompanyDeleteType, thunkAPI) => {
-    const state = thunkAPI.getState();
-    const access_token = state.auth.access_token;
-    if (access_token === null) {
-      return thunkAPI.rejectWithValue("Unable to edit company");
-    }
+  "companies/updateCompany",
+  async ({id, name, description, visible}, thunkAPI) => {
+    const access_token = get_access_token_from_state(thunkAPI);
     try {
-      const res = await axios.delete(`/companies/${id}`, {
+      const response = await axios.patch(`/companies/${id}`, {name, description, visible}, {
         headers: {
           Authorization: `Bearer ${access_token}`
         }
       });
-      return res.data;
+      return response.data;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+export const deleteCompanyById = createAsyncThunk<
+  string,
+  string,
+  { state: RootState }
+>(
+  "companies/deleteCompany",
+  async (id: string, thunkAPI) => {
+    const access_token = get_access_token_from_state(thunkAPI);
+    try {
+      const response = await axios.delete(`/companies/${id}`, {
+        headers: {
+          Authorization: `Bearer ${access_token}`
+        }
+      });
+      return response.data;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.message);
     }

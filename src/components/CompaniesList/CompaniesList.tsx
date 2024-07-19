@@ -27,7 +27,7 @@ const columns = [
 
 const CompaniesList = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const companies = useSelector(selectCompanies);
+  const {companies} = useSelector(selectCompanies);
   const totalCount: number = useSelector(selectTotalCount);
   const loading = useSelector<boolean>(selectLoading);
   const [skip, setSkip] = useState<number>(1);

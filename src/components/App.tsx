@@ -76,7 +76,7 @@ const App: React.FC = () => {
             />
             <Route
               path="company/:id"
-              element={<PrivateRoute redirectTo="/login" component={<CompanyProfilePage company={company}/>}/>}
+              element={<PrivateRoute redirectTo="/login" component={<CompanyProfilePage/>}/>}
             />
             <Route path="terms" element={<TermsPage/>}/>
             <Route path="*" element={<NotFoundPage/>}/>

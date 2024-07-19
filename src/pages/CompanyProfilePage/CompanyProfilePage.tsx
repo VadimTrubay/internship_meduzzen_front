@@ -1,9 +1,12 @@
 import React from "react";
 import {Grid, Typography} from "@mui/material";
 import Avatar from "@mui/material/Avatar";
+import {useSelector} from "react-redux";
+import {selectCompanyById} from "../../redux/companies/selectors";
+import {FaEye, FaEyeSlash} from "react-icons/fa";
 
-const CompanyProfilePage = ({company}) => {
-  console.log(company)
+const CompanyProfilePage = () => {
+  const company = useSelector(selectCompanyById)
   return (
     <>
       <Grid container direction="column" alignItems="center">
@@ -36,7 +39,7 @@ const CompanyProfilePage = ({company}) => {
             Visible:
           </Typography>
           <Typography color="textSecondary">
-            {company.is_admin ? "admin" : "user"}
+            {company.visible ? <FaEye /> : <FaEyeSlash />}
           </Typography>
         </Grid>
       </Grid>

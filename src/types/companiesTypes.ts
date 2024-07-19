@@ -1,5 +1,5 @@
 export interface initialCompaniesType {
-  items: Array<CompanyType> | [];
+  items: Array<CompanyType>;
   companyById: CompanyType | null;
   totalCount: number | null;
   loading: boolean;
@@ -10,7 +10,7 @@ export interface CompanyType {
   id: string;
   name: string;
   description: string;
-  is_visible: boolean,
+  visible: boolean,
 }
 
 export interface FetchCompaniesParams {
@@ -28,4 +28,10 @@ export interface CompanyUpdateType extends CompanyType {
 
 export interface CompanyDeleteType {
   id: string;
+}
+
+export interface CompanyAddType {
+  name: string,
+  description: string,
+  visible: boolean,
 }

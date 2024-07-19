@@ -6,3 +6,31 @@
   display: flex;
   justify-content: right;
 }
+
+.container > * {
+  display: flex;
+  justify-content: center;
+}
+
+.title {
+  text-align: center;
+}
+
+.button {
+  margin: 5px;
+}
+
+.close {
+  display: flex;
+  justify-content: flex-end;
+  color: var(--brand-color-contactbook);
+  cursor: pointer;
+}
+
+.title_add_company {
+  background-color: var(--brand-color-contactbook);
+  color: #ffffff;
+  border-radius: 3px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}

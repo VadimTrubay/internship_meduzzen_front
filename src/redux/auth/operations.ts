@@ -1,8 +1,9 @@
 import axios from "axios";
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import {baseURL} from "../../utils/process_base_url"
-import {initialAuthType, UsernameUpdateType} from "../../types/authTypes";
+import {UsernameUpdateType} from "../../types/authTypes";
 import {RootState} from "../store";
+import {get_access_token_from_state} from "../../utils/get_access_token_from_state";
 
 
 axios.defaults.baseURL = baseURL;
@@ -46,17 +47,13 @@ export const signIn = createAsyncThunk(
 );
 
 export const getMe = createAsyncThunk<
-  any,
+  never,
   UsernameUpdateType,
   { state: RootState }
 >(
   'auth/me',
   async (_, thunkAPI) => {
-    const state = thunkAPI.getState();
-    const access_token = state.auth.access_token;
-    if (access_token === null) {
-      return thunkAPI.rejectWithValue("Unable to fetch user");
-    }
+    const access_token = get_access_token_from_state(thunkAPI);
     try {
       const response = await axios.get('/auth/me', {
         headers: {

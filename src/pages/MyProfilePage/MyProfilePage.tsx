@@ -85,6 +85,7 @@ const MyProfilePage = () => {
     setOpenEditUsernameModal(false);
     setOpenEditPasswordModal(false);
     setOpenDeleteModal(false);
+    setOpenEditPasswordModal(false);
   };
 
   useEffect(() => {

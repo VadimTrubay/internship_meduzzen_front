@@ -1,8 +1,8 @@
-export const selectCompanies = (state) => state.companies.items.companies || [];
+export const selectCompanies = (state) => state.companies.items;
 
-export const selectCompanyById = (state) => state.companies.companyById || null;
+export const selectCompanyById = (state) => state.companies.companyById;
 
-export const selectTotalCount = (state) => state.companies.totalCount || null;
+export const selectTotalCount = (state) => state.companies.totalCount;
 
 export const selectLoading = (state) => state.companies.loading;
 

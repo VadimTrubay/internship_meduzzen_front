@@ -4,6 +4,7 @@ import {baseURL} from "../../utils/process_base_url"
 import {PasswordUpdateBackType, UserDeleteType, UsernameUpdateType} from "../../types/authTypes";
 import {FetchUsersParams} from "../../types/usersTypes";
 import {RootState} from "../store";
+import {get_access_token_from_state} from "../../utils/get_access_token_from_state";
 
 axios.defaults.baseURL = baseURL;
 
@@ -33,17 +34,13 @@ export const fetchUserById = createAsyncThunk(
 )
 
 export const updateUsername = createAsyncThunk<
-  any,
+  never,
   UsernameUpdateType,
   { state: RootState }
 >(
   "users/editUsername",
   async ({id, username}: UsernameUpdateType, thunkAPI) => {
-    const state = thunkAPI.getState();
-    const access_token = state.auth.access_token;
-    if (access_token === null) {
-      return thunkAPI.rejectWithValue("Unable to edit user");
-    }
+    const access_token = get_access_token_from_state(thunkAPI);
     try {
       const res = await axios.patch(`/users/${id}`, {username}, {
         headers: {
@@ -58,17 +55,13 @@ export const updateUsername = createAsyncThunk<
 );
 
 export const updatePassword = createAsyncThunk<
-  any,
+  never,
   PasswordUpdateBackType,
   { state: RootState }
 >(
   "users/editPassword",
   async ({id, password, new_password}: PasswordUpdateBackType, thunkAPI) => {
-    const state = thunkAPI.getState();
-    const access_token = state.auth.access_token;
-    if (access_token === null) {
-      return thunkAPI.rejectWithValue("Unable to edit user");
-    }
+    const access_token = get_access_token_from_state(thunkAPI);
     try {
       const res = await axios.patch(`/users/${id}`, {password, new_password}, {
         headers: {
@@ -83,17 +76,13 @@ export const updatePassword = createAsyncThunk<
 );
 
 export const deleteUserById = createAsyncThunk<
-  any,
+  never,
   UserDeleteType,
   { state: RootState }
 >(
   "users/deleteUser",
   async (id: UserDeleteType, thunkAPI) => {
-    const state = thunkAPI.getState();
-    const access_token = state.auth.access_token;
-    if (access_token === null) {
-      return thunkAPI.rejectWithValue("Unable to edit user");
-    }
+    const access_token = get_access_token_from_state(thunkAPI);
     try {
       const res = await axios.delete(`/users/${id}`, {
         headers: {
