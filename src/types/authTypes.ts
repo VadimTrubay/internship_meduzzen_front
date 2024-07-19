@@ -1,3 +1,5 @@
+import {initialValueUserAuthorization} from "../initialValues/initialValues";
+
 export interface initialAuthType {
   user: {
     id: string;
@@ -29,7 +31,6 @@ export interface UsernameUpdateType {
 }
 
 export interface PasswordUpdateType {
-  id: string;
   password: string;
   new_password: string;
   confirmPassword: string;
@@ -43,4 +44,16 @@ export interface PasswordUpdateBackType {
 
 export interface UserDeleteType {
   id: string;
+}
+
+export interface UserAuthorizationType {
+  email: string;
+  password: string;
+}
+
+export interface UserRegistrationType {
+  username: string;
+  email: string;
+  password: string;
+  confirmPassword: string,
 }

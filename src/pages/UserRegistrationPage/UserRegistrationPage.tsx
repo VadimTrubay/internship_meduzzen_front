@@ -22,6 +22,7 @@ import {AppDispatch} from "../../redux/store";
 import {selectError} from "../../redux/auth/selectors";
 import toast from "react-hot-toast";
 import styles from "../UserRegistrationPage/UserRegistrationPage.module.css";
+import {initialValueUserRegistration} from "../../initialValues/initialValues";
 
 const defaultTheme = createTheme();
 
@@ -31,12 +32,7 @@ const RegistrationForm = () => {
   const error = useSelector(selectError)
 
   const formik = useFormik({
-    initialValues: {
-      username: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
-    },
+    initialValues: initialValueUserRegistration,
     validationSchema: validationSchemaRegistration,
     onSubmit: (values) => {
       if (formik.isValid) {

@@ -18,6 +18,7 @@ import {signIn} from "../../redux/auth/operations";
 import {AppDispatch} from "../../redux/store";
 import {selectIsLoggedIn} from "../../redux/auth/selectors";
 import styles from "../UserRegistrationPage/UserRegistrationPage.module.css";
+import {initialValueUserAuthorization} from "../../initialValues/initialValues";
 
 const defaultTheme = createTheme();
 
@@ -26,10 +27,7 @@ const UserAuthorizationPage = () => {
   const isLoggedIn = useSelector(selectIsLoggedIn);
 
   const formik = useFormik({
-    initialValues: {
-      email: "",
-      password: "",
-    },
+    initialValues: initialValueUserAuthorization,
     validationSchema: validationSchemaAuthorization,
     onSubmit: (values) => {
       if (formik.isValid) {

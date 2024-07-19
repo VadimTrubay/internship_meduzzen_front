@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Box, Button, Checkbox, FormControlLabel, Grid, Modal, TextField, Typography} from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import {useDispatch, useSelector} from "react-redux";
@@ -13,18 +13,18 @@ import {deleteCompanyById, updateCompany} from "../../redux/companies/operations
 import {useFormik} from "formik";
 import {validationSchemaUpdateCompany} from "../../validate/validationSchemaUpdateCompany";
 import {AppDispatch} from "../../redux/store";
-import {CompanyUpdateType} from "../../types/companiesTypes";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {useNavigate} from "react-router-dom";
+import {initialValueUpdateCompany} from "../../initialValues/initialValues";
 
 
 const CompanyProfilePage = () => {
+  const dispatch = useDispatch<AppDispatch>();
   const company = useSelector(selectCompanyById);
   const navigate = useNavigate();
   const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
   const [openEditCompanyModal, setOpenEditCompanyModal] = useState<boolean>(false);
-  const dispatch = useDispatch<AppDispatch>();
 
   const handleOpenEditCompanyModal = () => setOpenEditCompanyModal(true);
   const handleCloseEditCompanyModal = () => {
@@ -34,12 +34,11 @@ const CompanyProfilePage = () => {
   const handleOpenDeleteModal = () => setOpenDeleteModal(true);
   const handleCloseDeleteModal = () => setOpenDeleteModal(false);
 
-  const initialValueUpdateCompany: CompanyUpdateType = {
-    id: company.id,
-    name: company.name,
-    description: company.description,
-    visible: true,
-  };
+  useEffect(() => {
+    if (company) {
+      formikEditCompany.setValues(company);
+    }
+  }, [company])
 
   const formikEditCompany = useFormik({
     initialValues: initialValueUpdateCompany,
@@ -96,7 +95,7 @@ const CompanyProfilePage = () => {
             Visible:
           </Typography>
           <Typography color="textSecondary">
-            {company.is_visible ? <FaEye/> : <FaEyeSlash/>}
+            {company.visible ? <FaEye/> : <FaEyeSlash/>}
           </Typography>
         </Grid>
         <Box marginTop={2}>

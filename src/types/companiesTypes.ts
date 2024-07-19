@@ -1,6 +1,6 @@
 export interface initialCompaniesType {
   items: Array<CompanyType>;
-  companyById: CompanyType | null;
+  companyById: CompanyType;
   totalCount: number | null;
   loading: boolean;
   error: string;
@@ -23,18 +23,12 @@ export interface CompanyProps {
 }
 
 export interface CompanyUpdateType {
-  id: string;
   name: string;
   description: string;
   visible: boolean,
 }
 
-export interface CompanyDeleteType {
-  id: string;
-}
-
 export interface CompanyAddType {
-  id: string;
   name: string,
   description: string,
   visible: boolean,

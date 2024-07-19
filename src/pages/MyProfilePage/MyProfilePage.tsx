@@ -18,6 +18,7 @@ import {PasswordUpdateType, UsernameUpdateType} from "../../types/authTypes";
 import {validationSchemaUpdateUsername} from "../../validate/validationSchemaUpdateUsername.js";
 import {validationSchemaUpdatePassword} from "../../validate/validationSchemaUpdatePassword";
 import {style, StyledBox, Text} from "./MyProfile.styled";
+import {initialValueUpdatePassword, initialValueUpdateUsername} from "../../initialValues/initialValues";
 
 const MyProfilePage = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -25,7 +26,6 @@ const MyProfilePage = () => {
   const userAuth0 = useAuth0();
   const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
   const [openEditUsernameModal, setOpenEditUsernameModal] = useState<boolean>(false);
-  const [updatedUsername, setUpdatedUsername] = useState<string>(user?.username);
   const [openEditPasswordModal, setOpenEditPasswordModal] = useState<boolean>(false);
 
 
@@ -39,17 +39,11 @@ const MyProfilePage = () => {
   const handleOpenDeleteModal = () => setOpenDeleteModal(true);
   const handleCloseDeleteModal = () => setOpenDeleteModal(false);
 
-  const initialValueUpdateUsername: UsernameUpdateType = {
-    id: user.id,
-    username: user.username,
-  };
-
-  const initialValueUpdatePassword: PasswordUpdateType = {
-    id: user.id,
-    password: "",
-    new_password: "",
-    confirmPassword: "",
-  };
+  useEffect(() => {
+    if (user) {
+      formikEditUsername.setValues(user);
+    }
+  }, [user])
 
   const formikEditUsername = useFormik({
     initialValues: initialValueUpdateUsername,
@@ -63,17 +57,17 @@ const MyProfilePage = () => {
     },
   });
 
-  const formikEditPassword = useFormik({
-    initialValues: initialValueUpdatePassword,
-    validationSchema: validationSchemaUpdatePassword,
-    onSubmit: (values) => {
-      if (formikEditUsername.isValid) {
-        dispatch(updatePassword(values))
-        dispatch(getMe())
-      }
-      handleCloseEditPasswordModal();
-    },
-  });
+const formikEditPassword = useFormik({
+  initialValues: initialValueUpdatePassword,
+  validationSchema: validationSchemaUpdatePassword,
+  onSubmit: (values) => {
+    if (formikEditPassword.isValid) {
+      dispatch(updatePassword({ id: user.id, password: values.password, new_password: values.new_password }))
+      dispatch(getMe())
+    }
+    handleCloseEditPasswordModal();
+  },
+});
 
   const handleDeleteContact = () => {
     dispatch(deleteUserById(user.id));
@@ -86,10 +80,6 @@ const MyProfilePage = () => {
     setOpenEditPasswordModal(false);
     setOpenDeleteModal(false);
   };
-
-  useEffect(() => {
-    setUpdatedUsername(user?.username);
-  }, [user]);
 
   return (
     <>
@@ -107,7 +97,7 @@ const MyProfilePage = () => {
             Username:
           </Typography>
           <Typography color="textSecondary">
-            {userAuth0?.user?.name || updatedUsername}
+            {userAuth0?.user?.name || user?.username}
           </Typography>
         </Grid>
         <Grid item xs={12}>

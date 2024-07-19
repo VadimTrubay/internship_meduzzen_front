@@ -8,22 +8,15 @@ import styles from "./ListOfCompaniesPage.module.css";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import DoneIcon from "@mui/icons-material/Done";
 import {useFormik} from "formik";
-import {CompanyAddType} from "../../types/companiesTypes";
 import {validationSchemaAddCompany} from "../../validate/validationSchemaAddCompany";
 import {Toaster} from "react-hot-toast";
 import {style, StyledBox, Text} from "./ListOfCompaniesPage.styled";
 import {addCompany} from "../../redux/companies/operations";
+import {initialValues} from "../../initialValues/initialValues";
 
 const ListOfCompaniesPage: React.FC = () => {
   const [openAddCompanyModal, setOpenAddCompanyModal] = useState<boolean>(false);
   const dispatch = useDispatch<AppDispatch>();
-
-  const initialValueAddCompany: CompanyAddType = {
-    id: "",
-    name: "",
-    description: "",
-    visible: true,
-  };
 
   const handleOpenAddCompanyModal = () => {
     setOpenAddCompanyModal(true);
@@ -35,7 +28,7 @@ const ListOfCompaniesPage: React.FC = () => {
   }
 
   const formikAddCompany = useFormik({
-    initialValues: initialValueAddCompany,
+    initialValues: initialValues,
     validationSchema: validationSchemaAddCompany,
     onSubmit: (values) => {
       if (formikAddCompany.isValid) {
