@@ -14,11 +14,10 @@ import {Toaster} from "react-hot-toast";
 import {AppDispatch} from "../../redux/store";
 import {deleteUserById, updatePassword, updateUsername} from "../../redux/users/operations";
 import {getMe, logOut} from "../../redux/auth/operations";
-import {PasswordUpdateType, UsernameUpdateType} from "../../types/authTypes";
 import {validationSchemaUpdateUsername} from "../../validate/validationSchemaUpdateUsername.js";
 import {validationSchemaUpdatePassword} from "../../validate/validationSchemaUpdatePassword";
-import {style, StyledBox, Text} from "./MyProfile.styled";
 import {initialValueUpdatePassword, initialValueUpdateUsername} from "../../initialValues/initialValues";
+import {style, StyledBox, Text} from "./MyProfile.styled";
 
 const MyProfilePage = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -57,17 +56,17 @@ const MyProfilePage = () => {
     },
   });
 
-const formikEditPassword = useFormik({
-  initialValues: initialValueUpdatePassword,
-  validationSchema: validationSchemaUpdatePassword,
-  onSubmit: (values) => {
-    if (formikEditPassword.isValid) {
-      dispatch(updatePassword({ id: user.id, password: values.password, new_password: values.new_password }))
-      dispatch(getMe())
-    }
-    handleCloseEditPasswordModal();
-  },
-});
+  const formikEditPassword = useFormik({
+    initialValues: initialValueUpdatePassword,
+    validationSchema: validationSchemaUpdatePassword,
+    onSubmit: (values) => {
+      if (formikEditPassword.isValid) {
+        dispatch(updatePassword({id: user.id, password: values.password, new_password: values.new_password}))
+        dispatch(getMe())
+      }
+      handleCloseEditPasswordModal();
+    },
+  });
 
   const handleDeleteContact = () => {
     dispatch(deleteUserById(user.id));
@@ -116,32 +115,31 @@ const formikEditPassword = useFormik({
             {user.is_admin ? "admin" : "user"}
           </Typography>
         </Grid>
-        <Box marginTop={2}>
+        <Box marginRight={2}>
           <Button
             onClick={handleOpenEditUsernameModal}
             variant="outlined"
             startIcon={<EditIcon/>}
             color="primary"
+            sx={{ marginRight: 1 }}
           >
             Change Username
           </Button>
-        </Box>
-        <Box marginTop={2}>
           <Button
             onClick={handleOpenEditPasswordModal}
             variant="outlined"
             startIcon={<EditIcon/>}
             color="primary"
+            sx={{ marginRight: 1 }}
           >
             Change Password
           </Button>
-        </Box>
-        <Box marginTop={2}>
           <Button
             onClick={handleOpenDeleteModal}
             variant="outlined"
             startIcon={<DeleteIcon/>}
             color="error"
+            sx={{ marginRight: 1 }}
           >
             Delete Profile
           </Button>

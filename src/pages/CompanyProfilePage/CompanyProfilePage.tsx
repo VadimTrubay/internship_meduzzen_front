@@ -17,12 +17,14 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {useNavigate} from "react-router-dom";
 import {initialValueUpdateCompany} from "../../initialValues/initialValues";
+import {selectUserById} from "../../redux/users/selectors";
 
 
 const CompanyProfilePage = () => {
-  const dispatch = useDispatch<AppDispatch>();
   const company = useSelector(selectCompanyById);
+  const user = useSelector(selectUserById);
   const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
   const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
   const [openEditCompanyModal, setOpenEditCompanyModal] = useState<boolean>(false);
 
@@ -79,7 +81,7 @@ const CompanyProfilePage = () => {
             Name:
           </Typography>
           <Typography color="textSecondary">
-            {company?.name}
+            {company ? company?.name : null}
           </Typography>
         </Grid>
         <Grid item xs={12}>
@@ -87,7 +89,7 @@ const CompanyProfilePage = () => {
             Description:
           </Typography>
           <Typography color="textSecondary">
-            {company?.description}
+            {company ? company?.description : null}
           </Typography>
         </Grid>
         <Grid item xs={12}>
@@ -95,24 +97,24 @@ const CompanyProfilePage = () => {
             Visible:
           </Typography>
           <Typography color="textSecondary">
-            {company.visible ? <FaEye/> : <FaEyeSlash/>}
+            {company ? company?.visible ? <FaEye/> : <FaEyeSlash/> : null}
           </Typography>
         </Grid>
+
         <Box marginTop={2}>
           <Button
             onClick={handleOpenEditCompanyModal}
             variant="outlined"
-            startIcon={<EditIcon/>}
+            startIcon={<EditIcon />}
             color="primary"
+            sx={{ marginRight: 1 }}
           >
             Edit Company
           </Button>
-        </Box>
-        <Box marginTop={2}>
           <Button
             onClick={handleOpenDeleteModal}
             variant="outlined"
-            startIcon={<DeleteIcon/>}
+            startIcon={<DeleteIcon />}
             color="error"
           >
             Delete Company
@@ -134,7 +136,7 @@ const CompanyProfilePage = () => {
           <Typography id="modal-modal-title" variant="h6" component="h2">
             <Text className={styles.title_delete}>Delete company</Text>
             <Text>Are you sure you want to delete this company?</Text>
-            <Text>&apos;{company.name}&apos;</Text>
+            <Text>&apos;{company ? company?.name : null}&apos;</Text>
           </Typography>
           <StyledBox component="form" onSubmit={handleDeleteCompany}>
             <Button type="submit">

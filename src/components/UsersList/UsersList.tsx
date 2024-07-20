@@ -48,7 +48,7 @@ const UsersList = () => {
     loading ?
       (
         <Box>
-          <LinearProgress className={styles.circular_progress}/>
+          <LinearProgress/>
         </Box>
       ) : (
         <Paper>

@@ -6,35 +6,6 @@
   margin: 0 auto;
 }
 
-.user {
-  flex: 0 0 calc(33.33% - 10px);
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  border: 2px solid #2b5d15;
-  border-radius: 10px;
-  margin: 5px;
-  min-width: 360px;
-}
-
-.button {
-  margin: 5px;
-}
-
-.contact span {
-  margin-right: 40px;
-}
-
-.contact div {
-  margin: 10px;
-}
-
-.name,
-.number {
-  margin-right: 10px;
-}
-
 .link {
   text-decoration: none;
   font-size: 15px;
@@ -44,21 +15,4 @@
   color: var(--link-hover);
   font-weight: bold;
   cursor: pointer;
-  /*font-size: 1.5em;*/
-}
-
-.title_edit {
-  background-color: var(--brand-color-contactbook);
-  color: #ffffff;
-  border-radius: 3px;
-  margin-top: 10px;
-  margin-bottom: 10px;
-}
-
-.title_delete {
-  background-color: #ff0000;
-  color: #ffffff;
-  border-radius: 3px;
-  margin-top: 10px;
-  margin-bottom: 10px;
 }

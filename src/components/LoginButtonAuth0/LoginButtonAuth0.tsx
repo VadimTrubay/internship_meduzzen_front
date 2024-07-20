@@ -6,6 +6,7 @@ import {useAuth0} from "@auth0/auth0-react";
 import {loginAuth0} from "../../redux/auth/slice";
 import {setAuthHeader} from "../../redux/auth/operations";
 import styles from "./LoginButtonAuth0.module.css";
+import {AppDispatch} from "../../redux/store";
 
 export const LoginButtonAuth0 = () => {
   const dispatch = useDispatch<AppDispatch>();

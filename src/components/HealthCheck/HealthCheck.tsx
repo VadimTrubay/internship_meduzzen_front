@@ -39,7 +39,7 @@ const HealthCheck: React.FC = () => {
           <p>Result: {healthCheckData.result}</p>
         </div>
       ) : (
-        <div className={styles.linear_progress}>
+        <div>
           <LinearProgress/>
         </div>
       )}

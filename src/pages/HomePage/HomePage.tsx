@@ -5,6 +5,7 @@ import ModalWindow from "../../components/ModalWindow/ModalWindow";
 import styles from "./HomePage.module.css";
 import {selectTestString} from "../../redux/test_string/selectors";
 import {updateTestString} from "../../redux/test_string/slice";
+import {AppDispatch} from "../../redux/store";
 
 const HomePage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();

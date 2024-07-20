@@ -1,21 +1,9 @@
-.box_name {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 .tableRow {
   background-color: #c9c9c9;
 }
 
 .tableRow:nth-of-type(odd) {
   background-color: #ffffff;
-}
-
-.center {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
 }
 
 .table {
@@ -28,20 +16,4 @@
 
 .table_head {
   background-color: var(--brand-color-contactbook);
-}
-
-.paper {
-  width: 100%;
-  overflow: hidden;
-  padding: 0;
-}
-
-.swap_icon {
-  font-size: 20px;
-  cursor: pointer;
-  color: #ffffff;
-}
-
-.swap_icon:hover {
-  color: #000000;
 }

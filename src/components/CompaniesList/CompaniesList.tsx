@@ -16,10 +16,11 @@ import {selectTotalCount, selectCompanies} from "../../redux/companies/selectors
 import {selectLoading} from "../../redux/companies/selectors";
 import {AppDispatch} from "../../redux/store";
 import {CompanyType} from "../../types/companiesTypes";
-import styles from "./CompaniesList.module.css";
 import Avatar from "@mui/material/Avatar";
 import {NavLink} from "react-router-dom";
 import {FaEye, FaEyeSlash} from "react-icons/fa";
+import {selectUser} from "../../redux/auth/selectors";
+import styles from "./CompaniesList.module.css";
 
 const columns = [
   {id: "avatar", label: "avatar", minWidth: 50, align: "center"},
@@ -29,11 +30,12 @@ const columns = [
 ];
 
 const CompaniesList = () => {
-  const dispatch = useDispatch<AppDispatch>();
-  const {companies} = useSelector(selectCompanies);
+  const user = useSelector(selectUser);
   const totalCount: number = useSelector(selectTotalCount);
   const loading = useSelector<boolean>(selectLoading);
   const [skip, setSkip] = useState<number>(1);
+  const dispatch = useDispatch<AppDispatch>();
+  const {companies} = useSelector(selectCompanies);
   const limit = 10;
 
   const countPage = Math.ceil(totalCount / limit);
@@ -74,24 +76,31 @@ const CompaniesList = () => {
                 </TableRow>
               </TableHead>
               <TableBody className={styles.tableHead}>
-                {companies?.map(({id, name, description, visible}: CompanyType) => (
-                  <TableRow key={id} className={styles.tableRow}>
-                    <TableCell component="th" scope="row" sx={{padding: "3px"}}>
-                      <Avatar className={styles.avatar}/>
-                    </TableCell>
-                    <TableCell align="center">
-                      <NavLink className={styles.link} to={id} onClick={() => handleGetCompany(id)}>
-                        {name}
-                      </NavLink>
-                    </TableCell>
-                    <TableCell sx={{padding: "3px"}} align="center">
-                      {description}
-                    </TableCell>
-                    <TableCell sx={{padding: "3px"}} align="center">
-                      {visible ? <FaEye/> : <FaEyeSlash/>}
-                    </TableCell>
-                  </TableRow>
-                ))}
+
+                {companies?.filter((company: CompanyType) => company.owner_id === user.id || company.visible)
+                  .map(({
+                          id,
+                          name,
+                          description,
+                          visible,
+                        }: CompanyType) => (
+                    <TableRow key={id} className={styles.tableRow}>
+                      <TableCell component="th" scope="row" sx={{padding: "3px"}}>
+                        <Avatar className={styles.avatar}/>
+                      </TableCell>
+                      <TableCell align="center">
+                        <NavLink className={styles.link} to={id} onClick={() => handleGetCompany(id)}>
+                          {name}
+                        </NavLink>
+                      </TableCell>
+                      <TableCell sx={{padding: "3px"}} align="center">
+                        {description}
+                      </TableCell>
+                      <TableCell sx={{padding: "3px"}} align="center">
+                        {visible ? <FaEye/> : <FaEyeSlash/>}
+                      </TableCell>
+                    </TableRow>
+                  ))}
               </TableBody>
             </Table>
           </TableContainer>

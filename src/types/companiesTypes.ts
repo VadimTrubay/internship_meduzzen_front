@@ -1,6 +1,6 @@
 export interface initialCompaniesType {
   items: Array<CompanyType>;
-  companyById: CompanyType;
+  companyById: CompanyType | null;
   totalCount: number | null;
   loading: boolean;
   error: string;
@@ -11,6 +11,7 @@ export interface CompanyType {
   name: string;
   description: string;
   visible: boolean,
+  owner_id: string,
 }
 
 export interface FetchCompaniesParams {

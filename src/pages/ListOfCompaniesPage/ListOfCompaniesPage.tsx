@@ -4,7 +4,6 @@ import Button from "@mui/material/Button";
 import {Box, Grid, Modal, TextField, Typography, FormControlLabel, Checkbox} from "@mui/material";
 import {AppDispatch} from "../../redux/store";
 import CompaniesList from "../../components/CompaniesList/CompaniesList";
-import styles from "./ListOfCompaniesPage.module.css";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import DoneIcon from "@mui/icons-material/Done";
 import {useFormik} from "formik";
@@ -13,6 +12,7 @@ import {Toaster} from "react-hot-toast";
 import {style, StyledBox, Text} from "./ListOfCompaniesPage.styled";
 import {addCompany} from "../../redux/companies/operations";
 import {initialValues} from "../../initialValues/initialValues";
+import styles from "./ListOfCompaniesPage.module.css";
 
 const ListOfCompaniesPage: React.FC = () => {
   const [openAddCompanyModal, setOpenAddCompanyModal] = useState<boolean>(false);

@@ -1,24 +1,7 @@
-.title {
-  text-align: center;
-}
-
 .addCompanyButton {
   display: flex;
   justify-content: center;
   margin-bottom: 10px;
-}
-
-.container > * {
-  display: flex;
-  justify-content: center;
-}
-
-.title {
-  text-align: center;
-}
-
-.button {
-  margin: 5px;
 }
 
 .close {

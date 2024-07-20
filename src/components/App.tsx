@@ -37,7 +37,7 @@ const App: React.FC = () => {
   return (
     loading ?
       (
-        <Box className={styles.linear_progress}>
+        <Box>
           <LinearProgress/>
         </Box>
       ) : (

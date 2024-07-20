@@ -1,21 +1,9 @@
-.box_name {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 .tableRow {
   background-color: #c9c9c9;
 }
 
 .tableRow:nth-of-type(odd) {
   background-color: #ffffff;
-}
-
-.center {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
 }
 
 .table {
@@ -30,57 +18,12 @@
   background-color: var(--brand-color-contactbook);
 }
 
-.paper {
-  width: 100%;
-  overflow: hidden;
-  padding: 0;
-}
-
-.swap_icon {
-  font-size: 20px;
-  cursor: pointer;
-  color: #ffffff;
-}
-
-.swap_icon:hover {
-  color: #000000;
-}
-
 .avatar {
   background-color: #a1a1a1;
   border: 1px solid #ffffff;
   width: 30px;
   height: 30px;
   margin: 0 auto;
-}
-
-.user {
-  flex: 0 0 calc(33.33% - 10px);
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  border: 2px solid #2b5d15;
-  border-radius: 10px;
-  margin: 5px;
-  min-width: 360px;
-}
-
-.button {
-  margin: 5px;
-}
-
-.contact span {
-  margin-right: 40px;
-}
-
-.contact div {
-  margin: 10px;
-}
-
-.name,
-.number {
-  margin-right: 10px;
 }
 
 .link {
@@ -94,21 +37,4 @@
   color: var(--link-hover);
   font-weight: 600;
   cursor: pointer;
-  /*font-size: 1.5em;*/
-}
-
-.title_edit {
-  background-color: var(--brand-color-contactbook);
-  color: #ffffff;
-  border-radius: 3px;
-  margin-top: 10px;
-  margin-bottom: 10px;
-}
-
-.title_delete {
-  background-color: #ff0000;
-  color: #ffffff;
-  border-radius: 3px;
-  margin-top: 10px;
-  margin-bottom: 10px;
 }
