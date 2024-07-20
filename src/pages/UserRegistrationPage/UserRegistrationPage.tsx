@@ -142,7 +142,7 @@ const RegistrationForm = () => {
                 id="termsCheck"
                 name="termsCheck"
                 label={termsCheckboxLabel}
-                onChange={handleTermsCheck as any}
+                onChange={handleTermsCheck}
               />
               <Button
                 type="submit"
