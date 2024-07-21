@@ -1,6 +1,5 @@
-import React from "react";
+import React, {useState} from "react";
 import {useFormik} from "formik";
-import {useState} from "react";
 import {Link} from "react-router-dom";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
@@ -12,24 +11,32 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import {createTheme, ThemeProvider} from "@mui/material/styles";
-import {Checkbox} from "@mui/material";
+import {Checkbox, IconButton, InputAdornment} from "@mui/material";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import {validationSchemaRegistration} from "../../validate/validationSchemaRegistration.js";
 import {LoginButtonAuth0} from "../../components/LoginButtonAuth0/LoginButtonAuth0";
 import {signUp} from "../../redux/auth/operations";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 import {AppDispatch} from "../../redux/store";
-import {selectError} from "../../redux/auth/selectors";
-import toast from "react-hot-toast";
 import styles from "../UserRegistrationPage/UserRegistrationPage.module.css";
 import {initialValueUserRegistration} from "../../initialValues/initialValues";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 const defaultTheme = createTheme();
 
 const RegistrationForm = () => {
   const dispatch = useDispatch<AppDispatch>();
   const [terms, setTerms] = useState<boolean>(false);
-  const error = useSelector(selectError)
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false);
+
+  const handleClickShowPassword = () => setShowPassword(!showPassword);
+  const handleClickShowConfirmPassword = () => setShowConfirmPassword(!showConfirmPassword);
+
+  const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+  };
 
   const formik = useFormik({
     initialValues: initialValueUserRegistration,
@@ -41,7 +48,7 @@ const RegistrationForm = () => {
     },
   });
 
-  const handleTermsCheck = (event: { target: HTMLInputElement; }) => {
+  const handleTermsCheck = (event: { target: HTMLInputElement }) => {
     const target = event.target as HTMLInputElement;
     setTerms(target.checked);
   };
@@ -54,7 +61,6 @@ const RegistrationForm = () => {
 
   return (
     <>
-      {error && toast.error(`Error operation`)}
       <ThemeProvider theme={defaultTheme}>
         <Container component="main" maxWidth="xs">
           <CssBaseline/>
@@ -109,13 +115,27 @@ const RegistrationForm = () => {
                     name="password"
                     label="Password"
                     color="primary"
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     id="password"
                     autoComplete="new-password"
                     value={formik.values.password}
                     onChange={formik.handleChange}
                     error={formik.touched.password && Boolean(formik.errors.password)}
                     helperText={formik.touched.password && formik.errors.password}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton
+                            aria-label="toggle password visibility"
+                            onClick={handleClickShowPassword}
+                            onMouseDown={handleMouseDownPassword}
+                            edge="end"
+                          >
+                            {showPassword ? <Visibility/> : <VisibilityOff/>}
+                          </IconButton>
+                        </InputAdornment>
+                      ),
+                    }}
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -125,20 +145,32 @@ const RegistrationForm = () => {
                     name="confirmPassword"
                     label="Confirm Password"
                     color="primary"
-                    type="password"
+                    type={showConfirmPassword ? "text" : "password"}
                     id="confirmPassword"
                     autoComplete="confirm-password"
                     value={formik.values.confirmPassword}
                     onChange={formik.handleChange}
                     error={formik.touched.confirmPassword && Boolean(formik.errors.confirmPassword)}
                     helperText={formik.touched.confirmPassword && formik.errors.confirmPassword}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton
+                            aria-label="toggle password visibility"
+                            onClick={handleClickShowConfirmPassword}
+                            onMouseDown={handleMouseDownPassword}
+                            edge="end"
+                          >
+                            {showConfirmPassword ? <Visibility/> : <VisibilityOff/>}
+                          </IconButton>
+                        </InputAdornment>
+                      ),
+                    }}
                   />
                 </Grid>
               </Grid>
               <FormControlLabel
-                control={
-                  <Checkbox id="termsCheck" name="termsCheck" color="primary"/>
-                }
+                control={<Checkbox id="termsCheck" name="termsCheck" color="primary"/>}
                 id="termsCheck"
                 name="termsCheck"
                 label={termsCheckboxLabel}
