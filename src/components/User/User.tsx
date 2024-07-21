@@ -5,11 +5,10 @@ import {useNavigate} from "react-router-dom";
 import {fetchUserById} from "../../redux/users/operations";
 import {useDispatch} from "react-redux";
 import {AppDispatch} from "../../redux/store";
-import {UserType} from "../../types/UserType";
 import styles from "./User.module.css";
 
 
-const User: React.FC<UserType> = ({user}) => {
+const User: React.FC = ({user}) => {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
 

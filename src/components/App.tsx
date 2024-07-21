@@ -9,15 +9,14 @@ import HealthCheck from "./HealthCheck/HealthCheck";
 import UserRegistrationPage from "../pages/UserRegistrationPage/UserRegistrationPage";
 import UserAuthorizationPage from "../pages/UserAuthorizationPage/UserAuthorizationPage";
 import ListOfUsersPage from "../pages/ListOfUsersPage/ListOfUsersPage";
-import MyProfilePage from "../pages/MyProfilePage/MyProfilePage";
 import ListOfCompaniesPage from "../pages/ListOfCompaniesPage/ListOfCompaniesPage";
 import CompanyProfilePage from "../pages/CompanyProfilePage/CompanyProfilePage";
 import {selectLoading, selectIsLoggedIn} from "../redux/auth/selectors";
 import {useDispatch, useSelector} from "react-redux";
 import {getMe} from "../redux/auth/operations";
 import {Box, LinearProgress} from "@mui/material";
-import UserProfile from "./UserProfile/UserProfile";
 import {AppDispatch} from "../redux/store";
+import UserProfilePage from "../pages/UserProfilePage/UserProfilePage";
 
 const HomePage = lazy(() => import("../pages/HomePage/HomePage"));
 const AboutPage = lazy(() => import("../pages/AboutPage/AboutPage"));
@@ -64,11 +63,7 @@ const App: React.FC = () => {
             />
             <Route
               path="user/:id"
-              element={<PrivateRoute redirectTo="/login" component={<UserProfile/>}/>}
-            />
-            <Route
-              path="my-profile"
-              element={<PrivateRoute redirectTo="/login" component={<MyProfilePage/>}/>}
+              element={<PrivateRoute redirectTo="/login" component={<UserProfilePage/>}/>}
             />
             <Route
               path="companies"

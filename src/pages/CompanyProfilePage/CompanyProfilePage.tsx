@@ -4,8 +4,8 @@ import Avatar from "@mui/material/Avatar";
 import {useDispatch, useSelector} from "react-redux";
 import {selectCompanyById} from "../../redux/companies/selectors";
 import {FaEye, FaEyeSlash} from "react-icons/fa";
-import {style, StyledBox, Text} from "../MyProfilePage/MyProfile.styled";
-import styles from "../MyProfilePage/MyProfilePage.module.css";
+import {style, StyledBox, Text} from "../UserProfilePage/UserProfilePage.styled";
+import styles from "../UserProfilePage/UserProfilePage.module.css";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import DoneIcon from "@mui/icons-material/Done";
 import {Toaster} from "react-hot-toast";
@@ -18,16 +18,19 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import {useNavigate} from "react-router-dom";
 import {initialValueUpdateCompany} from "../../initialValues/initialValues";
 import {selectUserById} from "../../redux/users/selectors";
+import {selectUser} from "../../redux/auth/selectors";
 
 
 const CompanyProfilePage = () => {
   const company = useSelector(selectCompanyById);
+  const currentuser = useSelector(selectUser);
   const user = useSelector(selectUserById);
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
   const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
   const [openEditCompanyModal, setOpenEditCompanyModal] = useState<boolean>(false);
 
+  console.log(company, user)
   const handleOpenEditCompanyModal = () => setOpenEditCompanyModal(true);
   const handleCloseEditCompanyModal = () => {
     formikEditCompany.resetForm();
@@ -100,7 +103,7 @@ const CompanyProfilePage = () => {
             {company ? company?.visible ? <FaEye/> : <FaEyeSlash/> : null}
           </Typography>
         </Grid>
-
+        {currentuser?.id === company?.owner_id &&
         <Box marginTop={2}>
           <Button
             onClick={handleOpenEditCompanyModal}
@@ -119,7 +122,7 @@ const CompanyProfilePage = () => {
           >
             Delete Company
           </Button>
-        </Box>
+        </Box>}
       </Grid>
 
       {/*Delete modal*/}
@@ -136,7 +139,7 @@ const CompanyProfilePage = () => {
           <Typography id="modal-modal-title" variant="h6" component="h2">
             <Text className={styles.title_delete}>Delete company</Text>
             <Text>Are you sure you want to delete this company?</Text>
-            <Text>&apos;{company ? company?.name : null}&apos;</Text>
+            <Text>&apos;{company?.name}&apos;</Text>
           </Typography>
           <StyledBox component="form" onSubmit={handleDeleteCompany}>
             <Button type="submit">
