@@ -6,12 +6,15 @@ import styles from "./HomePage.module.css";
 import {selectTestString} from "../../redux/test_string/selectors";
 import {updateTestString} from "../../redux/test_string/slice";
 import {AppDispatch} from "../../redux/store";
+import {getMe} from "../../redux/auth/operations";
+import {selectIsLoggedIn} from "../../redux/auth/selectors";
+
 
 const HomePage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const testString = useSelector(selectTestString);
-
   const [openModal, setOpenModal] = useState(false);
+
 
   const handleChange = () => {
     dispatch(updateTestString("Goodbye, MEDUZZEN!"));

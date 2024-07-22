@@ -52,8 +52,8 @@ export const getMe = createAsyncThunk<
   { state: RootState }
 >(
   'auth/me',
-  async (_, thunkAPI) => {
-    const access_token = get_access_token_from_state(thunkAPI);
+  async (access_tokenAuth0, thunkAPI) => {
+    const access_token = access_tokenAuth0? access_tokenAuth0 : get_access_token_from_state(thunkAPI);
     try {
       const response = await axios.get('/auth/me', {
         headers: {

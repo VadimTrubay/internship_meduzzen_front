@@ -71,6 +71,8 @@ const handleUpdatePasswordFulfilled = (state: initialAuthType, action: PayloadAc
 };
 
 const handleLogOutFulfilled = (state: initialAuthType) => {
+  state.loading = false;
+  state.error = "";
   state.user = {
     id: "", username: "",
     email: "", password: "",
@@ -85,8 +87,8 @@ const authSlice = createSlice({
   name: "auth",
   initialState: initialAuth,
   reducers: {
-    loginAuth0(state: initialAuthType, action: PayloadAction<boolean>) {
-      state.isLoggedIn = action.payload;
+    setAccessToken(state: initialAuthType, action: PayloadAction<string>) {
+      state.access_token = action.payload;
     }
   },
   extraReducers: (builder) => {
@@ -112,5 +114,5 @@ const authSlice = createSlice({
   }
 });
 
-export const {loginAuth0} = authSlice.actions;
+export const {setAccessToken} = authSlice.actions;
 export const authReducer = authSlice.reducer;

@@ -2,7 +2,6 @@ import React, {useState, useEffect} from "react";
 import styles from "./UserProfilePage.module.css";
 import {useDispatch, useSelector} from "react-redux";
 import {useFormik} from "formik";
-import {useAuth0} from "@auth0/auth0-react";
 import Avatar from "@mui/material/Avatar";
 import {Grid, Typography, Button, Box, Modal, TextField} from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
@@ -19,12 +18,15 @@ import {initialValueUpdatePassword, initialValueUpdateUsername} from "../../init
 import {style, StyledBox, Text} from "./UserProfilePage.styled";
 import {selectUserById} from "../../redux/users/selectors";
 import {selectUser} from "../../redux/auth/selectors";
+import {setAccessToken} from "../../redux/auth/slice";
+import {useAuth0} from "@auth0/auth0-react";
 
 const UserProfilePage = () => {
   const dispatch = useDispatch<AppDispatch>();
   const currentUser = useSelector(selectUser);
   const user = useSelector(selectUserById);
-  const userAuth0 = useAuth0();
+  const { isAuthenticated } = useAuth0()
+  const { logout } = useAuth0()
   const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
   const [openEditUsernameModal, setOpenEditUsernameModal] = useState<boolean>(false);
   const [openEditPasswordModal, setOpenEditPasswordModal] = useState<boolean>(false);
@@ -72,7 +74,12 @@ const UserProfilePage = () => {
 
   const handleDeleteContact = () => {
     dispatch(deleteUserById(user.id));
-    dispatch(logOut());
+    if (isAuthenticated) {
+      logout({ returnTo: window.location.origin });
+    } else {
+      dispatch(logOut());
+    }
+    dispatch(setAccessToken(""));
     handleCloseDeleteModal();
   };
 
@@ -91,14 +98,14 @@ const UserProfilePage = () => {
           </Typography>
         </Grid>
         <Grid item xs={12}>
-          <Avatar src={userAuth0?.user?.picture}/>
+          <Avatar/>
         </Grid>
         <Grid item xs={12}>
           <Typography variant="h6" fontWeight="bold">
             Username:
           </Typography>
           <Typography color="textSecondary">
-            {userAuth0?.user?.name || user?.username}
+            {user?.username}
           </Typography>
         </Grid>
         <Grid item xs={12}>
@@ -106,7 +113,7 @@ const UserProfilePage = () => {
             Email:
           </Typography>
           <Typography color="textSecondary">
-            {userAuth0?.user?.email || user?.email}
+            {user?.email}
           </Typography>
         </Grid>
         <Grid item xs={12}>

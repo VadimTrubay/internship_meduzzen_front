@@ -30,7 +30,6 @@ const CompanyProfilePage = () => {
   const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
   const [openEditCompanyModal, setOpenEditCompanyModal] = useState<boolean>(false);
 
-  console.log(company, user)
   const handleOpenEditCompanyModal = () => setOpenEditCompanyModal(true);
   const handleCloseEditCompanyModal = () => {
     formikEditCompany.resetForm();

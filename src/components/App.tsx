@@ -17,6 +17,7 @@ import {getMe} from "../redux/auth/operations";
 import {Box, LinearProgress} from "@mui/material";
 import {AppDispatch} from "../redux/store";
 import UserProfilePage from "../pages/UserProfilePage/UserProfilePage";
+import {useAuth0} from "@auth0/auth0-react";
 
 const HomePage = lazy(() => import("../pages/HomePage/HomePage"));
 const AboutPage = lazy(() => import("../pages/AboutPage/AboutPage"));
@@ -26,12 +27,15 @@ const NotFoundPage = lazy(() => import("../pages/NotFoundPage/NotFoundPage"));
 const App: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const isLoggedIn = useSelector<boolean>(selectIsLoggedIn);
+  const {isAuthenticated} = useAuth0()
   const loading = useSelector(selectLoading);
 
+    useEffect(() => {
+  }, [isAuthenticated, isLoggedIn]);
 
   useEffect(() => {
     dispatch(getMe());
-  }, [dispatch, isLoggedIn]);
+  }, [isAuthenticated, isLoggedIn, dispatch]);
 
   return (
     loading ?
