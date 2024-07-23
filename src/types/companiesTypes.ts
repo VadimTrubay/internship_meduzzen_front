@@ -24,8 +24,9 @@ export interface CompanyProps {
 }
 
 export interface CompanyUpdateType {
-  name: string;
-  description: string;
+  id: string;
+  name?: string;
+  description?: string;
   visible: boolean,
 }
 

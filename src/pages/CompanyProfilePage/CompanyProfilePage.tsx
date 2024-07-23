@@ -17,20 +17,17 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {useNavigate} from "react-router-dom";
 import {initialValueUpdateCompany} from "../../initialValues/initialValues";
-import {selectUserById} from "../../redux/users/selectors";
 import {selectUser} from "../../redux/auth/selectors";
 
 
 const CompanyProfilePage = () => {
   const company = useSelector(selectCompanyById);
-  const currentuser = useSelector(selectUser);
-  const user = useSelector(selectUserById);
+  const currentUser = useSelector(selectUser);
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
   const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
   const [openEditCompanyModal, setOpenEditCompanyModal] = useState<boolean>(false);
 
-  console.log(company, user)
   const handleOpenEditCompanyModal = () => setOpenEditCompanyModal(true);
   const handleCloseEditCompanyModal = () => {
     formikEditCompany.resetForm();
@@ -103,7 +100,7 @@ const CompanyProfilePage = () => {
             {company ? company?.visible ? <FaEye/> : <FaEyeSlash/> : null}
           </Typography>
         </Grid>
-        {currentuser?.id === company?.owner_id &&
+        {currentUser?.id === company?.owner_id &&
         <Box marginTop={2}>
           <Button
             onClick={handleOpenEditCompanyModal}

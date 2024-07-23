@@ -11,7 +11,7 @@ import DoneIcon from "@mui/icons-material/Done";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import {Toaster} from "react-hot-toast";
 import {AppDispatch} from "../../redux/store";
-import {deleteUserById, updatePassword, updateUsername} from "../../redux/users/operations";
+import {deleteUser, updatePassword, updateUsername} from "../../redux/users/operations";
 import {getMe, logOut} from "../../redux/auth/operations";
 import {validationSchemaUpdateUsername} from "../../validate/validationSchemaUpdateUsername.js";
 import {validationSchemaUpdatePassword} from "../../validate/validationSchemaUpdatePassword";
@@ -71,7 +71,7 @@ const UserProfilePage = () => {
   });
 
   const handleDeleteContact = () => {
-    dispatch(deleteUserById(user.id));
+    dispatch(deleteUser(user.id));
     dispatch(logOut());
     handleCloseDeleteModal();
   };
