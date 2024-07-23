@@ -4,22 +4,23 @@ import {RegisterType, UserAuthorizationType} from "../types/authTypes";
 import {get_access_token_from_state} from "../utils/get_access_token_from_state";
 import { GetThunkAPI } from "@reduxjs/toolkit";
 import { AsyncThunkConfig } from "@reduxjs/toolkit/dist/createAsyncThunk";
+import {mainUrls} from "../config/urls";
 
 
 axios.defaults.baseURL = baseURL;
 
 export const register = async (credentials: RegisterType): Promise<AxiosResponse> => {
-  return await axios.post("/auth/signup", credentials);
+  return await axios.post(mainUrls.auth.sign_up, credentials);
 };
 
 export const login = async (credentials: UserAuthorizationType): Promise<AxiosResponse> => {
-  return await axios.post("/auth/login", credentials);
+  return await axios.post(mainUrls.auth.login, credentials);
 };
 
 export const me = async (thunkAPI: GetThunkAPI<AsyncThunkConfig>): Promise<AxiosResponse> => {
   const access_token = get_access_token_from_state(thunkAPI);
 
-  return await axios.get('/auth/me', {
+  return await axios.get(mainUrls.auth.me, {
     headers: {
       Authorization: `Bearer ${access_token}`
     }
