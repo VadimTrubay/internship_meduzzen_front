@@ -1,5 +1,5 @@
 export interface initialCompaniesType {
-  items: Array<CompanyType>;
+  items: Array<CompanyType> | [];
   companyById: CompanyType | null;
   totalCount: number | null;
   loading: boolean;

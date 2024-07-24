@@ -1,12 +1,5 @@
 export interface initialAuthType {
-  user: {
-    id: string;
-    username: string;
-    email: string;
-    password: string;
-    new_password: string;
-    is_admin: boolean;
-  },
+  user: authType | null,
   access_token: string;
   isLoggedIn: boolean;
   loading: boolean;

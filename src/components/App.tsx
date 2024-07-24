@@ -20,7 +20,7 @@ import {AppDispatch} from "../redux/store";
 import UserProfilePage from "../pages/UserProfilePage/UserProfilePage";
 import {useAuth0} from "@auth0/auth0-react";
 import {RouterEndpoints} from "../config/routes";
-import {mainUrls} from "../config/urls";
+
 
 const HomePage = lazy(() => import("../pages/HomePage/HomePage"));
 const AboutPage = lazy(() => import("../pages/AboutPage/AboutPage"));
@@ -49,40 +49,40 @@ const App: React.FC = () => {
       ) : (
         <Layout className={styles.container}>
           <Routes>
-            <Route path={mainUrls.index} element={<HomePage/>}/>
-            <Route path={mainUrls.about} element={<AboutPage/>}/>
-            <Route path={mainUrls.healthcheck} element={<HealthCheck/>}/>
+            <Route path={RouterEndpoints.index} element={<HomePage/>}/>
+            <Route path={RouterEndpoints.about} element={<AboutPage/>}/>
+            <Route path={RouterEndpoints.healthcheck} element={<HealthCheck/>}/>
             <Route
-              path={mainUrls.auth.signup}
+              path={RouterEndpoints.signup}
               element={
-                <RestrictedRoute redirectTo={mainUrls.index} component={<UserRegistrationPage/>}/>
+                <RestrictedRoute redirectTo={RouterEndpoints.index} component={<UserRegistrationPage/>}/>
               }
             />
             <Route
-              path={mainUrls.auth.login}
+              path={RouterEndpoints.login}
               element={
-                <RestrictedRoute redirectTo={mainUrls.index} component={<UserAuthorizationPage/>}/>
+                <RestrictedRoute redirectTo={RouterEndpoints.index} component={<UserAuthorizationPage/>}/>
               }
             />
             <Route
-              path={mainUrls.users.submit}
-              element={<PrivateRoute redirectTo={mainUrls.auth.login} component={<ListOfUsersPage/>}/>}
+              path={RouterEndpoints.users}
+              element={<PrivateRoute redirectTo={RouterEndpoints.login} component={<ListOfUsersPage/>}/>}
             />
             <Route
-              path={`${mainUrls.users.submit}/${mainUrls.id}`}
-              element={<PrivateRoute redirectTo={mainUrls.auth.login} component={<UserProfilePage/>}/>}
+              path={`${RouterEndpoints.users}/${RouterEndpoints.id}`}
+              element={<PrivateRoute redirectTo={RouterEndpoints.login} component={<UserProfilePage/>}/>}
             />
             <Route
-              path={mainUrls.companies.submit}
-              element={<PrivateRoute redirectTo={mainUrls.auth.login} component={<ListOfCompaniesPage/>}/>}
+              path={RouterEndpoints.companies}
+              element={<PrivateRoute redirectTo={RouterEndpoints.login} component={<ListOfCompaniesPage/>}/>}
             />
             <Route
-              path={`${mainUrls.companies.submit}/${mainUrls.id}`}
-              element={<PrivateRoute redirectTo={mainUrls.auth.login} component={<CompanyProfilePage/>}/>}
+              path={`${RouterEndpoints.companies}/${RouterEndpoints.id}`}
+              element={<PrivateRoute redirectTo={RouterEndpoints.login} component={<CompanyProfilePage/>}/>}
             />
-            <Route path={mainUrls.actions.members} element={<CompanyMembersPage/>}/>
-            <Route path={mainUrls.terms} element={<TermsPage/>}/>
-            <Route path={mainUrls.notFound} element={<NotFoundPage/>}/>
+            <Route path={RouterEndpoints.members} element={<CompanyMembersPage/>}/>
+            <Route path={RouterEndpoints.terms} element={<TermsPage/>}/>
+            <Route path={RouterEndpoints.notFound} element={<NotFoundPage/>}/>
           </Routes>
         </Layout>)
   )

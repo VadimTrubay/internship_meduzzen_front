@@ -6,7 +6,7 @@ import {login, me, register} from "../../api/api_auth";
 
 
 export const signUp = createAsyncThunk(
-  "auth/signup",
+  "auth/signUp",
   async (credentials: RegisterType, thunkAPI) => {
     try {
       const response = await register(credentials);
@@ -45,7 +45,7 @@ export const getMe = createAsyncThunk(
 );
 
 export const logOut = createAsyncThunk(
-  "auth/logout",
+  "auth/logOut",
   async (_, thunkAPI) => {
     try {
       clearAuthHeader();

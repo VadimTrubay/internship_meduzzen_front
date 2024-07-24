@@ -2,6 +2,8 @@ export const auth = "/auth";
 export const users = "/users";
 export const companies = "/companies";
 export const actions = "/actions";
+export const members = `${actions}/company/members`;
+
 
 export const mainUrls = {
     index: "/",
@@ -26,7 +28,7 @@ export const mainUrls = {
         byId: (id: string) => `${companies}/${id}`,
     },
     actions: {
-        members: (skip: number, limit: number, companyId: string) =>  `${actions}/company/members?skip=${skip}&limit=${limit}&company_id=${companyId}`,
+        members: (companyId: string) =>  `${actions}/company/members?company_id=${companyId}`,
         //     candidates: (company_id: number) => `${invitation}/company/${company_id}/candidates`,
         //     send_invite: (company_id: number, user_id: number) => `${invitation}/invitation_send_from_company/${company_id}/user/${user_id}`,
         //     send_request: (company_id: number) => `${invitation}/action/create_from_user/company/${company_id}/`,

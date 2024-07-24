@@ -1,11 +1,7 @@
-import axios from "axios";
 import {createAsyncThunk} from "@reduxjs/toolkit";
-import {baseURL} from "../../utils/process_base_url"
 import {PasswordUpdateBackType, UsernameUpdateType} from "../../types/authTypes";
 import {FetchUsersParams} from "../../types/usersTypes";
 import {editUserPassword, editUserUsername, getUserById, getUsers, removeUser} from "../../api/api_users";
-
-axios.defaults.baseURL = baseURL;
 
 
 export const fetchUsers = createAsyncThunk(

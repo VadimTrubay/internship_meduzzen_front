@@ -18,16 +18,17 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import {NavLink, useNavigate} from "react-router-dom";
 import {initialValueUpdateCompany} from "../../initialValues/initialValues";
 import {selectUser} from "../../redux/auth/selectors";
-import {companies, mainUrls} from "../../config/urls";
+import {companies, members} from "../../config/urls";
+import {fetchMembers} from "../../redux/actions/operations";
 
 
 const CompanyProfilePage: React.FC = () => {
-  const company = useSelector(selectCompanyById);
   const currentUser = useSelector(selectUser);
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
   const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
   const [openEditCompanyModal, setOpenEditCompanyModal] = useState<boolean>(false);
+  const company = useSelector(selectCompanyById);
 
   const handleOpenEditCompanyModal = () => setOpenEditCompanyModal(true);
   const handleCloseEditCompanyModal = () => {
@@ -62,6 +63,7 @@ const CompanyProfilePage: React.FC = () => {
   };
 
   const handleOpenCompaniesMembers = () => {
+    dispatch(fetchMembers(company?.id))
   };
 
   const closeModal = () => {
@@ -78,11 +80,12 @@ const CompanyProfilePage: React.FC = () => {
           </Typography>
         </Grid>
         <Box marginTop={2}>
-          <NavLink className={styles.link} to={mainUrls.actions.members}
+          <NavLink className={styles.link} to={members}
                    onClick={() => handleOpenCompaniesMembers()}
           >
             <Button
               variant="outlined"
+
               color="primary"
               sx={{margin: 1}}
             >

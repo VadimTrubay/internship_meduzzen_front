@@ -7,9 +7,9 @@ import {mainUrls} from "../config/urls";
 axios.defaults.baseURL = baseURL;
 
 
-export const getMembers = async (skip: number, limit: number, companyId: string, thunkAPI: AsyncThunkConfig): Promise<AxiosResponse> => {
+export const getMembers = async (companyId: string, thunkAPI: AsyncThunkConfig): Promise<AxiosResponse> => {
   const access_token = get_access_token_from_state(thunkAPI);
-  return await axios.get(mainUrls.actions.members(skip, limit, companyId), {
+  return await axios.get(mainUrls.actions.members(companyId), {
     headers: {
       Authorization: `Bearer ${access_token}`
     }
