@@ -18,15 +18,12 @@ import {initialValueUpdatePassword, initialValueUpdateUsername} from "../../init
 import {style, StyledBox, Text} from "./UserProfilePage.styled";
 import {selectUserById} from "../../redux/users/selectors";
 import {selectUser} from "../../redux/auth/selectors";
-import {setAccessToken} from "../../redux/auth/slice";
-import {useAuth0} from "@auth0/auth0-react";
+
 
 const UserProfilePage = () => {
   const dispatch = useDispatch<AppDispatch>();
   const currentUser = useSelector(selectUser);
   const user = useSelector(selectUserById);
-  const { isAuthenticated } = useAuth0()
-  const { logout } = useAuth0()
   const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
   const [openEditUsernameModal, setOpenEditUsernameModal] = useState<boolean>(false);
   const [openEditPasswordModal, setOpenEditPasswordModal] = useState<boolean>(false);

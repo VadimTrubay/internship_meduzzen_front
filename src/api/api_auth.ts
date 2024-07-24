@@ -10,7 +10,7 @@ import {mainUrls} from "../config/urls";
 axios.defaults.baseURL = baseURL;
 
 export const register = async (credentials: RegisterType): Promise<AxiosResponse> => {
-  return await axios.post(mainUrls.auth.sign_up, credentials);
+  return await axios.post(mainUrls.auth.signup, credentials);
 };
 
 export const login = async (credentials: UserAuthorizationType): Promise<AxiosResponse> => {

@@ -15,12 +15,13 @@ import {validationSchemaUpdateCompany} from "../../validate/validationSchemaUpda
 import {AppDispatch} from "../../redux/store";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import {useNavigate} from "react-router-dom";
+import {NavLink, useNavigate} from "react-router-dom";
 import {initialValueUpdateCompany} from "../../initialValues/initialValues";
 import {selectUser} from "../../redux/auth/selectors";
+import {companies, mainUrls} from "../../config/urls";
 
 
-const CompanyProfilePage = () => {
+const CompanyProfilePage: React.FC = () => {
   const company = useSelector(selectCompanyById);
   const currentUser = useSelector(selectUser);
   const navigate = useNavigate();
@@ -50,14 +51,17 @@ const CompanyProfilePage = () => {
         dispatch(updateCompany(values))
       }
       handleCloseEditCompanyModal();
-      navigate(`/companies`);
+      navigate(companies);
     },
   });
 
   const handleDeleteCompany = () => {
-    dispatch(deleteCompanyById(company.id));
+    dispatch(deleteCompanyById(company?.id));
     handleCloseDeleteModal();
-    navigate(`/companies`);
+    navigate(companies);
+  };
+
+  const handleOpenCompaniesMembers = () => {
   };
 
   const closeModal = () => {
@@ -73,6 +77,19 @@ const CompanyProfilePage = () => {
             COMPANY PROFILE
           </Typography>
         </Grid>
+        <Box marginTop={2}>
+          <NavLink className={styles.link} to={mainUrls.actions.members}
+                   onClick={() => handleOpenCompaniesMembers()}
+          >
+            <Button
+              variant="outlined"
+              color="primary"
+              sx={{margin: 1}}
+            >
+              Company Members
+            </Button>
+          </NavLink>
+        </Box>
         <Grid item xs={12}>
           <Avatar/>
         </Grid>
@@ -101,25 +118,25 @@ const CompanyProfilePage = () => {
           </Typography>
         </Grid>
         {currentUser?.id === company?.owner_id &&
-        <Box marginTop={2}>
-          <Button
-            onClick={handleOpenEditCompanyModal}
-            variant="outlined"
-            startIcon={<EditIcon />}
-            color="primary"
-            sx={{ marginRight: 1 }}
-          >
-            Edit Company
-          </Button>
-          <Button
-            onClick={handleOpenDeleteModal}
-            variant="outlined"
-            startIcon={<DeleteIcon />}
-            color="error"
-          >
-            Delete Company
-          </Button>
-        </Box>}
+          <Box marginTop={2}>
+            <Button
+              onClick={handleOpenEditCompanyModal}
+              variant="outlined"
+              startIcon={<EditIcon/>}
+              color="primary"
+              sx={{marginRight: 1}}
+            >
+              Edit Company
+            </Button>
+            <Button
+              onClick={handleOpenDeleteModal}
+              variant="outlined"
+              startIcon={<DeleteIcon/>}
+              color="error"
+            >
+              Delete Company
+            </Button>
+          </Box>}
       </Grid>
 
       {/*Delete modal*/}

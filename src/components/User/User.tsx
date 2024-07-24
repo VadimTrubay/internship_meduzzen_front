@@ -6,6 +6,7 @@ import {fetchUserById} from "../../redux/users/operations";
 import {useDispatch} from "react-redux";
 import {AppDispatch} from "../../redux/store";
 import styles from "./User.module.css";
+import {mainUrls} from "../../config/urls";
 
 
 const User: React.FC = ({user}) => {
@@ -14,7 +15,7 @@ const User: React.FC = ({user}) => {
 
   const handleGetUser = (id: string) => {
     dispatch(fetchUserById(id));
-    navigate(`/user/${id}`);
+    navigate(mainUrls.users.byId(id));
   };
 
   return (
