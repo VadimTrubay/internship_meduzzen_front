@@ -4,8 +4,8 @@ export const RouterEndpoints = {
     about: "about",
     healthcheck: "healthcheck",
 
-    signup: "signup",
-    login: "login",
+    signup: "/signup",
+    login: "/login",
 
     users: "users",
     companies: "companies",

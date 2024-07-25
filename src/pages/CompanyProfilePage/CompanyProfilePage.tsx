@@ -79,13 +79,13 @@ const CompanyProfilePage: React.FC = () => {
             COMPANY PROFILE
           </Typography>
         </Grid>
+        {currentUser?.id === company?.owner_id &&
         <Box marginTop={2}>
           <NavLink className={styles.link} to={members}
                    onClick={() => handleOpenCompaniesMembers()}
           >
             <Button
               variant="outlined"
-
               color="primary"
               sx={{margin: 1}}
             >
@@ -93,6 +93,7 @@ const CompanyProfilePage: React.FC = () => {
             </Button>
           </NavLink>
         </Box>
+        }
         <Grid item xs={12}>
           <Avatar/>
         </Grid>

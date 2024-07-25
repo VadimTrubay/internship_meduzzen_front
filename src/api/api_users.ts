@@ -1,6 +1,6 @@
 import {AsyncThunkConfig} from "@reduxjs/toolkit/dist/createAsyncThunk";
 import axios, {AxiosResponse} from "axios";
-import {get_access_token_from_state} from "../utils/get_access_token_from_state";
+import {createAxiosInstance} from "../utils/createAxiosInstance";
 import {PasswordUpdateBackType, UsernameUpdateType} from "../types/authTypes";
 import {mainUrls} from "../config/urls";
 
@@ -14,31 +14,21 @@ export const getUserById = async (id: string): Promise<AxiosResponse> => {
 };
 
 export const editUserUsername = async (userData: UsernameUpdateType, thunkAPI: AsyncThunkConfig): Promise<AxiosResponse> => {
-  const access_token = get_access_token_from_state(thunkAPI);
+  const axiosInstance = createAxiosInstance(thunkAPI);
   const {id} = userData;
-  return await axios.patch(mainUrls.users.byId(id), userData, {
-    headers: {
-      Authorization: `Bearer ${access_token}`
-    }
-  });
+
+  return await axiosInstance.patch(mainUrls.users.byId(id), userData);
 };
 
 export const editUserPassword = async (userData: PasswordUpdateBackType, thunkAPI: AsyncThunkConfig): Promise<AxiosResponse> => {
-  const access_token = get_access_token_from_state(thunkAPI);
+  const axiosInstance = createAxiosInstance(thunkAPI);
   const {id} = userData;
-  return await axios.patch(mainUrls.users.byId(id), userData, {
-    headers: {
-      Authorization: `Bearer ${access_token}`
-    }
-  });
+
+  return await axiosInstance.patch(mainUrls.users.byId(id), userData);
 };
 
 export const removeUser = async (id: string, thunkAPI: AsyncThunkConfig): Promise<AxiosResponse> => {
-  const access_token = get_access_token_from_state(thunkAPI);
+  const axiosInstance = createAxiosInstance(thunkAPI);
 
-  return await axios.delete(mainUrls.users.byId(id), {
-    headers: {
-      Authorization: `Bearer ${access_token}`
-    }
-  });
+  return await axiosInstance.delete(mainUrls.users.byId(id));
 };

@@ -1,4 +1,4 @@
-export const selectMembers = (state) => state.actions.items;
+export const selectMembers = (state) => state.actions.members;
 
 export const selectLoading = (state) => state.actions.loading;
 
