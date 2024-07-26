@@ -14,7 +14,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {memberType} from "../../types/actionsTypes";
 import {selectMembers, selectLoading} from "../../redux/actions/selectors";
 import Paper from "@mui/material/Paper";
-import styles from "./CompanyMembersPage.module.css";
+import styles from "./MyInvitesPage.module.css";
 import Avatar from "@mui/material/Avatar";
 import {style, StyledBox, Text} from "../../utils/BaseModal.styled";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
@@ -26,14 +26,13 @@ import {selectCompanyById} from "../../redux/companies/selectors";
 import {UserType} from "../../types/usersTypes";
 import {CompanyType} from "../../types/companiesTypes";
 
-
 const columns = [
   {id: "avatar", label: "Avatar", minWidth: 50},
   {id: "username", label: "Username", minWidth: 120},
   {id: "options", label: "Options", minWidth: 120},
 ];
 
-const CompanyMembersPage: React.FC = () => {
+const MyInvitesPage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const members = useSelector(selectMembers) as memberType[];
   const users = useSelector(selectUsers);
@@ -85,7 +84,7 @@ const CompanyMembersPage: React.FC = () => {
         <Grid container direction="column" alignItems="center">
           <Grid item xs={12}>
             <Typography variant="h5" gutterBottom>
-              Company Members
+              My Invites
             </Typography>
           </Grid>
           <Box className={styles.inviteMemberButton}>
@@ -184,4 +183,4 @@ const CompanyMembersPage: React.FC = () => {
   );
 };
 
-export default CompanyMembersPage;
+export default MyInvitesPage;

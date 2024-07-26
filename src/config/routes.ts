@@ -10,6 +10,7 @@ export const RouterEndpoints = {
     users: "users",
     companies: "companies",
     members: "actions/company/members",
+    myInvites: "actions/my/invites",
 
     terms: "terms",
     notFound: "*",

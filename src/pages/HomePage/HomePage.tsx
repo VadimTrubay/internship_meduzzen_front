@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react";
 import {useSelector, useDispatch} from "react-redux";
-import {Button} from "@mui/material";
+import {Button, Grid, Typography} from "@mui/material";
 import ModalWindow from "../../components/ModalWindow/ModalWindow";
 import styles from "./HomePage.module.css";
 import {selectTestString} from "../../redux/test_string/selectors";
@@ -35,12 +35,11 @@ const HomePage: React.FC = () => {
   return (
     <div className={styles.container}>
       <ModalWindow testString={testString} openModal={openModal} handleCloseModal={handleCloseModal}/>
-      <h1>Home</h1>
-      <br/>
-      <p>Welcome to App</p>
-      <br/>
-      <br/>
-      <br/>
+      <Grid item xs={12}>
+        <Typography variant="h5" gutterBottom>
+          Home
+        </Typography>
+      </Grid>
       <br/>
       <h2>{testString}</h2>
       <br/>

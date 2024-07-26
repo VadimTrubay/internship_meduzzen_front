@@ -20,6 +20,7 @@ import {AppDispatch} from "../redux/store";
 import UserProfilePage from "../pages/UserProfilePage/UserProfilePage";
 import {useAuth0} from "@auth0/auth0-react";
 import {RouterEndpoints} from "../config/routes";
+import MyInvitesPage from "../pages/MyInvitesPage/MyInvitesPage";
 
 
 const HomePage = lazy(() => import("../pages/HomePage/HomePage"));
@@ -81,6 +82,7 @@ const App: React.FC = () => {
               element={<PrivateRoute redirectTo={RouterEndpoints.login} component={<CompanyProfilePage/>}/>}
             />
             <Route path={RouterEndpoints.members} element={<CompanyMembersPage/>}/>
+            <Route path={RouterEndpoints.myInvites} element={<MyInvitesPage/>}/>
             <Route path={RouterEndpoints.terms} element={<TermsPage/>}/>
             <Route path={RouterEndpoints.notFound} element={<NotFoundPage/>}/>
           </Routes>

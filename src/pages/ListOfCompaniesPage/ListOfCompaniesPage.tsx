@@ -9,7 +9,7 @@ import DoneIcon from "@mui/icons-material/Done";
 import {useFormik} from "formik";
 import {validationSchemaAddCompany} from "../../validate/validationSchemaAddCompany";
 import {Toaster} from "react-hot-toast";
-import {style, StyledBox, Text} from "./ListOfCompaniesPage.styled";
+import {style, StyledBox, Text} from "../../utils/BaseModal.styled";
 import {addCompany} from "../../redux/companies/operations";
 import {initialValues} from "../../initialValues/initialValues";
 import styles from "./ListOfCompaniesPage.module.css";
@@ -47,7 +47,7 @@ const ListOfCompaniesPage: React.FC = () => {
     <>
       <Grid container direction="column" alignItems="center">
         <Grid item xs={12}>
-          <Typography variant="h4" gutterBottom>
+          <Typography variant="h5" gutterBottom>
             Companies
           </Typography>
         </Grid>

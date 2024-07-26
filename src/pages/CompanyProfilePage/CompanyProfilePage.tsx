@@ -4,7 +4,7 @@ import Avatar from "@mui/material/Avatar";
 import {useDispatch, useSelector} from "react-redux";
 import {selectCompanyById} from "../../redux/companies/selectors";
 import {FaEye, FaEyeSlash} from "react-icons/fa";
-import {style, StyledBox, Text} from "../UserProfilePage/UserProfilePage.styled";
+import {style, StyledBox, Text} from "../../utils/BaseModal.styled";
 import styles from "../UserProfilePage/UserProfilePage.module.css";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import DoneIcon from "@mui/icons-material/Done";
@@ -23,9 +23,9 @@ import {fetchMembers} from "../../redux/actions/operations";
 
 
 const CompanyProfilePage: React.FC = () => {
+  const dispatch = useDispatch<AppDispatch>();
   const currentUser = useSelector(selectUser);
   const navigate = useNavigate();
-  const dispatch = useDispatch<AppDispatch>();
   const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
   const [openEditCompanyModal, setOpenEditCompanyModal] = useState<boolean>(false);
   const company = useSelector(selectCompanyById);
@@ -76,24 +76,24 @@ const CompanyProfilePage: React.FC = () => {
     <>
       <Grid container direction="column" alignItems="center">
         <Grid item xs={12}>
-          <Typography variant="h4" gutterBottom>
-            COMPANY PROFILE
+          <Typography variant="h5" gutterBottom>
+            Company Profile
           </Typography>
         </Grid>
         {currentUser?.id === company?.owner_id &&
-        <Box marginTop={2}>
-          <NavLink className={styles.link} to={members}
-                   onClick={() => handleOpenCompaniesMembers()}
-          >
-            <Button
-              variant="outlined"
-              color="primary"
-              sx={{margin: 1}}
+          <Box>
+            <NavLink className={styles.link} to={members}
+                     onClick={() => handleOpenCompaniesMembers()}
             >
-              Company Members
-            </Button>
-          </NavLink>
-        </Box>
+              <Button
+                variant="outlined"
+                color="primary"
+                sx={{margin: 1}}
+              >
+                Company Members
+              </Button>
+            </NavLink>
+          </Box>
         }
         <Grid item xs={12}>
           <Avatar/>

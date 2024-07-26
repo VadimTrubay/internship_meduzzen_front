@@ -15,13 +15,16 @@ import {getMe, logOut} from "../../redux/auth/operations";
 import {validationSchemaUpdateUsername} from "../../validate/validationSchemaUpdateUsername.js";
 import {validationSchemaUpdatePassword} from "../../validate/validationSchemaUpdatePassword";
 import {initialValueUpdatePassword, initialValueUpdateUsername} from "../../initialValues/initialValues";
-import {style, StyledBox, Text} from "./UserProfilePage.styled";
+import {style, StyledBox, Text} from "../../utils/BaseModal.styled";
 import {selectUserById} from "../../redux/users/selectors";
 import {selectUser} from "../../redux/auth/selectors";
+import {useNavigate} from "react-router-dom";
+import {mainUrls} from "../../config/urls";
 
 
 const UserProfilePage = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
   const currentUser = useSelector(selectUser);
   const user = useSelector(selectUserById);
   const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
@@ -85,10 +88,31 @@ const UserProfilePage = () => {
     <>
       <Grid container direction="column" alignItems="center">
         <Grid item xs={12}>
-          <Typography variant="h4" gutterBottom>
-            USER PROFILE PAGE
+          <Typography variant="h5" gutterBottom>
+            User Profile
           </Typography>
         </Grid>
+        {user?.id === currentUser?.id &&
+          <Grid direction="row" alignItems="center">
+            {/*MY INVITES*/}
+            <Button
+              onClick={() => {navigate(mainUrls.actions.myInvites)}}
+              variant="outlined"
+              color="success"
+              sx={{margin: 1}}
+            >
+              My Invites
+            </Button>
+            {/*<Button*/}
+            {/*  // onClick={handleOpenEditUsernameModal}*/}
+            {/*  variant="outlined"*/}
+            {/*  color="success"*/}
+            {/*  sx={{margin: 1}}*/}
+            {/*>*/}
+            {/*  My Requests*/}
+            {/*</Button>*/}
+          </Grid>
+        }
         <Grid item xs={12}>
           <Avatar/>
         </Grid>

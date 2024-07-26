@@ -20,3 +20,21 @@
   right: 0;
 
 }
+
+
+.back {
+  font-weight: bold;
+  color: var(--brand-color-contactbook);
+  cursor: pointer;
+  margin-left: 20px;
+  font-size: 28px;
+}
+
+.back:hover {
+  color: var(--link-hover);
+}
+
+.container_back {
+  display: flex;
+  justify-content: flex-start;
+}
