@@ -1,8 +1,8 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {
   Box, Button,
   Grid,
-  LinearProgress, Menu, MenuItem, Modal,
+  LinearProgress, Modal,
   Table, TableBody,
   TableCell,
   TableContainer,
@@ -12,66 +12,55 @@ import {
 } from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
 import {memberType} from "../../types/actionsTypes";
-import {selectMembers, selectLoading} from "../../redux/actions/selectors";
+import {selectMembers, selectLoading, selectMyInvites} from "../../redux/actions/selectors";
 import Paper from "@mui/material/Paper";
 import styles from "./MyInvitesPage.module.css";
-import Avatar from "@mui/material/Avatar";
 import {style, StyledBox, Text} from "../../utils/BaseModal.styled";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import DoneIcon from "@mui/icons-material/Done";
-import {createInvite, deleteMember} from "../../redux/actions/operations";
+// import {createInvite, deleteMember} from "../../redux/actions/operations";
 import {AppDispatch} from "../../redux/store";
-import {selectUsers} from "../../redux/users/selectors";
-import {selectCompanyById} from "../../redux/companies/selectors";
-import {UserType} from "../../types/usersTypes";
-import {CompanyType} from "../../types/companiesTypes";
+import {fetchMyInvites} from "../../redux/actions/operations";
+// import {selectUsers} from "../../redux/users/selectors";
+// import {selectCompanyById} from "../../redux/companies/selectors";
+// import {UserType} from "../../types/usersTypes";
+// import {CompanyType} from "../../types/companiesTypes";
 
 const columns = [
-  {id: "avatar", label: "Avatar", minWidth: 50},
-  {id: "username", label: "Username", minWidth: 120},
-  {id: "options", label: "Options", minWidth: 120},
+  {id: "username", label: "Name", minWidth: 200},
+  {id: "accept", label: "Accept", minWidth: 60},
+  {id: "decline", label: "Decline", minWidth: 60},
 ];
 
 const MyInvitesPage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const members = useSelector(selectMembers) as memberType[];
-  const users = useSelector(selectUsers);
-  const [currentMember, setCurrentMember] = useState<memberType | null>(null);
+  const myInvites = useSelector(selectMyInvites) as memberType[];
+  // const users = useSelector(selectUsers);
+  // const [currentMember, setCurrentMember] = useState<memberType | null>(null);
   const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const companyId = useSelector<CompanyType>(selectCompanyById);
+  // const companyId = useSelector<CompanyType>(selectCompanyById);
   const loading = useSelector<boolean>(selectLoading);
 
+  console.log(myInvites)
+  useEffect(() => {
+    dispatch(fetchMyInvites())
+  }, []);
+
   const handleOpenDeleteModal = (member: memberType) => {
-    setCurrentMember(member);
+    // setCurrentMember(member);
     setOpenDeleteModal(true);
   };
 
   const handleCloseDeleteModal = () => {
     setOpenDeleteModal(false);
-    setCurrentMember(null);
+    // setCurrentMember(null);
   };
 
   const handleDeleteMember = () => {
-    if (currentMember) {
-      dispatch(deleteMember(currentMember?.id));
-      handleCloseDeleteModal();
-    }
-  };
-
-  const handleOpenMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleCloseMenu = () => {
-    setAnchorEl(null);
-  };
-
-  const handleInviteUser = (userId: string) => {
-    if (userId && companyId) {
-      dispatch(createInvite({user_id: userId, company_id: companyId.id}));
-    }
-    handleCloseMenu();
+    // if (currentMember) {
+    // dispatch(deleteMember(currentMember?.id));
+    handleCloseDeleteModal();
+    // }
   };
 
   return (
@@ -87,30 +76,6 @@ const MyInvitesPage: React.FC = () => {
               My Invites
             </Typography>
           </Grid>
-          <Box className={styles.inviteMemberButton}>
-            <Button
-              variant="outlined"
-              onClick={handleOpenMenu}
-              color="success"
-            >
-              + Invite member
-            </Button>
-            <Menu
-              anchorEl={anchorEl}
-              open={Boolean(anchorEl)}
-              onClose={handleCloseMenu}
-            >
-              {users?.filter((user: UserType) => user?.id !== companyId?.owner_id)
-                .map((user: UserType) => (
-                  <MenuItem
-                    key={user?.id}
-                    onClick={() => handleInviteUser(user?.id)}
-                  >
-                    {user?.username}
-                  </MenuItem>
-                ))}
-            </Menu>
-          </Box>
         </Grid>
         <Paper>
           <TableContainer className={styles.table}>
@@ -129,22 +94,29 @@ const MyInvitesPage: React.FC = () => {
                 </TableRow>
               </TableHead>
               <TableBody className={styles.tableHead}>
-                {members.map((member: memberType) => (
-                  <TableRow key={member.id} className={styles.tableRow}>
-                    <TableCell component="th" scope="row" sx={{padding: "3px"}}>
-                      <Avatar className={styles.avatar}/>
+                {myInvites.map((invites: memberType) => (
+                  <TableRow key={invites.id} className={styles.tableRow}>
+                    <TableCell>
+                      {invites?.user_username}
                     </TableCell>
                     <TableCell align="center">
-                      {member.user_username}
+                      <Button
+                        // onClick={() => handleOpenDeleteModal(invites)}
+                        variant="outlined"
+                        color="success"
+                        sx={{marginRight: 1}}
+                      >
+                        Accept
+                      </Button>
                     </TableCell>
                     <TableCell sx={{padding: "3px"}} align="center">
                       <Button
-                        onClick={() => handleOpenDeleteModal(member)}
+                        // onClick={() => handleOpenDeleteModal(invites)}
                         variant="outlined"
                         color="error"
                         sx={{marginRight: 1}}
                       >
-                        Delete member
+                        Decline
                       </Button>
                     </TableCell>
                   </TableRow>
@@ -153,6 +125,7 @@ const MyInvitesPage: React.FC = () => {
             </Table>
           </TableContainer>
         </Paper>
+
         {/*Delete modal*/}
         <Modal
           open={openDeleteModal}

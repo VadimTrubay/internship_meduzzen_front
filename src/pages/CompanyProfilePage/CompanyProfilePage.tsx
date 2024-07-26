@@ -15,7 +15,7 @@ import {validationSchemaUpdateCompany} from "../../validate/validationSchemaUpda
 import {AppDispatch} from "../../redux/store";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import {NavLink, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {initialValueUpdateCompany} from "../../initialValues/initialValues";
 import {selectUser} from "../../redux/auth/selectors";
 import {companies, mainUrls, members} from "../../config/urls";
@@ -65,6 +65,7 @@ const CompanyProfilePage: React.FC = () => {
 
   const handleOpenCompaniesMembers = () => {
     dispatch(fetchMembers(company?.id))
+    navigate(members);
   };
 
   const closeModal = () => {
@@ -82,17 +83,14 @@ const CompanyProfilePage: React.FC = () => {
         </Grid>
         {currentUser?.id === company?.owner_id &&
           <Box>
-            <NavLink className={styles.link} to={members}
-                     onClick={() => handleOpenCompaniesMembers()}
+            <Button
+              variant="outlined"
+              color="success"
+              sx={{marginBottom: 1}}
+              onClick={() => handleOpenCompaniesMembers()}
             >
-              <Button
-                variant="outlined"
-                color="primary"
-                sx={{margin: 1}}
-              >
-                Company Members
-              </Button>
-            </NavLink>
+              Company Members
+            </Button>
           </Box>
         }
         <Grid item xs={12}>

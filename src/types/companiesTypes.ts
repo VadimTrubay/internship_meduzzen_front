@@ -31,3 +31,7 @@ export interface CompanyAddType {
   description: string,
   visible: boolean,
 }
+
+export interface CompaniesListProps {
+  companies: CompanyType[];
+}

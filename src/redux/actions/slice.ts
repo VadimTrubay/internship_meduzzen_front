@@ -1,10 +1,11 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import toast from "react-hot-toast";
 import {initialActionsType, memberType} from "../../types/actionsTypes";
-import {deleteMember, fetchMembers} from "./operations";
+import {deleteMember, fetchMembers, fetchMyInvites} from "./operations";
 
 const initialActions: initialActionsType = {
   members: [],
+  myInvites: [],
   loading: false,
   error: null,
 };
@@ -31,6 +32,15 @@ const handleFetchMembersFulfilled = (
   state.members = action.payload;
 };
 
+const handleFetchMyInvitesFulfilled = (
+  state: initialActionsType,
+  action: PayloadAction<memberType[]>
+) => {
+  state.loading = false;
+  state.error = null;
+  state.myInvites = action.payload;
+};
+
 const handleDeleteMemberFulfilled = (
   state: initialActionsType,
   action: PayloadAction<any>
@@ -50,6 +60,9 @@ const actionsSlice = createSlice({
       .addCase(fetchMembers.pending, handlePending)
       .addCase(fetchMembers.fulfilled, handleFetchMembersFulfilled)
       .addCase(fetchMembers.rejected, handleRejected)
+      .addCase(fetchMyInvites.pending, handlePending)
+      .addCase(fetchMyInvites.fulfilled, handleFetchMyInvitesFulfilled)
+      .addCase(fetchMyInvites.rejected, handleRejected)
       .addCase(deleteMember.pending, handlePending)
       .addCase(deleteMember.fulfilled, handleDeleteMemberFulfilled)
       .addCase(deleteMember.rejected, handleRejected)

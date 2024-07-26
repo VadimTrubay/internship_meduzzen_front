@@ -1,5 +1,6 @@
 export interface initialActionsType {
   members: memberType[];
+  myInvites: memberType[];
   loading: boolean;
   error: null;
 }

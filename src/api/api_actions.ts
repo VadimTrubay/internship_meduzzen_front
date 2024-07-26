@@ -11,6 +11,12 @@ export const getMembers = async (companyId: string, thunkAPI: AsyncThunkConfig):
   return await axiosInstance.get(mainUrls.actions.members(companyId))
 };
 
+export const getMyInvites = async (thunkAPI: AsyncThunkConfig): Promise<AxiosResponse> => {
+  const axiosInstance = createAxiosInstance(thunkAPI);
+
+  return await axiosInstance.get(mainUrls.actions.myInvites)
+};
+
 export const removeMember = async (actionId: string, thunkAPI: AsyncThunkConfig): Promise<AxiosResponse> => {
   const axiosInstance = createAxiosInstance(thunkAPI);
 

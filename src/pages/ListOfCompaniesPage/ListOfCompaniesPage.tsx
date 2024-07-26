@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import Button from "@mui/material/Button";
 import {Box, Grid, Modal, TextField, Typography, FormControlLabel, Checkbox} from "@mui/material";
 import {AppDispatch} from "../../redux/store";
@@ -13,26 +13,34 @@ import {style, StyledBox, Text} from "../../utils/BaseModal.styled";
 import {addCompany} from "../../redux/companies/operations";
 import {initialValues} from "../../initialValues/initialValues";
 import styles from "./ListOfCompaniesPage.module.css";
+import {selectUser} from "../../redux/auth/selectors";
+import {selectCompanies} from "../../redux/companies/selectors";
+import {CompaniesListProps} from "../../types/companiesTypes";
+import {UserType} from "../../types/usersTypes";
 
 const ListOfCompaniesPage: React.FC = () => {
-  const [openAddCompanyModal, setOpenAddCompanyModal] = useState<boolean>(false);
   const dispatch = useDispatch<AppDispatch>();
+  const [openAddCompanyModal, setOpenAddCompanyModal] = useState<boolean>(false);
+  const [showMyCompanies, setShowMyCompanies] = useState<boolean>(false);
+  const user = useSelector(selectUser) as UserType;
+  const {companies} = useSelector(selectCompanies) as CompaniesListProps[];
 
   const handleOpenAddCompanyModal = () => {
     setOpenAddCompanyModal(true);
     formikAddCompany.resetForm();
-  }
+  };
+
   const handleCloseAddCompanyModal = () => {
     setOpenAddCompanyModal(false);
     formikAddCompany.resetForm();
-  }
+  };
 
   const formikAddCompany = useFormik({
     initialValues: initialValues,
     validationSchema: validationSchemaAddCompany,
     onSubmit: (values) => {
       if (formikAddCompany.isValid) {
-        dispatch(addCompany(values))
+        dispatch(addCompany(values));
       }
       handleCloseAddCompanyModal();
     },
@@ -42,6 +50,10 @@ const ListOfCompaniesPage: React.FC = () => {
     setOpenAddCompanyModal(false);
     formikAddCompany.resetForm();
   };
+
+  const filteredCompanies = showMyCompanies
+    ? companies.filter(company => company.owner_id === user.id)
+    : companies;
 
   return (
     <>
@@ -53,14 +65,23 @@ const ListOfCompaniesPage: React.FC = () => {
         </Grid>
       </Grid>
       <Box className={styles.addCompanyButton}>
-        <Button
-          variant="contained"
-          onClick={handleOpenAddCompanyModal}
-        >
+        <Button variant="contained" onClick={handleOpenAddCompanyModal}>
           + Add Company
         </Button>
       </Box>
-      <CompaniesList/>
+      <Box className={styles.filterMyCompanies}>
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={showMyCompanies}
+              onChange={() => setShowMyCompanies(!showMyCompanies)}
+            />
+          }
+          label="Show Only My Companies"
+        />
+      </Box>
+      <CompaniesList companies={filteredCompanies}/>
+
       {/* Add company modal */}
       <Modal
         open={openAddCompanyModal}

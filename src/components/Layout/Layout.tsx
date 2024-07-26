@@ -7,7 +7,7 @@ import Navigation from "../Navigation/Navigation";
 import Header from "../Header/Header.jsx";
 import Footer from "../Footer/Footer";
 import styles from "../Layout/Layout.module.css";
-import {TiArrowBack} from "react-icons/ti";
+import {IoPlayBack} from "react-icons/io5";
 
 
 export const Layout = ({children}: LayoutProps) => {
@@ -18,7 +18,7 @@ export const Layout = ({children}: LayoutProps) => {
       <Header/>
       <Navigation/>
       <div className={styles.container_back}>
-        <TiArrowBack className={styles.back} onClick={() => {navigate(-1)}}/>
+        <IoPlayBack className={styles.back} onClick={() => {navigate(-1)}}/>
       </div>
       <Suspense fallback={
         <Box display="flex" justifyContent="center" alignItems="center" height="100vh">

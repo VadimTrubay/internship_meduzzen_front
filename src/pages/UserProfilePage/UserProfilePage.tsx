@@ -93,25 +93,27 @@ const UserProfilePage = () => {
           </Typography>
         </Grid>
         {user?.id === currentUser?.id &&
-          <Grid direction="row" alignItems="center">
+          <Box marginRight={2}>
             {/*MY INVITES*/}
             <Button
-              onClick={() => {navigate(mainUrls.actions.myInvites)}}
+              onClick={() => {
+                navigate(mainUrls.actions.myInvites)
+              }}
               variant="outlined"
               color="success"
               sx={{margin: 1}}
             >
               My Invites
             </Button>
-            {/*<Button*/}
-            {/*  // onClick={handleOpenEditUsernameModal}*/}
-            {/*  variant="outlined"*/}
-            {/*  color="success"*/}
-            {/*  sx={{margin: 1}}*/}
-            {/*>*/}
-            {/*  My Requests*/}
-            {/*</Button>*/}
-          </Grid>
+            <Button
+              // onClick={handleOpenEditUsernameModal}
+              variant="outlined"
+              color="success"
+              sx={{margin: 1}}
+            >
+              My Requests
+            </Button>
+          </Box>
         }
         <Grid item xs={12}>
           <Avatar/>

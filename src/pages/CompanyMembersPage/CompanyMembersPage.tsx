@@ -29,7 +29,7 @@ import {CompanyType} from "../../types/companiesTypes";
 
 const columns = [
   {id: "avatar", label: "Avatar", minWidth: 50},
-  {id: "username", label: "Username", minWidth: 120},
+  {id: "username", label: "Name", minWidth: 120},
   {id: "options", label: "Options", minWidth: 120},
 ];
 
