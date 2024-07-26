@@ -1,9 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import Typography from "@mui/material/Typography";
-import {getHealthCheck} from '../../api/api';
+import {getHealthCheck} from '../../api/api_healthcheck';
 import {HealthCheckTypes} from '../../types/healthCheckTypes';
 import {LinearProgress} from "@mui/material";
-import styles from "./HealthCheck.module.css";
 
 const HealthCheck: React.FC = () => {
   const [healthCheckData, setHealthCheckData] = useState<HealthCheckTypes | null>(null);
@@ -39,7 +38,7 @@ const HealthCheck: React.FC = () => {
           <p>Result: {healthCheckData.result}</p>
         </div>
       ) : (
-        <div className={styles.linear_progress}>
+        <div>
           <LinearProgress/>
         </div>
       )}

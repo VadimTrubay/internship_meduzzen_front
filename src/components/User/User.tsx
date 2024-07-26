@@ -1,15 +1,14 @@
 import React from "react";
 import TableCell from "@mui/material/TableCell";
 import Avatar from "@mui/material/Avatar";
-import styles from "./User.module.css";
 import {useNavigate} from "react-router-dom";
 import {fetchUserById} from "../../redux/users/operations";
 import {useDispatch} from "react-redux";
 import {AppDispatch} from "../../redux/store";
-import {authType} from "../../types/authTypes";
+import styles from "./User.module.css";
 
 
-const User: React.FC<UserProps> = ({user}) => {
+const User: React.FC = ({user}) => {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
 
@@ -24,7 +23,7 @@ const User: React.FC<UserProps> = ({user}) => {
         <Avatar className={styles.avatar}/>
       </TableCell>
       <TableCell sx={{padding: "3px"}} align="center">
-        <span className={styles.link} onClick={() => handleGetUser(user.id)}>
+        <span className={styles.link} onClick={() => handleGetUser(user?.id)}>
           {user?.username}
         </span>
       </TableCell>

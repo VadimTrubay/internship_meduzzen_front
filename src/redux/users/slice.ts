@@ -1,6 +1,6 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {deleteUserById, fetchUserById, fetchUsers} from "./operations";
-import {initialUsersType, UserType} from "../../types/usersTypes";
+import {deleteUser, fetchUserById, fetchUsers} from "./operations";
+import {initialUsersType} from "../../types/usersTypes";
 import toast from "react-hot-toast";
 
 const initialUsers: initialUsersType = {
@@ -44,7 +44,7 @@ const handleGetUserByIdFulfilled = (
 };
 
 
-const handleDeleteUserByIdFulfilled = (
+const handleDeleteUserFulfilled = (
   state: initialUsersType,
   action: PayloadAction<any>
 ) => {
@@ -67,9 +67,9 @@ const usersSlice = createSlice({
       .addCase(fetchUserById.pending, handlePending)
       .addCase(fetchUserById.fulfilled, handleGetUserByIdFulfilled)
       .addCase(fetchUserById.rejected, handleRejected)
-      .addCase(deleteUserById.pending, handlePending)
-      .addCase(deleteUserById.fulfilled, handleDeleteUserByIdFulfilled)
-      .addCase(deleteUserById.rejected, handleRejected)
+      .addCase(deleteUser.pending, handlePending)
+      .addCase(deleteUser.fulfilled, handleDeleteUserFulfilled)
+      .addCase(deleteUser.rejected, handleRejected)
 });
 
 export const usersReducer = usersSlice.reducer;

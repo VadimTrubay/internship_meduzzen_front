@@ -1,10 +1,10 @@
 import React from "react";
 import Button from "@mui/material/Button";
-import styles from "../UserMenu/UserMenu.module.css";
 import {useAuth0} from "@auth0/auth0-react";
 import {logOut} from "../../redux/auth/operations";
 import {useDispatch} from "react-redux";
 import {AppDispatch} from "../../redux/store";
+import styles from "../UserMenu/UserMenu.module.css";
 
 export const LogoutButton = () => {
   const dispatch = useDispatch<AppDispatch>();

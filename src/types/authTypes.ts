@@ -29,7 +29,6 @@ export interface UsernameUpdateType {
 }
 
 export interface PasswordUpdateType {
-  id: string;
   password: string;
   new_password: string;
   confirmPassword: string;
@@ -41,6 +40,20 @@ export interface PasswordUpdateBackType {
   new_password: string;
 }
 
-export interface UserDeleteType {
-  id: string;
+export interface UserAuthorizationType {
+  email: string;
+  password: string;
+}
+
+export interface UserRegistrationType {
+  username: string;
+  email: string;
+  password: string;
+  confirmPassword: string,
+}
+
+export interface RegisterType {
+  username: string;
+  email: string;
+  password: string;
 }

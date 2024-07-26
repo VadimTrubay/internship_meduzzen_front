@@ -6,7 +6,7 @@ import styles from "./AuthNav.module.css";
 
 const AuthNav: React.FC = () => {
   return (
-    <div className={styles.container}>
+    <div>
       <NavLink className={styles.nav_link} to={"/signup"}>
         <RegisterButton/>
       </NavLink>

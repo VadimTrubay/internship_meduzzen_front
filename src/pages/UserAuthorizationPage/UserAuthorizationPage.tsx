@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {Link} from "react-router-dom";
 import {useFormik} from "formik";
@@ -12,24 +12,32 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import {createTheme, ThemeProvider} from "@mui/material/styles";
+import {InputAdornment, IconButton} from "@mui/material";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import {validationSchemaAuthorization} from "../../validate/validationSchemaAuthorization.js";
 import {LoginButtonAuth0} from "../../components/LoginButtonAuth0/LoginButtonAuth0";
 import {signIn} from "../../redux/auth/operations";
 import {AppDispatch} from "../../redux/store";
 import {selectIsLoggedIn} from "../../redux/auth/selectors";
 import styles from "../UserRegistrationPage/UserRegistrationPage.module.css";
+import {initialValueUserAuthorization} from "../../initialValues/initialValues";
 
 const defaultTheme = createTheme();
 
 const UserAuthorizationPage = () => {
   const dispatch = useDispatch<AppDispatch>();
   const isLoggedIn = useSelector(selectIsLoggedIn);
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+
+  const handleClickShowPassword = () => setShowPassword(!showPassword);
+
+  const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+  };
 
   const formik = useFormik({
-    initialValues: {
-      email: "",
-      password: "",
-    },
+    initialValues: initialValueUserAuthorization,
     validationSchema: validationSchemaAuthorization,
     onSubmit: (values) => {
       if (formik.isValid) {
@@ -77,15 +85,27 @@ const UserAuthorizationPage = () => {
                 name="password"
                 label="Password"
                 color="primary"
-                type="password"
+                type={showPassword ? "text" : "password"}
                 id="password"
                 autoComplete="current-password"
                 value={formik.values.password}
                 onChange={formik.handleChange}
-                error={
-                  formik.touched.password && Boolean(formik.errors.password)
-                }
+                error={formik.touched.password && Boolean(formik.errors.password)}
                 helperText={formik.touched.password && formik.errors.password}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                        edge="end"
+                      >
+                        {showPassword ? <Visibility/> : <VisibilityOff/>}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
               />
               <Button
                 type="submit"
@@ -98,7 +118,7 @@ const UserAuthorizationPage = () => {
               </Button>
               <Grid container justifyContent="flex-end">
                 <Grid item>
-                  <span className={styles.span}>Don&apos;t have an account?</span>
+                  <span className={styles.span}>Don't have an account?</span>
                   <Link to="/signup">
                     Register
                   </Link>
