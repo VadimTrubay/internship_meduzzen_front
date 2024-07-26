@@ -1,5 +1,5 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
-import {getMembers} from "../../api/api_actions";
+import {getMembers, removeMember} from "../../api/api_actions";
 
 
 export const fetchMembers = createAsyncThunk(
@@ -37,15 +37,15 @@ export const fetchMembers = createAsyncThunk(
 //     }
 //   }
 // );
-//
-// export const deleteCompanyById = createAsyncThunk(
-//   "companies/deleteCompany",
-//   async (id: string, thunkAPI) => {
-//     try {
-//       const response = await removeCompany(id, thunkAPI);
-//       return response.data;
-//     } catch (error: any) {
-//       return thunkAPI.rejectWithValue(error.message);
-//     }
-//   }
-// );
+
+export const deleteMember = createAsyncThunk(
+  "members/deleteMember",
+  async (actionId: string, thunkAPI) => {
+    try {
+      const response = await removeMember(actionId, thunkAPI);
+      return response.data;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);

@@ -16,7 +16,7 @@ const initialAuth: initialAuthType = {
   access_token: "",
   isLoggedIn: false,
   loading: false,
-  error: "",
+  error: null,
 };
 
 const handlePending = (state: initialAuthType) => {
@@ -29,23 +29,23 @@ const handleRejected = (state: initialAuthType, action: PayloadAction<any>) => {
   toast.error(`Error operation`);
 };
 
-const handleSignUpFulfilled = (state: initialAuthType, action: PayloadAction<authType>) => {
+const handleSignUpFulfilled = (state: initialAuthType, action: PayloadAction<initialAuthType>) => {
   state.loading = false;
-  state.error = "";
+  state.error = null;
   state.access_token = action.payload.access_token;
   state.isLoggedIn = true;
 };
 
-const handleSignInFulfilled = (state: initialAuthType, action: PayloadAction<authType>) => {
+const handleSignInFulfilled = (state: initialAuthType, action: PayloadAction<initialAuthType>) => {
   state.loading = false;
-  state.error = "";
+  state.error = null;
   state.access_token = action.payload.access_token;
   state.isLoggedIn = true;
 };
 
 const handleGetMeFulfilled = (state: initialAuthType, action: PayloadAction<authType>) => {
   state.loading = false;
-  state.error = "";
+  state.error = null;
   state.isLoggedIn = true;
   state.user.id = action.payload.id;
   state.user.username = action.payload.username;
@@ -55,7 +55,7 @@ const handleGetMeFulfilled = (state: initialAuthType, action: PayloadAction<auth
 
 const handleUpdateUsernameFulfilled = (state: initialAuthType, action: PayloadAction<UsernameUpdateType>) => {
   state.loading = false;
-  state.error = "";
+  state.error = null;
   state.user.id = action.payload.id;
   state.user.username = action.payload.username;
   toast.success(`Username updated successfully`);
@@ -63,7 +63,7 @@ const handleUpdateUsernameFulfilled = (state: initialAuthType, action: PayloadAc
 
 const handleUpdatePasswordFulfilled = (state: initialAuthType, action: PayloadAction<PasswordUpdateType>) => {
   state.loading = false;
-  state.error = "";
+  state.error = null;
   state.user.id = action.payload.id;
   state.user.password = "";
   state.user.new_password = "";
@@ -72,7 +72,7 @@ const handleUpdatePasswordFulfilled = (state: initialAuthType, action: PayloadAc
 
 const handleLogOutFulfilled = (state: initialAuthType) => {
   state.loading = false;
-  state.error = "";
+  state.error = null;
   state.user = {
     id: "", username: "",
     email: "", password: "",

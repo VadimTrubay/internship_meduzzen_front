@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {ChangeEvent, useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {
   Box, LinearProgress,
@@ -20,9 +20,9 @@ import {AppDispatch} from "../../redux/store";
 import {authType} from "../../types/authTypes";
 
 const columns = [
-  {id: "avatar", label: "Avatar", minWidth: 50, align: "center"},
-  {id: "name", label: "Name", minWidth: 120, align: "center"},
-  {id: "email", label: "Email", minWidth: 120, align: "center"},
+  {id: "avatar", label: "Avatar", minWidth: 50},
+  {id: "name", label: "Name", minWidth: 120},
+  {id: "email", label: "Email", minWidth: 120},
 ];
 
 const UsersList = () => {
@@ -36,8 +36,8 @@ const UsersList = () => {
   const countPage = Math.ceil(totalCount / limit);
 
 
-  const handleChangePage = (event: React.ChangeEvent, newPage: React.SetStateAction<number>) => {
-    setSkip(newPage)
+  const handleChangePage = (event: ChangeEvent<unknown>, page: number) => {
+    setSkip(page)
   };
 
   useEffect(() => {
@@ -59,7 +59,7 @@ const UsersList = () => {
                   {columns?.map((column) => (
                     <TableCell sx={{backgroundColor: "#a4a4a4"}}
                                key={column.id}
-                               align={column.align}
+                               align={"center"}
                                style={{minWidth: column.minWidth}}
                     >
                       {column.label}

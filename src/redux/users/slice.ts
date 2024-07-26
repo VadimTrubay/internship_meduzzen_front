@@ -8,7 +8,7 @@ const initialUsers: initialUsersType = {
   userById: null,
   totalCount: null,
   loading: false,
-  error: "",
+  error: null,
 };
 
 const handlePending = (state: initialUsersType) => {
@@ -29,7 +29,7 @@ const handleFetchUsersFulfilled = (
   action: PayloadAction<any>
 ) => {
   state.loading = false;
-  state.error = "";
+  state.error = null;
   state.items = action.payload;
   state.totalCount = action.payload.total_count;
 };
@@ -39,7 +39,7 @@ const handleGetUserByIdFulfilled = (
   action: PayloadAction<any>
 ) => {
   state.loading = false;
-  state.error = "";
+  state.error = null;
   state.userById = action.payload;
 };
 
@@ -49,9 +49,8 @@ const handleDeleteUserFulfilled = (
   action: PayloadAction<any>
 ) => {
   state.loading = false;
-  state.error = "";
-
-  state.items = state.items.filter((user) => user.id !== action.payload);
+  state.error = null;
+  state.items = state.items.filter((user) => user.id !== action.payload.id);
   toast.error(`User deleted successfully`);
 };
 

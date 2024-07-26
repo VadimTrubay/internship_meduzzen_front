@@ -1,11 +1,11 @@
 import {authType} from "./authTypes";
 
 export interface initialUsersType {
-  items: Array<UserType> | [];
-  userById: UserType | null;
-  totalCount: number | null;
+  items: UserType[];
+  userById: null;
+  totalCount: null;
   loading: boolean;
-  error: string;
+  error: null;
 }
 
 export interface UserType {
@@ -21,6 +21,6 @@ export interface FetchUsersParams {
   limit: number;
 }
 
-interface UserProps {
+export interface UserProps {
   user: authType;
 }

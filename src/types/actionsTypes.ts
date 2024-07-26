@@ -1,7 +1,7 @@
 export interface initialActionsType {
-  members: Array<memberType> | [];
+  members: memberType[];
   loading: boolean;
-  error: string;
+  error: null;
 }
 
 export interface memberType {

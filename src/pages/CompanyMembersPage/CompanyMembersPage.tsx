@@ -1,8 +1,8 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {
   Box, Button,
   Grid,
-  LinearProgress, Modal, Pagination,
+  LinearProgress, Modal,
   Table, TableBody,
   TableCell,
   TableContainer,
@@ -19,18 +19,20 @@ import Avatar from "@mui/material/Avatar";
 import {style, StyledBox, Text} from "./CompanyMembers.styled";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import DoneIcon from "@mui/icons-material/Done";
+import {deleteMember} from "../../redux/actions/operations";
+import {AppDispatch} from "../../redux/store";
 
 
 const columns = [
-  {id: "avatar", label: "Avatar", minWidth: 50, align: "center"},
-  {id: "username", label: "Username", minWidth: 120, align: "center"},
-  {id: "options", label: "Options", minWidth: 120, align: "center"},
+  {id: "avatar", label: "Avatar", minWidth: 50},
+  {id: "username", label: "Username", minWidth: 120},
+  {id: "options", label: "Options", minWidth: 120},
 ];
 
 const CompanyMembersPage: React.FC = () => {
-  const dispatch = useDispatch();
-  const members = useSelector<memberType[]>(selectMembers);
-  const [currentMember, setCurrentMember] = useState<memberType>(null);
+  const dispatch = useDispatch<AppDispatch>();
+  const members = useSelector(selectMembers) as memberType[];
+  const [currentMember, setCurrentMember] = useState<memberType | null>(null);
   const loading = useSelector<boolean>(selectLoading);
   const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
 
@@ -45,11 +47,10 @@ const CompanyMembersPage: React.FC = () => {
   };
 
   const handleDeleteMember = () => {
-    console.log(currentMember)
-    // if (currentMember) {
-    //   dispatch(deleteMemberById(currentMember.id));
-    //   handleCloseDeleteModal();
-    // }
+    if (currentMember) {
+      dispatch(deleteMember(currentMember.id));
+      handleCloseDeleteModal();
+    }
   };
 
   const closeModal = () => {
@@ -79,7 +80,7 @@ const CompanyMembersPage: React.FC = () => {
                     {columns?.map((column) => (
                       <TableCell sx={{backgroundColor: "#a4a4a4"}}
                                  key={column.id}
-                                 align={column.align}
+                                 align={"center"}
                                  style={{minWidth: column.minWidth}}
                       >
                         {column.label}
@@ -110,13 +111,6 @@ const CompanyMembersPage: React.FC = () => {
                 </TableBody>
               </Table>
             </TableContainer>
-            {/*<Box sx={{display: "flex", justifyContent: "center", marginTop: 4}}>*/}
-            {/*  <Pagination*/}
-            {/*    count={countPage}*/}
-            {/*    page={skip}*/}
-            {/*    onChange={handleChangePage}*/}
-            {/*    color={"primary"}/>*/}
-            {/*</Box>*/}
           </Paper>
           {/*Delete modal*/}
           <Modal
@@ -145,8 +139,7 @@ const CompanyMembersPage: React.FC = () => {
           </Modal>
         </>
       )
-  )
-    ;
+  );
 };
 
 export default CompanyMembersPage;

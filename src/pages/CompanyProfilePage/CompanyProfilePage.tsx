@@ -9,7 +9,7 @@ import styles from "../UserProfilePage/UserProfilePage.module.css";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import DoneIcon from "@mui/icons-material/Done";
 import {Toaster} from "react-hot-toast";
-import {deleteCompanyById, updateCompany} from "../../redux/companies/operations";
+import {deleteCompanyById, fetchCompanyById, updateCompany} from "../../redux/companies/operations";
 import {useFormik} from "formik";
 import {validationSchemaUpdateCompany} from "../../validate/validationSchemaUpdateCompany";
 import {AppDispatch} from "../../redux/store";
@@ -18,7 +18,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import {NavLink, useNavigate} from "react-router-dom";
 import {initialValueUpdateCompany} from "../../initialValues/initialValues";
 import {selectUser} from "../../redux/auth/selectors";
-import {companies, members} from "../../config/urls";
+import {companies, mainUrls, members} from "../../config/urls";
 import {fetchMembers} from "../../redux/actions/operations";
 
 
@@ -50,9 +50,10 @@ const CompanyProfilePage: React.FC = () => {
     onSubmit: (values) => {
       if (formikEditCompany.isValid) {
         dispatch(updateCompany(values))
+        dispatch(fetchCompanyById(company?.id));
       }
       handleCloseEditCompanyModal();
-      navigate(companies);
+      navigate(mainUrls.companies.byId(company?.id));
     },
   });
 

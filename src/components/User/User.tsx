@@ -7,9 +7,10 @@ import {useDispatch} from "react-redux";
 import {AppDispatch} from "../../redux/store";
 import styles from "./User.module.css";
 import {mainUrls} from "../../config/urls";
+import {UserProps} from "../../types/usersTypes";
 
 
-const User: React.FC = ({user}) => {
+const User = ({user}: UserProps) => {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
 

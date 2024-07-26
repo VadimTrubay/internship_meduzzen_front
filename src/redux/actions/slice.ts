@@ -1,12 +1,12 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import toast from "react-hot-toast";
 import {initialActionsType, memberType} from "../../types/actionsTypes";
-import {fetchMembers} from "./operations";
+import {deleteMember, fetchMembers} from "./operations";
 
 const initialActions: initialActionsType = {
   members: [],
   loading: false,
-  error: "",
+  error: null,
 };
 
 const handlePending = (state: initialActionsType) => {
@@ -27,8 +27,18 @@ const handleFetchMembersFulfilled = (
   action: PayloadAction<memberType[]>
 ) => {
   state.loading = false;
-  state.error = "";
+  state.error = null;
   state.members = action.payload;
+};
+
+const handleDeleteMemberFulfilled = (
+  state: initialActionsType,
+  action: PayloadAction<any>
+) => {
+  state.loading = false;
+  state.error = null;
+  state.members = state.members.filter((member) => member.id !== action.payload.id);
+  toast.error(`Member deleted successfully`);
 };
 
 const actionsSlice = createSlice({
@@ -40,6 +50,9 @@ const actionsSlice = createSlice({
       .addCase(fetchMembers.pending, handlePending)
       .addCase(fetchMembers.fulfilled, handleFetchMembersFulfilled)
       .addCase(fetchMembers.rejected, handleRejected)
+      .addCase(deleteMember.pending, handlePending)
+      .addCase(deleteMember.fulfilled, handleDeleteMemberFulfilled)
+      .addCase(deleteMember.rejected, handleRejected)
 });
 
 export const actionsReducer = actionsSlice.reducer;

@@ -8,6 +8,7 @@ export const initialValues: CompanyAddType = {
 };
 
 export const initialValueUpdateCompany: CompanyUpdateType = {
+  id: "",
   name: "",
   description: "",
   visible: true,

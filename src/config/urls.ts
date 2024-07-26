@@ -29,7 +29,8 @@ export const mainUrls = {
     },
     actions: {
         members: (companyId: string) =>  `${actions}/company/members?company_id=${companyId}`,
-        //     candidates: (company_id: number) => `${invitation}/company/${company_id}/candidates`,
+        kick: (actionId: string) => `${actions}/kick?action_id=${actionId}`,
+        // candidates: (company_id: number) => `${invitation}/company/${company_id}/candidates`,
         //     send_invite: (company_id: number, user_id: number) => `${invitation}/invitation_send_from_company/${company_id}/user/${user_id}`,
         //     send_request: (company_id: number) => `${invitation}/action/create_from_user/company/${company_id}/`,
         //     company_invite: (company_id: number) => `${invitation}/company/${company_id}/invitation_list`,

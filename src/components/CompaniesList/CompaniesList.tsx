@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {ChangeEvent, useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {
   Box, LinearProgress,
@@ -23,10 +23,10 @@ import {selectUser} from "../../redux/auth/selectors";
 import styles from "./CompaniesList.module.css";
 
 const columns = [
-  {id: "avatar", label: "avatar", minWidth: 50, align: "center"},
-  {id: "name", label: "Name", minWidth: 120, align: "center"},
-  {id: "description", label: "Description", minWidth: 120, align: "center"},
-  {id: "visible", label: "Visible", minWidth: 50, align: "center"},
+  {id: "avatar", label: "avatar", minWidth: 50},
+  {id: "name", label: "Name", minWidth: 120},
+  {id: "description", label: "Description", minWidth: 120},
+  {id: "visible", label: "Visible", minWidth: 50},
 ];
 
 const CompaniesList = () => {
@@ -40,8 +40,8 @@ const CompaniesList = () => {
 
   const countPage = Math.ceil(totalCount / limit);
 
-  const handleChangePage = (event: React.ChangeEvent, newPage: React.SetStateAction<number>) => {
-    setSkip(newPage)
+  const handleChangePage = (event: ChangeEvent<unknown>, page: number) => {
+    setSkip(page)
   };
 
   const handleGetCompany = (id: string) => {
@@ -67,7 +67,7 @@ const CompaniesList = () => {
                   {columns?.map((column) => (
                     <TableCell sx={{backgroundColor: "#a4a4a4"}}
                                key={column.id}
-                               align={column.align}
+                               align={"center"}
                                style={{minWidth: column.minWidth}}
                     >
                       {column.label}

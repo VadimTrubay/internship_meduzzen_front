@@ -23,8 +23,8 @@ export const LoginButtonAuth0 = () => {
             prompt: "consent",
           },
         });
-        dispatch(getMe(token));
         dispatch(setAccessToken(token));
+        dispatch(getMe(token));
       } catch (error) {
         console.error('Error fetching access token:', error);
       }

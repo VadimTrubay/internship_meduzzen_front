@@ -13,6 +13,7 @@ export const LogoutButton = () => {
   const handleBaseLogout = () => {
     if (isAuthenticated) {
       logout({ returnTo: window.location.origin });
+      dispatch(logOut());
     } else {
       dispatch(logOut());
     }

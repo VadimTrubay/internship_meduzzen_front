@@ -6,5 +6,12 @@ import {mainUrls} from "../config/urls";
 
 export const getMembers = async (companyId: string, thunkAPI: AsyncThunkConfig): Promise<AxiosResponse> => {
   const axiosInstance = createAxiosInstance(thunkAPI);
+
   return await axiosInstance.get(mainUrls.actions.members(companyId))
+};
+
+export const removeMember = async (actionId: string, thunkAPI: AsyncThunkConfig): Promise<AxiosResponse> => {
+  const axiosInstance = createAxiosInstance(thunkAPI);
+
+  return await axiosInstance.delete(mainUrls.actions.kick(actionId));
 };
