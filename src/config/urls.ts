@@ -19,18 +19,19 @@ export const mainUrls = {
     },
     users: {
         submit: users,
-        all: (skip: number, limit: number) => `${users}?skip=${skip}&limit=${limit}`,
+        all: (skip: number | null, limit: number | null) => `${users}?skip=${skip}&limit=${limit}`,
         byId: (id: string) => `${users}/${id}`,
     },
     companies: {
         submit: companies,
-        all: (skip: number, limit: number) => `${companies}?skip=${skip}&limit=${limit}`,
+        all: (skip: number | null, limit: number | null) => `${companies}?skip=${skip}&limit=${limit}`,
         byId: (id: string) => `${companies}/${id}`,
     },
     actions: {
         members: (companyId: string) =>  `${actions}/company/members?company_id=${companyId}`,
         kick: (actionId: string) => `${actions}/kick?action_id=${actionId}`,
-        // candidates: (company_id: number) => `${invitation}/company/${company_id}/candidates`,
+        sendInvite: `${actions}/invite`,
+        // candidates: (company_id: number) => `${invitation}/invite`,
         //     send_invite: (company_id: number, user_id: number) => `${invitation}/invitation_send_from_company/${company_id}/user/${user_id}`,
         //     send_request: (company_id: number) => `${invitation}/action/create_from_user/company/${company_id}/`,
         //     company_invite: (company_id: number) => `${invitation}/company/${company_id}/invitation_list`,

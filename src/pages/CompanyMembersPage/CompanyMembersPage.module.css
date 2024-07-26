@@ -53,3 +53,9 @@
   color: var(--brand-color-contactbook);
   cursor: pointer;
 }
+
+.inviteMemberButton {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+}

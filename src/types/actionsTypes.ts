@@ -9,3 +9,8 @@ export interface memberType {
   user_id: string;
   user_username: string;
 }
+
+export interface sendInviteType {
+  user_id: string;
+  company_id: string;
+}

@@ -1,9 +1,10 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
-import {getMembers, removeMember} from "../../api/api_actions";
+import {getMembers, removeMember, sendInvite} from "../../api/api_actions";
+import {sendInviteType} from "../../types/actionsTypes";
 
 
 export const fetchMembers = createAsyncThunk(
-  "companies/fetchMembers",
+  "actions/fetchMembers",
   async (companyId: string, thunkAPI) => {
     try {
       const response = await getMembers(companyId, thunkAPI)
@@ -14,20 +15,20 @@ export const fetchMembers = createAsyncThunk(
   }
 );
 
-// export const fetchCompanyById = createAsyncThunk(
-//   "companies/getCompanyById",
-//   async (id: string, thunkAPI) => {
-//     try {
-//       const response = await getCompanyById(id, thunkAPI);
-//       return response.data;
-//     } catch (error: any) {
-//       return thunkAPI.rejectWithValue(error.message);
-//     }
-//   }
-// );
+export const createInvite = createAsyncThunk(
+  "actions/createInvite",
+  async (sendInviteData: sendInviteType, thunkAPI) => {
+    try {
+      const response = await sendInvite(sendInviteData, thunkAPI);
+      return response.data;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
 //
 // export const updateCompany = createAsyncThunk(
-//   "companies/updateCompany",
+//   "actions/updateCompany",
 //   async (companyData: CompanyUpdateType, thunkAPI) => {
 //     try {
 //       const response = await editCompany(companyData, thunkAPI)
@@ -39,7 +40,7 @@ export const fetchMembers = createAsyncThunk(
 // );
 
 export const deleteMember = createAsyncThunk(
-  "members/deleteMember",
+  "actions/deleteMember",
   async (actionId: string, thunkAPI) => {
     try {
       const response = await removeMember(actionId, thunkAPI);
