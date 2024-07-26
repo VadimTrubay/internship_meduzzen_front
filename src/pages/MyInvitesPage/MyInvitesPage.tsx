@@ -11,20 +11,16 @@ import {
   Typography
 } from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
-import {memberType} from "../../types/actionsTypes";
-import {selectMembers, selectLoading, selectMyInvites} from "../../redux/actions/selectors";
+import {selectLoading, selectMyInvites} from "../../redux/actions/selectors";
 import Paper from "@mui/material/Paper";
 import styles from "./MyInvitesPage.module.css";
 import {style, StyledBox, Text} from "../../utils/BaseModal.styled";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import DoneIcon from "@mui/icons-material/Done";
-// import {createInvite, deleteMember} from "../../redux/actions/operations";
 import {AppDispatch} from "../../redux/store";
-import {fetchMyInvites} from "../../redux/actions/operations";
-// import {selectUsers} from "../../redux/users/selectors";
-// import {selectCompanyById} from "../../redux/companies/selectors";
-// import {UserType} from "../../types/usersTypes";
-// import {CompanyType} from "../../types/companiesTypes";
+import {acceptInvite, fetchMyInvites} from "../../redux/actions/operations";
+import {memberType} from "../../types/actionsTypes";
+
 
 const columns = [
   {id: "username", label: "Name", minWidth: 200},
@@ -32,36 +28,39 @@ const columns = [
   {id: "decline", label: "Decline", minWidth: 60},
 ];
 
+
 const MyInvitesPage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const myInvites = useSelector(selectMyInvites) as memberType[];
-  // const users = useSelector(selectUsers);
-  // const [currentMember, setCurrentMember] = useState<memberType | null>(null);
-  const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
-  // const companyId = useSelector<CompanyType>(selectCompanyById);
+  const [openAcceptInviteModal, setOpenAcceptInviteModal] = useState<boolean>(false);
+  const [selectedActionId, setSelectedActionId] = useState<string | null>(null);
   const loading = useSelector<boolean>(selectLoading);
 
-  console.log(myInvites)
   useEffect(() => {
-    dispatch(fetchMyInvites())
-  }, []);
+    dispatch(fetchMyInvites());
+  }, [dispatch]);
 
-  const handleOpenDeleteModal = (member: memberType) => {
-    // setCurrentMember(member);
-    setOpenDeleteModal(true);
+  const handleOpenAcceptInviteModal = (inviteId: string) => {
+    setSelectedActionId(inviteId);
+    setOpenAcceptInviteModal(true);
   };
 
-  const handleCloseDeleteModal = () => {
-    setOpenDeleteModal(false);
-    // setCurrentMember(null);
+  const handleCloseAcceptInviteModal = () => {
+    setOpenAcceptInviteModal(false);
+    setSelectedActionId(null);
   };
 
-  const handleDeleteMember = () => {
-    // if (currentMember) {
-    // dispatch(deleteMember(currentMember?.id));
-    handleCloseDeleteModal();
-    // }
+  const handleAcceptInvite = () => {
+    if (selectedActionId !== null) {
+      dispatch(acceptInvite(selectedActionId));
+    }
+    handleCloseAcceptInviteModal();
+    console.log(selectedActionId, myInvites);
   };
+
+  // const handleDeclineInvite = (inviteId: number) => {
+    // dispatch(declineInvite(inviteId));
+  // };
 
   return (
     loading ? (
@@ -94,14 +93,14 @@ const MyInvitesPage: React.FC = () => {
                 </TableRow>
               </TableHead>
               <TableBody className={styles.tableHead}>
-                {myInvites.map((invites: memberType) => (
-                  <TableRow key={invites.id} className={styles.tableRow}>
-                    <TableCell>
-                      {invites?.user_username}
+                {myInvites.map((invite: memberType) => (
+                  <TableRow key={invite.id} className={styles.tableRow}>
+                    <TableCell sx={{padding: "3px"}} align="center">
+                      {invite.user_username}
                     </TableCell>
                     <TableCell align="center">
                       <Button
-                        // onClick={() => handleOpenDeleteModal(invites)}
+                        onClick={() => handleOpenAcceptInviteModal(invite.id)}
                         variant="outlined"
                         color="success"
                         sx={{marginRight: 1}}
@@ -110,14 +109,14 @@ const MyInvitesPage: React.FC = () => {
                       </Button>
                     </TableCell>
                     <TableCell sx={{padding: "3px"}} align="center">
-                      <Button
-                        // onClick={() => handleOpenDeleteModal(invites)}
-                        variant="outlined"
-                        color="error"
-                        sx={{marginRight: 1}}
-                      >
-                        Decline
-                      </Button>
+                      {/*<Button*/}
+                      {/*  onClick={() => handleDeclineInvite(invite.id)}*/}
+                      {/*  variant="outlined"*/}
+                      {/*  color="error"*/}
+                      {/*  sx={{marginRight: 1}}*/}
+                      {/*>*/}
+                      {/*  Decline*/}
+                      {/*</Button>*/}
                     </TableCell>
                   </TableRow>
                 ))}
@@ -126,27 +125,24 @@ const MyInvitesPage: React.FC = () => {
           </TableContainer>
         </Paper>
 
-        {/*Delete modal*/}
+        {/* Accept Invite Modal */}
         <Modal
-          open={openDeleteModal}
-          onClose={handleCloseDeleteModal}
+          open={openAcceptInviteModal}
+          onClose={handleCloseAcceptInviteModal}
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
         >
           <Box sx={style}>
             <div className={styles.close}>
-              <HighlightOffIcon onClick={handleCloseDeleteModal} color={"error"}/>
+              <HighlightOffIcon onClick={handleCloseAcceptInviteModal} color={"success"}/>
             </div>
             <Typography id="modal-modal-title" variant="h6" component="h2">
-              <Text className={styles.title_delete}>Delete member</Text>
-              <Text>Are you sure you want to delete this member?</Text>
+              <Text className={styles.title_accept}>Accept Invite</Text>
+              <Text>Are you sure you want to accept this invite?</Text>
             </Typography>
-            <StyledBox component="form" onSubmit={(e) => {
-              e.preventDefault();
-              handleDeleteMember();
-            }}>
-              <Button type="submit">
-                <DoneIcon sx={{fontSize: 40, color: "red"}}/>
+            <StyledBox>
+              <Button onClick={handleAcceptInvite} type="button">
+                <DoneIcon sx={{fontSize: 40, color: "green"}}/>
               </Button>
             </StyledBox>
           </Box>

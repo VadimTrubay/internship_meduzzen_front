@@ -1,7 +1,7 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import toast from "react-hot-toast";
 import {initialActionsType, memberType} from "../../types/actionsTypes";
-import {deleteMember, fetchMembers, fetchMyInvites} from "./operations";
+import {acceptInvite, deleteMember, fetchMembers, fetchMyInvites} from "./operations";
 
 const initialActions: initialActionsType = {
   members: [],
@@ -41,6 +41,16 @@ const handleFetchMyInvitesFulfilled = (
   state.myInvites = action.payload;
 };
 
+const handleAcceptInviteFulfilled = (
+  state: initialActionsType
+) => {
+  state.loading = false;
+  state.error = null;
+  state.myInvites = [];
+  toast.error(`Invite accepted successfully`);
+};
+
+
 const handleDeleteMemberFulfilled = (
   state: initialActionsType,
   action: PayloadAction<any>
@@ -63,6 +73,9 @@ const actionsSlice = createSlice({
       .addCase(fetchMyInvites.pending, handlePending)
       .addCase(fetchMyInvites.fulfilled, handleFetchMyInvitesFulfilled)
       .addCase(fetchMyInvites.rejected, handleRejected)
+      .addCase(acceptInvite.pending, handlePending)
+      .addCase(acceptInvite.fulfilled, handleAcceptInviteFulfilled)
+      .addCase(acceptInvite.rejected, handleRejected)
       .addCase(deleteMember.pending, handlePending)
       .addCase(deleteMember.fulfilled, handleDeleteMemberFulfilled)
       .addCase(deleteMember.rejected, handleRejected)

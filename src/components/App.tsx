@@ -34,7 +34,7 @@ const App: React.FC = () => {
   const {isAuthenticated} = useAuth0()
   const loading = useSelector(selectLoading);
 
-    useEffect(() => {
+  useEffect(() => {
   }, [isAuthenticated, isLoggedIn]);
 
   useEffect(() => {
@@ -81,8 +81,14 @@ const App: React.FC = () => {
               path={`${RouterEndpoints.companies}/${RouterEndpoints.id}`}
               element={<PrivateRoute redirectTo={RouterEndpoints.login} component={<CompanyProfilePage/>}/>}
             />
-            <Route path={RouterEndpoints.members} element={<CompanyMembersPage/>}/>
-            <Route path={RouterEndpoints.myInvites} element={<MyInvitesPage/>}/>
+            <Route
+              path={`${RouterEndpoints.members}`}
+              element={<PrivateRoute redirectTo={RouterEndpoints.login} component={<CompanyMembersPage/>}/>}
+            />
+            <Route
+              path={`${RouterEndpoints.myInvites}`}
+              element={<PrivateRoute redirectTo={RouterEndpoints.login} component={<MyInvitesPage/>}/>}
+            />
             <Route path={RouterEndpoints.terms} element={<TermsPage/>}/>
             <Route path={RouterEndpoints.notFound} element={<NotFoundPage/>}/>
           </Routes>

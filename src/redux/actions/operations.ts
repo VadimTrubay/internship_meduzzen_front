@@ -1,5 +1,5 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
-import {getMembers, removeMember, sendInvite, getMyInvites} from "../../api/api_actions";
+import {getMembers, removeMember, sendInvite, getMyInvites, acceptInviteApi} from "../../api/api_actions";
 import {sendInviteType} from "../../types/actionsTypes";
 
 
@@ -38,6 +38,19 @@ export const createInvite = createAsyncThunk(
     }
   }
 );
+
+export const acceptInvite = createAsyncThunk(
+  "actions/acceptInvite",
+  async (actionId: string, thunkAPI) => {
+    try {
+      const response = await acceptInviteApi(actionId, thunkAPI)
+      return response.data;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
 //
 // export const updateCompany = createAsyncThunk(
 //   "actions/updateCompany",

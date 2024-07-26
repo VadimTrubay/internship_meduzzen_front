@@ -39,8 +39,8 @@
   cursor: pointer;
 }
 
-.title_delete {
-  background-color: #ff0000;
+.title_accept {
+  background-color: #4a853d;
   color: #ffffff;
   border-radius: 3px;
   margin-top: 10px;
@@ -50,7 +50,6 @@
 .close {
   display: flex;
   justify-content: flex-end;
-  color: var(--brand-color-contactbook);
   cursor: pointer;
 }
 

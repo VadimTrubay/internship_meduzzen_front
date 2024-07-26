@@ -28,10 +28,11 @@ export const mainUrls = {
         byId: (id: string) => `${companies}/${id}`,
     },
     actions: {
-        members: (companyId: string) =>  `${actions}/company/members?company_id=${companyId}`,
+        members: (companyId: string) => `${actions}/company/members?company_id=${companyId}`,
         kick: (actionId: string) => `${actions}/kick?action_id=${actionId}`,
         sendInvite: `${actions}/invite`,
         myInvites: `${actions}/my/invites`,
+        acceptInvite: (actionId: string) => `${actions}/invite/accept?action_id=${actionId}`,
     }
 }
 

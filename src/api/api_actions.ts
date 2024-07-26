@@ -28,3 +28,9 @@ export const sendInvite = async (sendInviteData: sendInviteType, thunkAPI: Async
 
   return await axiosInstance.post(mainUrls.actions.sendInvite, sendInviteData);
 };
+
+export const acceptInviteApi = async (actionId: string, thunkAPI: AsyncThunkConfig): Promise<AxiosResponse> => {
+  const axiosInstance = createAxiosInstance(thunkAPI);
+
+  return await axiosInstance.post(mainUrls.actions.acceptInvite(actionId));
+};
