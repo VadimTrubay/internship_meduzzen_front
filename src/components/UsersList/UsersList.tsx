@@ -12,12 +12,12 @@ import {
 } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import {fetchUsers} from "../../redux/users/operations";
-import {selectTotalCount, selectUsers} from "../../redux/users/selectors";
+import {selectTotalCount} from "../../redux/users/selectors";
 import User from "../User/User";
 import {selectLoading} from "../../redux/users/selectors";
 import styles from "./UsersList.module.css";
 import {AppDispatch} from "../../redux/store";
-import {authType} from "../../types/authTypes";
+import {UsersListProps} from "../../types/usersTypes";
 
 const columns = [
   {id: "avatar", label: "Avatar", minWidth: 50},
@@ -25,9 +25,8 @@ const columns = [
   {id: "email", label: "Email", minWidth: 120},
 ];
 
-const UsersList = () => {
+const UsersList: React.FC<UsersListProps> = ({users}) => {
   const dispatch = useDispatch<AppDispatch>();
-  const users = useSelector(selectUsers);
   const totalCount: number = useSelector(selectTotalCount);
   const loading = useSelector<boolean>(selectLoading);
   const [skip, setSkip] = useState<number>(1);
@@ -68,7 +67,7 @@ const UsersList = () => {
                 </TableRow>
               </TableHead>
               <TableBody className={styles.tableHead}>
-                {users?.map((user: authType) => (
+                {users?.map((user) => (
                   <TableRow key={user.id} className={styles.tableRow}>
                     <User user={user}/>
                   </TableRow>

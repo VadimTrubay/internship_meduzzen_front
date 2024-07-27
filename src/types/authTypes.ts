@@ -15,8 +15,15 @@ export interface authType {
   is_admin: boolean;
 }
 
-export interface UsernameUpdateType {
+export interface authUserType {
   id: string;
+  username: string;
+  email: string;
+  password: string;
+  is_admin: boolean;
+}
+
+export interface UsernameUpdateType {
   username: string;
 }
 

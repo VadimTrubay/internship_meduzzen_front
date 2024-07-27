@@ -21,6 +21,7 @@ import UserProfilePage from "../pages/UserProfilePage/UserProfilePage";
 import {useAuth0} from "@auth0/auth0-react";
 import {RouterEndpoints} from "../config/routes";
 import MyInvitesPage from "../pages/MyInvitesPage/MyInvitesPage";
+import MyRequestsPage from "../pages/MyRequestsPage/MyRequestsPage";
 
 
 const HomePage = lazy(() => import("../pages/HomePage/HomePage"));
@@ -82,13 +83,25 @@ const App: React.FC = () => {
               element={<PrivateRoute redirectTo={RouterEndpoints.login} component={<CompanyProfilePage/>}/>}
             />
             <Route
-              path={`${RouterEndpoints.members}`}
+              path={`${RouterEndpoints.membersCompany}`}
               element={<PrivateRoute redirectTo={RouterEndpoints.login} component={<CompanyMembersPage/>}/>}
             />
             <Route
               path={`${RouterEndpoints.myInvites}`}
               element={<PrivateRoute redirectTo={RouterEndpoints.login} component={<MyInvitesPage/>}/>}
             />
+            <Route
+              path={`${RouterEndpoints.myRequests}`}
+              element={<PrivateRoute redirectTo={RouterEndpoints.login} component={<MyRequestsPage/>}/>}
+            />
+            {/*<Route*/}
+            {/*  path={`${RouterEndpoints.invitesCompany}`}*/}
+            {/*  element={<PrivateRoute redirectTo={RouterEndpoints.login} component={<CompanyInvitesPage/>}/>}*/}
+            {/*/>*/}
+            {/*<Route*/}
+            {/*  path={`${RouterEndpoints.requestsCompany}`}*/}
+            {/*  element={<PrivateRoute redirectTo={RouterEndpoints.login} component={<CompanyRequestsPage/>}/>}*/}
+            {/*/>*/}
             <Route path={RouterEndpoints.terms} element={<TermsPage/>}/>
             <Route path={RouterEndpoints.notFound} element={<NotFoundPage/>}/>
           </Routes>

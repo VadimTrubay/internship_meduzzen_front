@@ -9,8 +9,11 @@ export const RouterEndpoints = {
 
     users: "users",
     companies: "companies",
-    members: "actions/company/members",
+    membersCompany: "actions/company/members",
+    invitesCompany: "actions/company/invites",
+    requestsCompany: "actions/company/requests",
     myInvites: "actions/my/invites",
+    myRequests: "actions/my/requests",
 
     terms: "terms",
     notFound: "*",

@@ -10,7 +10,7 @@ import {mainUrls} from "../../config/urls";
 import {UserProps} from "../../types/usersTypes";
 
 
-const User = ({user}: UserProps) => {
+const User: React.FC<UserProps> = ({user}) => {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
 

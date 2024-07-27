@@ -1,9 +1,22 @@
-import React from "react";
+import React, {useState} from "react";
 import styles from "./ListOfUsersPage.module.css";
 import UsersList from "../../components/UsersList/UsersList";
-import {Grid, Typography} from "@mui/material";
+import {Box, Checkbox, FormControlLabel, Grid, Typography} from "@mui/material";
+import {useSelector} from "react-redux";
+import {selectUsers} from "../../redux/users/selectors";
+import {UserType} from "../../types/usersTypes";
+import {selectUser} from "../../redux/auth/selectors";
 
 const ListOfUsersPage: React.FC = () => {
+  const currentUser = useSelector(selectUser) as UserType;
+  const users = useSelector(selectUsers) as UserType[];
+  const [showMe, setShowMe] = useState<boolean>(false);
+
+
+  const filteredUsers = showMe
+    ? users.filter(user => user.id === currentUser.id)
+    : users;
+
   return (
     <div className={styles.title}>
       <Grid item xs={12}>
@@ -11,7 +24,18 @@ const ListOfUsersPage: React.FC = () => {
           Users
         </Typography>
       </Grid>
-      <UsersList/>
+      <Box className={styles.filterUsers}>
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={showMe}
+              onChange={() => setShowMe(!showMe)}
+            />
+          }
+          label="Show Only My"
+        />
+      </Box>
+      <UsersList users={filteredUsers}/>
     </div>
   );
 };

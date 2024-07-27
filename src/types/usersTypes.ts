@@ -1,4 +1,4 @@
-import {authType} from "./authTypes";
+import {authUserType} from "./authTypes";
 
 export interface initialUsersType {
   items: UserType[];
@@ -22,5 +22,9 @@ export interface FetchUsersParams {
 }
 
 export interface UserProps {
-  user: authType;
+  user: authUserType;
+}
+
+export interface UsersListProps {
+  users: UserType[];
 }

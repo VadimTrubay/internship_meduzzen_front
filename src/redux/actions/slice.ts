@@ -1,11 +1,12 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import toast from "react-hot-toast";
 import {initialActionsType, memberType} from "../../types/actionsTypes";
-import {acceptInvite, deleteMember, fetchMembers, fetchMyInvites} from "./operations";
+import {acceptInvite, declineInvite, deleteMember, fetchMembers, fetchMyInvites, fetchMyRequests} from "./operations";
 
 const initialActions: initialActionsType = {
   members: [],
   myInvites: [],
+  myRequests: [],
   loading: false,
   error: null,
 };
@@ -41,15 +42,34 @@ const handleFetchMyInvitesFulfilled = (
   state.myInvites = action.payload;
 };
 
-const handleAcceptInviteFulfilled = (
-  state: initialActionsType
+const handleFetchMyRequestsFulfilled = (
+  state: initialActionsType,
+  action: PayloadAction<memberType[]>
 ) => {
   state.loading = false;
   state.error = null;
-  state.myInvites = [];
-  toast.error(`Invite accepted successfully`);
+  state.myRequests = action.payload;
 };
 
+const handleAcceptInviteFulfilled = (
+  state: initialActionsType,
+  action: PayloadAction<any>
+) => {
+  state.loading = false;
+  state.error = null;
+  state.myInvites = state.myInvites.filter((invite) => invite.id !== action.payload.id);
+  toast.success(`Invite accepted successfully`);
+};
+
+const handleDeclineInviteFulfilled = (
+  state: initialActionsType,
+  action: PayloadAction<any>
+) => {
+  state.loading = false;
+  state.error = null;
+  state.myInvites = state.myInvites.filter((invite) => invite.id !== action.payload.id);
+  toast.error(`Invite decline successfully`);
+};
 
 const handleDeleteMemberFulfilled = (
   state: initialActionsType,
@@ -73,9 +93,15 @@ const actionsSlice = createSlice({
       .addCase(fetchMyInvites.pending, handlePending)
       .addCase(fetchMyInvites.fulfilled, handleFetchMyInvitesFulfilled)
       .addCase(fetchMyInvites.rejected, handleRejected)
+      .addCase(fetchMyRequests.pending, handlePending)
+      .addCase(fetchMyRequests.fulfilled, handleFetchMyRequestsFulfilled)
+      .addCase(fetchMyRequests.rejected, handleRejected)
       .addCase(acceptInvite.pending, handlePending)
       .addCase(acceptInvite.fulfilled, handleAcceptInviteFulfilled)
       .addCase(acceptInvite.rejected, handleRejected)
+      .addCase(declineInvite.pending, handlePending)
+      .addCase(declineInvite.fulfilled, handleDeclineInviteFulfilled)
+      .addCase(declineInvite.rejected, handleRejected)
       .addCase(deleteMember.pending, handlePending)
       .addCase(deleteMember.fulfilled, handleDeleteMemberFulfilled)
       .addCase(deleteMember.rejected, handleRejected)

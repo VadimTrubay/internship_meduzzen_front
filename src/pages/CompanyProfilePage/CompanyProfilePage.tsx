@@ -18,7 +18,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import {useNavigate} from "react-router-dom";
 import {initialValueUpdateCompany} from "../../initialValues/initialValues";
 import {selectUser} from "../../redux/auth/selectors";
-import {companies, mainUrls, members} from "../../config/urls";
+import {companies, mainUrls, membersCompany} from "../../config/urls";
 import {fetchMembers} from "../../redux/actions/operations";
 
 
@@ -63,9 +63,21 @@ const CompanyProfilePage: React.FC = () => {
     navigate(companies);
   };
 
-  const handleOpenCompaniesMembers = () => {
+  const handleOpenCompanyMembers = () => {
     dispatch(fetchMembers(company?.id))
-    navigate(members);
+    navigate(membersCompany);
+  };
+
+  const handleOpenCompanyInvites = () => {
+    // dispatch(fetchCompanyInvites(company?.id))
+    // navigate(members);
+    console.log("Open Company Invites")
+  };
+
+  const handleOpenCompanyRequests = () => {
+    // dispatch(fetchCompanyRequests(company?.id))
+    // navigate(members);
+    console.log("Open Company Requests")
   };
 
   const closeModal = () => {
@@ -86,10 +98,26 @@ const CompanyProfilePage: React.FC = () => {
             <Button
               variant="outlined"
               color="success"
-              sx={{marginBottom: 1}}
-              onClick={() => handleOpenCompaniesMembers()}
+              sx={{margin: 1}}
+              onClick={() => handleOpenCompanyMembers()}
             >
               Company Members
+            </Button>
+            <Button
+              variant="outlined"
+              color="success"
+              sx={{margin: 1}}
+              onClick={() => handleOpenCompanyInvites()}
+            >
+              Company Invites
+            </Button>
+            <Button
+              variant="outlined"
+              color="success"
+              sx={{margin: 1}}
+              onClick={() => handleOpenCompanyRequests()}
+            >
+              Company Requests
             </Button>
           </Box>
         }

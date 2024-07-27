@@ -25,6 +25,7 @@ import {selectUsers} from "../../redux/users/selectors";
 import {selectCompanyById} from "../../redux/companies/selectors";
 import {UserType} from "../../types/usersTypes";
 import {CompanyType} from "../../types/companiesTypes";
+import {Toaster} from "react-hot-toast";
 
 
 const columns = [
@@ -40,7 +41,7 @@ const CompanyMembersPage: React.FC = () => {
   const [currentMember, setCurrentMember] = useState<memberType | null>(null);
   const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const companyId = useSelector<CompanyType>(selectCompanyById);
+  const company = useSelector(selectCompanyById) as CompanyType;
   const loading = useSelector<boolean>(selectLoading);
 
   const handleOpenDeleteModal = (member: memberType) => {
@@ -69,8 +70,8 @@ const CompanyMembersPage: React.FC = () => {
   };
 
   const handleInviteUser = (userId: string) => {
-    if (userId && companyId) {
-      dispatch(createInvite({user_id: userId, company_id: companyId.id}));
+    if (userId && company) {
+      dispatch(createInvite({user_id: userId, company_id: company.id}));
     }
     handleCloseMenu();
   };
@@ -87,6 +88,9 @@ const CompanyMembersPage: React.FC = () => {
             <Typography variant="h5" gutterBottom>
               Company Members
             </Typography>
+            <Typography variant="h6">
+              "{company?.name}"
+            </Typography>
           </Grid>
           <Box className={styles.inviteMemberButton}>
             <Button
@@ -101,7 +105,7 @@ const CompanyMembersPage: React.FC = () => {
               open={Boolean(anchorEl)}
               onClose={handleCloseMenu}
             >
-              {users?.filter((user: UserType) => user?.id !== companyId?.owner_id)
+              {users?.filter((user: UserType) => user?.id !== company?.owner_id)
                 .map((user: UserType) => (
                   <MenuItem
                     key={user?.id}
@@ -179,6 +183,8 @@ const CompanyMembersPage: React.FC = () => {
             </StyledBox>
           </Box>
         </Modal>
+
+        <Toaster position="top-center"/>
       </>
     )
   );

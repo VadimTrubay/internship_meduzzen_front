@@ -105,8 +105,12 @@ const UserProfilePage = () => {
             >
               My Invites
             </Button>
+
+            {/*MY REQUESTS*/}
             <Button
-              // onClick={handleOpenEditUsernameModal}
+              onClick={() => {
+                navigate(mainUrls.actions.myRequests)
+              }}
               variant="outlined"
               color="success"
               sx={{margin: 1}}
