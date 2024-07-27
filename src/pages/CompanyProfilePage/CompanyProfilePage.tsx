@@ -19,7 +19,7 @@ import {useNavigate} from "react-router-dom";
 import {initialValueUpdateCompany} from "../../initialValues/initialValues";
 import {selectUser} from "../../redux/auth/selectors";
 import {companies, mainUrls, membersCompany} from "../../config/urls";
-import {fetchMembers} from "../../redux/actions/operations";
+import {fetchCompanyInvites, fetchCompanyRequests, fetchMembers} from "../../redux/actions/operations";
 
 
 const CompanyProfilePage: React.FC = () => {
@@ -58,26 +58,28 @@ const CompanyProfilePage: React.FC = () => {
   });
 
   const handleDeleteCompany = () => {
-    dispatch(deleteCompanyById(company?.id));
-    handleCloseDeleteModal();
-    navigate(companies);
+    if (company) {
+      dispatch(deleteCompanyById(company?.id));
+      handleCloseDeleteModal();
+      navigate(companies);
+    }
   };
 
   const handleOpenCompanyMembers = () => {
-    dispatch(fetchMembers(company?.id))
-    navigate(membersCompany);
+    if (company) {
+      dispatch(fetchMembers(company?.id));
+      navigate(membersCompany);
+    }
   };
 
   const handleOpenCompanyInvites = () => {
-    // dispatch(fetchCompanyInvites(company?.id))
-    // navigate(members);
-    console.log("Open Company Invites")
+    dispatch(fetchCompanyInvites(company?.id))
+    navigate(mainUrls.actions.companyInvites(company?.id));
   };
 
   const handleOpenCompanyRequests = () => {
-    // dispatch(fetchCompanyRequests(company?.id))
-    // navigate(members);
-    console.log("Open Company Requests")
+    dispatch(fetchCompanyRequests(company?.id))
+    navigate(mainUrls.actions.companyRequests(company?.id));
   };
 
   const closeModal = () => {

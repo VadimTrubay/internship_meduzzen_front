@@ -1,12 +1,23 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import toast from "react-hot-toast";
 import {initialActionsType, memberType} from "../../types/actionsTypes";
-import {acceptInvite, declineInvite, deleteMember, fetchMembers, fetchMyInvites, fetchMyRequests} from "./operations";
+import {
+  acceptInvite,
+  createInvite,
+  declineInvite, deleteInvite,
+  deleteMember, fetchCompanyInvites, fetchCompanyRequests,
+  fetchMembers,
+  fetchMyInvites,
+  fetchMyRequests
+} from "./operations";
+
 
 const initialActions: initialActionsType = {
   members: [],
   myInvites: [],
   myRequests: [],
+  companyInvites: [],
+  companyRequests: [],
   loading: false,
   error: null,
 };
@@ -21,7 +32,24 @@ const handleRejected = (
 ) => {
   state.loading = false;
   state.error = action.payload;
-  toast.error(`Error operation`);
+};
+
+const handleSendInviteFulfilled = (
+  state: initialActionsType,
+) => {
+  state.loading = false;
+  state.error = null;
+  toast.success(`Invite sent successfully`);
+};
+
+const handleDeleteInviteFulfilled = (
+  state: initialActionsType,
+  action: PayloadAction<any>
+) => {
+  state.loading = false;
+  state.error = null;
+  state.companyInvites = state.myInvites.filter((invite) => invite.id !== action.payload.id);
+  toast.success(`Invite deleted successfully`);
 };
 
 const handleFetchMembersFulfilled = (
@@ -49,6 +77,24 @@ const handleFetchMyRequestsFulfilled = (
   state.loading = false;
   state.error = null;
   state.myRequests = action.payload;
+};
+
+const handleFetchCompanyInvitesFulfilled = (
+  state: initialActionsType,
+  action: PayloadAction<memberType[]>
+) => {
+  state.loading = false;
+  state.error = null;
+  state.companyInvites = action.payload;
+};
+
+const handleFetchCompanyRequestsFulfilled = (
+  state: initialActionsType,
+  action: PayloadAction<memberType[]>
+) => {
+  state.loading = false;
+  state.error = null;
+  state.companyRequests = action.payload;
 };
 
 const handleAcceptInviteFulfilled = (
@@ -87,6 +133,12 @@ const actionsSlice = createSlice({
   reducers: {},
   extraReducers: (builder) =>
     builder
+      .addCase(createInvite.pending, handlePending)
+      .addCase(createInvite.fulfilled, handleSendInviteFulfilled)
+      .addCase(createInvite.rejected, handleRejected)
+      .addCase(deleteInvite.pending, handlePending)
+      .addCase(deleteInvite.fulfilled, handleDeleteInviteFulfilled)
+      .addCase(deleteInvite.rejected, handleRejected)
       .addCase(fetchMembers.pending, handlePending)
       .addCase(fetchMembers.fulfilled, handleFetchMembersFulfilled)
       .addCase(fetchMembers.rejected, handleRejected)
@@ -96,6 +148,12 @@ const actionsSlice = createSlice({
       .addCase(fetchMyRequests.pending, handlePending)
       .addCase(fetchMyRequests.fulfilled, handleFetchMyRequestsFulfilled)
       .addCase(fetchMyRequests.rejected, handleRejected)
+      .addCase(fetchCompanyInvites.pending, handlePending)
+      .addCase(fetchCompanyInvites.fulfilled, handleFetchCompanyInvitesFulfilled)
+      .addCase(fetchCompanyInvites.rejected, handleRejected)
+      .addCase(fetchCompanyRequests.pending, handlePending)
+      .addCase(fetchCompanyRequests.fulfilled, handleFetchCompanyRequestsFulfilled)
+      .addCase(fetchCompanyRequests.rejected, handleRejected)
       .addCase(acceptInvite.pending, handlePending)
       .addCase(acceptInvite.fulfilled, handleAcceptInviteFulfilled)
       .addCase(acceptInvite.rejected, handleRejected)

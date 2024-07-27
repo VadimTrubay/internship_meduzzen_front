@@ -73,7 +73,6 @@ const MyInvitesPage: React.FC = () => {
   };
 
   const handleDeclineInvite = () => {
-    console.log(selectedActionId);
     if (selectedActionId !== null) {
       dispatch(declineInvite(selectedActionId));
     }
@@ -93,7 +92,7 @@ const MyInvitesPage: React.FC = () => {
               My Invites
             </Typography>
             <Typography variant="h6">
-              "{user?.username}"
+              Profile: "{user?.username}"
             </Typography>
           </Grid>
         </Grid>

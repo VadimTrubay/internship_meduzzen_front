@@ -2,6 +2,8 @@ export interface initialActionsType {
   members: memberType[];
   myInvites: memberType[];
   myRequests: memberType[];
+  companyInvites: memberType[];
+  companyRequests: memberType[];
   loading: boolean;
   error: null;
 }

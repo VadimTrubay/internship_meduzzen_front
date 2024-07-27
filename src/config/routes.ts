@@ -10,8 +10,8 @@ export const RouterEndpoints = {
     users: "users",
     companies: "companies",
     membersCompany: "actions/company/members",
-    invitesCompany: "actions/company/invites",
-    requestsCompany: "actions/company/requests",
+    companyInvites: "actions/company/invites",
+    companyRequests: "actions/company/requests",
     myInvites: "actions/my/invites",
     myRequests: "actions/my/requests",
 

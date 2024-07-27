@@ -11,18 +11,19 @@ import {
   Typography
 } from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
-import {selectLoading, selectMyRequests} from "../../redux/actions/selectors";
+import {selectCompanyInvites} from "../../redux/actions/selectors";
 import Paper from "@mui/material/Paper";
-import styles from "./MyRequestsPage.module.css";
+import styles from "./CompanyInvitesPage.module.css";
 import {style, StyledBox, Text} from "../../utils/BaseModal.styled";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import DoneIcon from "@mui/icons-material/Done";
 import {AppDispatch} from "../../redux/store";
 import {memberType} from "../../types/actionsTypes";
 import {Toaster} from "react-hot-toast";
-import {UserType} from "../../types/usersTypes";
-import {selectUser} from "../../redux/auth/selectors";
-import {fetchMyRequests} from "../../redux/actions/operations";
+import {selectLoading} from "../../redux/actions/selectors";
+import {selectCompanyById} from "../../redux/companies/selectors";
+import {CompanyType} from "../../types/companiesTypes";
+import {deleteInvite, fetchCompanyInvites, fetchCompanyRequests, fetchMyInvites} from "../../redux/actions/operations";
 
 
 const columns = [
@@ -31,33 +32,35 @@ const columns = [
 ];
 
 
-const MyRequestsPage: React.FC = () => {
+const CompanyInvitesPage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const user = useSelector(selectUser) as UserType;
-  const myRequests = useSelector(selectMyRequests) as memberType[];
-  const [openDeleteRequestModal, setOpenDeleteRequestModal] = useState<boolean>(false);
+  const company = useSelector(selectCompanyById) as CompanyType;
+  const companyInvites = useSelector(selectCompanyInvites) as memberType[];
+  const [openDeleteInviteModal, setOpenDeleteInviteModal] = useState<boolean>(false);
   const [selectedActionId, setSelectedActionId] = useState<string | null>(null);
   const loading = useSelector<boolean>(selectLoading);
 
-  useEffect(() => {
-    dispatch(fetchMyRequests());
-  }, [dispatch]);
 
-  const handleOpenDeleteRequestModal = (requestId: string) => {
-    setSelectedActionId(requestId);
-    setOpenDeleteRequestModal(true);
+  useEffect(() => {
+    dispatch(fetchCompanyInvites(company.id));
+  }, [dispatch, company.id]);
+
+  const handleOpenDeleteInviteModal = (inviteId: string) => {
+    setSelectedActionId(inviteId);
+    setOpenDeleteInviteModal(true);
   };
 
-  const handleCloseDeleteRequestModal = () => {
-    setOpenDeleteRequestModal(false);
+  const handleCloseDeleteInviteModal = () => {
+    setOpenDeleteInviteModal(false);
     setSelectedActionId(null);
   };
 
-  const handleDeleteRequest = () => {
+
+  const handleDeleteInvite = () => {
     if (selectedActionId !== null) {
-      // dispatch(deleteMyRequest(selectedActionId));
+      dispatch(deleteInvite(selectedActionId));
     }
-    handleCloseDeleteRequestModal();
+    handleCloseDeleteInviteModal();
   };
 
   return (
@@ -70,10 +73,10 @@ const MyRequestsPage: React.FC = () => {
         <Grid container direction="column" alignItems="center">
           <Grid item xs={12}>
             <Typography variant="h5" gutterBottom>
-              My Requests
+              Company Invites
             </Typography>
             <Typography variant="h6">
-              Profile: "{user?.username}"
+              Company: "{company?.name}"
             </Typography>
           </Grid>
         </Grid>
@@ -94,19 +97,19 @@ const MyRequestsPage: React.FC = () => {
                 </TableRow>
               </TableHead>
               <TableBody className={styles.tableHead}>
-                {myRequests.map((invite: memberType) => (
+                {companyInvites.map((invite: memberType) => (
                   <TableRow key={invite.id} className={styles.tableRow}>
                     <TableCell sx={{padding: "3px"}} align="center">
                       {invite.user_username}
                     </TableCell>
-                    <TableCell align="center">
+                    <TableCell sx={{padding: "3px"}} align="center">
                       <Button
-                        onClick={() => handleOpenDeleteRequestModal(invite.id)}
+                        onClick={() => handleOpenDeleteInviteModal(invite.id)}
                         variant="outlined"
                         color="error"
                         sx={{marginRight: 1}}
                       >
-                        Delete Request
+                        Delete
                       </Button>
                     </TableCell>
                   </TableRow>
@@ -116,23 +119,23 @@ const MyRequestsPage: React.FC = () => {
           </TableContainer>
         </Paper>
 
-        {/* Delete Request Modal */}
+        {/* Delete Invite Modal */}
         <Modal
-          open={openDeleteRequestModal}
-          onClose={handleCloseDeleteRequestModal}
+          open={openDeleteInviteModal}
+          onClose={handleCloseDeleteInviteModal}
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
         >
           <Box sx={style}>
             <div className={styles.close}>
-              <HighlightOffIcon onClick={handleCloseDeleteRequestModal} color={"error"}/>
+              <HighlightOffIcon onClick={handleCloseDeleteInviteModal} color={"error"}/>
             </div>
             <Typography id="modal-modal-title" variant="h6" component="h2">
-              <Text className={styles.title_decline}>Delete Request</Text>
-              <Text>Are you sure you want to delete this request?</Text>
+              <Text className={styles.title_decline}>Delete Invite</Text>
+              <Text>Are you sure you want to decline this invite?</Text>
             </Typography>
             <StyledBox>
-              <Button onClick={handleDeleteRequest} type="button">
+              <Button onClick={handleDeleteInvite} type="button">
                 <DoneIcon sx={{fontSize: 40, color: "red"}}/>
               </Button>
             </StyledBox>
@@ -145,4 +148,4 @@ const MyRequestsPage: React.FC = () => {
   );
 };
 
-export default MyRequestsPage;
+export default CompanyInvitesPage;

@@ -6,7 +6,7 @@ import {
   getMyInvites,
   getMyRequests,
   acceptInviteApi,
-  declineInviteApi
+  declineInviteApi, getCompanyInvites, getCompanyRequests, deleteInviteApi
 } from "../../api/api_actions";
 import {sendInviteType} from "../../types/actionsTypes";
 
@@ -47,11 +47,47 @@ export const fetchMyRequests = createAsyncThunk(
   }
 );
 
+export const fetchCompanyInvites = createAsyncThunk(
+  "actions/fetchCompanyInvites",
+  async (companyId: string, thunkAPI) => {
+    try {
+      const response = await getCompanyInvites(companyId, thunkAPI)
+      return response.data;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+export const fetchCompanyRequests = createAsyncThunk(
+  "actions/fetchCompanyRequests",
+  async (companyId: string, thunkAPI) => {
+    try {
+      const response = await getCompanyRequests(companyId, thunkAPI)
+      return response.data;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
 export const createInvite = createAsyncThunk(
   "actions/createInvite",
   async (sendInviteData: sendInviteType, thunkAPI) => {
     try {
       const response = await sendInvite(sendInviteData, thunkAPI);
+      return response.data;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+export const deleteInvite = createAsyncThunk(
+  "actions/deleteInvite",
+  async (actionId: string, thunkAPI) => {
+    try {
+      const response = await deleteInviteApi(actionId, thunkAPI)
       return response.data;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.message);
@@ -83,19 +119,6 @@ export const declineInvite = createAsyncThunk(
   }
 );
 
-//
-// export const updateCompany = createAsyncThunk(
-//   "actions/updateCompany",
-//   async (companyData: CompanyUpdateType, thunkAPI) => {
-//     try {
-//       const response = await editCompany(companyData, thunkAPI)
-//       return response.data;
-//     } catch (error: any) {
-//       return thunkAPI.rejectWithValue(error.message);
-//     }
-//   }
-// );
-
 export const deleteMember = createAsyncThunk(
   "actions/deleteMember",
   async (actionId: string, thunkAPI) => {
@@ -107,3 +130,4 @@ export const deleteMember = createAsyncThunk(
     }
   }
 );
+

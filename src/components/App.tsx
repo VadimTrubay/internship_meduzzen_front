@@ -22,6 +22,8 @@ import {useAuth0} from "@auth0/auth0-react";
 import {RouterEndpoints} from "../config/routes";
 import MyInvitesPage from "../pages/MyInvitesPage/MyInvitesPage";
 import MyRequestsPage from "../pages/MyRequestsPage/MyRequestsPage";
+import CompanyInvitesPage from "../pages/CompanyInvitesPage/CompanyInvitesPage";
+import CompanyRequestsPage from "../pages/CompanyRequestsPage/CompanyRequestsPage";
 
 
 const HomePage = lazy(() => import("../pages/HomePage/HomePage"));
@@ -35,8 +37,6 @@ const App: React.FC = () => {
   const {isAuthenticated} = useAuth0()
   const loading = useSelector(selectLoading);
 
-  useEffect(() => {
-  }, [isAuthenticated, isLoggedIn]);
 
   useEffect(() => {
     dispatch(getMe());
@@ -94,14 +94,14 @@ const App: React.FC = () => {
               path={`${RouterEndpoints.myRequests}`}
               element={<PrivateRoute redirectTo={RouterEndpoints.login} component={<MyRequestsPage/>}/>}
             />
-            {/*<Route*/}
-            {/*  path={`${RouterEndpoints.invitesCompany}`}*/}
-            {/*  element={<PrivateRoute redirectTo={RouterEndpoints.login} component={<CompanyInvitesPage/>}/>}*/}
-            {/*/>*/}
-            {/*<Route*/}
-            {/*  path={`${RouterEndpoints.requestsCompany}`}*/}
-            {/*  element={<PrivateRoute redirectTo={RouterEndpoints.login} component={<CompanyRequestsPage/>}/>}*/}
-            {/*/>*/}
+            <Route
+              path={`${RouterEndpoints.companyInvites}`}
+              element={<PrivateRoute redirectTo={RouterEndpoints.login} component={<CompanyInvitesPage/>}/>}
+            />
+            <Route
+              path={`${RouterEndpoints.companyRequests}`}
+              element={<PrivateRoute redirectTo={RouterEndpoints.login} component={<CompanyRequestsPage/>}/>}
+            />
             <Route path={RouterEndpoints.terms} element={<TermsPage/>}/>
             <Route path={RouterEndpoints.notFound} element={<NotFoundPage/>}/>
           </Routes>

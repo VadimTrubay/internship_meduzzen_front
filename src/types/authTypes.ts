@@ -24,6 +24,7 @@ export interface authUserType {
 }
 
 export interface UsernameUpdateType {
+  id: string;
   username: string;
 }
 

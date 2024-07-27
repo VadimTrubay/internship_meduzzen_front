@@ -14,9 +14,11 @@ const User: React.FC<UserProps> = ({user}) => {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
 
-  const handleGetUser = (id: string) => {
-    dispatch(fetchUserById(id));
-    navigate(mainUrls.users.byId(id));
+  const handleGetUser = (userid: string) => {
+    if (userid) {
+      dispatch(fetchUserById(userid));
+      navigate(mainUrls.users.byId(userid));
+    }
   };
 
   return (

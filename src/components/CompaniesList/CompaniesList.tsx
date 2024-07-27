@@ -44,8 +44,10 @@ const CompaniesList: React.FC<CompaniesListProps> = ({companies}) => {
     setSkip(page);
   };
 
-  const handleGetCompany = (id: string) => {
-    dispatch(fetchCompanyById(id));
+  const handleGetCompany = (companyid: string) => {
+    if (companyid) {
+      dispatch(fetchCompanyById(companyid));
+    }
   };
 
   useEffect(() => {

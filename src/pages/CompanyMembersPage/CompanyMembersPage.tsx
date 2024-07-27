@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {
   Box, Button,
   Grid,
@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
 import {memberType} from "../../types/actionsTypes";
-import {selectMembers, selectLoading} from "../../redux/actions/selectors";
+import {selectMembers, selectLoading, selectError} from "../../redux/actions/selectors";
 import Paper from "@mui/material/Paper";
 import styles from "./CompanyMembersPage.module.css";
 import Avatar from "@mui/material/Avatar";
@@ -25,8 +25,8 @@ import {selectUsers} from "../../redux/users/selectors";
 import {selectCompanyById} from "../../redux/companies/selectors";
 import {UserType} from "../../types/usersTypes";
 import {CompanyType} from "../../types/companiesTypes";
-import {Toaster} from "react-hot-toast";
-
+import toast, {Toaster} from "react-hot-toast";
+import {fetchUsers} from "../../redux/users/operations";
 
 const columns = [
   {id: "avatar", label: "Avatar", minWidth: 50},
@@ -43,6 +43,14 @@ const CompanyMembersPage: React.FC = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const company = useSelector(selectCompanyById) as CompanyType;
   const loading = useSelector<boolean>(selectLoading);
+  const skip = 1;
+  const limit = 100;
+  const error = useSelector<boolean>(selectError);
+
+
+  useEffect(() => {
+    dispatch(fetchUsers({skip, limit}));
+  }, [dispatch]);
 
   const handleOpenDeleteModal = (member: memberType) => {
     setCurrentMember(member);
@@ -89,7 +97,7 @@ const CompanyMembersPage: React.FC = () => {
               Company Members
             </Typography>
             <Typography variant="h6">
-              "{company?.name}"
+              Company: "{company?.name}"
             </Typography>
           </Grid>
           <Box className={styles.inviteMemberButton}>

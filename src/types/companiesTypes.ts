@@ -15,8 +15,8 @@ export interface CompanyType {
 }
 
 export interface FetchCompaniesParams {
-  skip: number | null;
-  limit: number | null;
+  skip: number;
+  limit: number;
 }
 
 export interface CompanyUpdateType {

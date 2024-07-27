@@ -19,22 +19,23 @@ export const mainUrls = {
   },
   users: {
     submit: users,
-    all: (skip: number | null, limit: number | null) => `${users}?skip=${skip}&limit=${limit}`,
+    all: (skip: number, limit: number) => `${users}?skip=${skip}&limit=${limit}`,
     byId: (id: string) => `${users}/${id}`,
   },
   companies: {
     submit: companies,
-    all: (skip: number | null, limit: number | null) => `${companies}?skip=${skip}&limit=${limit}`,
+    all: (skip: number, limit: number) => `${companies}?skip=${skip}&limit=${limit}`,
     byId: (id: string) => `${companies}/${id}`,
   },
   actions: {
     membersCompany: (companyId: string) => `${actions}/company/members?company_id=${companyId}`,
-    invitesCompany: (companyId: string) => `${actions}/company/invites?company_id=${companyId}`,
-    requestsCompany: (companyId: string) => `${actions}/company/requests?company_id=${companyId}`,
+    companyInvites: (companyId: string) => `${actions}/company/invites?company_id=${companyId}`,
+    companyRequests: (companyId: string) => `${actions}/company/requests?company_id=${companyId}`,
     myInvites: `${actions}/my/invites`,
     myRequests: `${actions}/my/requests`,
     kick: (actionId: string) => `${actions}/kick?action_id=${actionId}`,
     sendInvite: `${actions}/invite`,
+    deleteInvite: (actionId: string) =>  `${actions}/invite?action_id=${actionId}`,
     acceptInvite: (actionId: string) => `${actions}/invite/accept?action_id=${actionId}`,
     declineInvite: (actionId: string) => `${actions}/invite/decline?action_id=${actionId}`,
   }

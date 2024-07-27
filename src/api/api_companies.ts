@@ -14,7 +14,7 @@ export const submitCompany = async (companyData: CompanyAddType, thunkAPI: Async
   return await axiosInstance.post(mainUrls.companies.submit, companyData);
 };
 
-export const getCompanies = async (skip: number | null, limit: number | null): Promise<AxiosResponse> => {
+export const getCompanies = async (skip: number, limit: number): Promise<AxiosResponse> => {
   return await axios.get(mainUrls.companies.all(skip, limit));
 };
 

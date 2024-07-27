@@ -5,7 +5,7 @@ import {PasswordUpdateBackType, UsernameUpdateType} from "../types/authTypes";
 import {mainUrls} from "../config/urls";
 
 
-export const getUsers = async (skip: number | null, limit: number | null): Promise<AxiosResponse> => {
+export const getUsers = async (skip: number, limit: number): Promise<AxiosResponse> => {
   return await axios.get(mainUrls.users.all(skip, limit));
 };
 

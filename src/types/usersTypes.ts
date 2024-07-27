@@ -17,8 +17,8 @@ export interface UserType {
 }
 
 export interface FetchUsersParams {
-  skip: number | null;
-  limit: number | null;
+  skip: number;
+  limit: number;
 }
 
 export interface UserProps {
