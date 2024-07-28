@@ -1,21 +1,26 @@
 import React, {useEffect, useState} from "react";
 import {
-  Box, Button,
+  Box,
+  Button,
   Grid,
-  LinearProgress, Menu, MenuItem, Modal,
-  Table, TableBody,
+  LinearProgress,
+  Menu,
+  MenuItem,
+  Modal,
+  Table,
+  TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
-  Typography
+  Typography,
+  Paper,
+  Avatar,
 } from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
 import {memberType} from "../../types/actionsTypes";
 import {selectMembers, selectLoading, selectError} from "../../redux/actions/selectors";
-import Paper from "@mui/material/Paper";
 import styles from "./CompanyMembersPage.module.css";
-import Avatar from "@mui/material/Avatar";
 import {style, StyledBox, Text} from "../../utils/BaseModal.styled";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import DoneIcon from "@mui/icons-material/Done";
@@ -50,7 +55,6 @@ const CompanyMembersPage: React.FC = () => {
   const limit = 100;
   const error = useSelector<boolean>(selectError);
 
-
   useEffect(() => {
     dispatch(fetchUsers({skip, limit}));
   }, [dispatch]);
@@ -67,15 +71,15 @@ const CompanyMembersPage: React.FC = () => {
 
   const handleDeleteMember = () => {
     if (error) {
-      toast.error(`Error deleting`)
+      toast.error(`Error deleting`);
     } else if (currentMember) {
-      dispatch(deleteMember(currentMember?.id));
-      toast.error(`Member deleted successfully`)
+      dispatch(deleteMember(currentMember.id));
+      toast.success(`Member deleted successfully`);
     }
     handleCloseDeleteModal();
   };
 
-    const handleOpenLeaveModal = (member: memberType) => {
+  const handleOpenLeaveModal = (member: memberType) => {
     setCurrentMember(member);
     setOpenLeaveModal(true);
   };
@@ -87,10 +91,10 @@ const CompanyMembersPage: React.FC = () => {
 
   const handleLeave = () => {
     if (error) {
-      toast.error(`Error leaving from company`)
+      toast.error(`Error leaving from company`);
     } else if (currentMember) {
-      dispatch(leaveFromCompany(currentMember?.id));
-      toast.error(`Member leaved successfully`)
+      dispatch(leaveFromCompany(currentMember.id));
+      toast.success(`Member left successfully`);
     }
     handleCloseLeaveModal();
   };
@@ -105,163 +109,152 @@ const CompanyMembersPage: React.FC = () => {
 
   const handleInviteUser = (userId: string) => {
     if (error) {
-      toast.error(`User already invited`)
+      toast.error(`User already invited`);
     } else if (userId && company) {
       dispatch(createInvite({user_id: userId, company_id: company.id}));
-      toast.success(`Invited created successfully`)
+      toast.success(`Invite created successfully`);
     }
-
     handleCloseMenu();
   };
 
-  return (
-    loading ? (
-      <Box>
-        <LinearProgress/>
-      </Box>
-    ) : (
-      <>
-        <Grid container direction="column" alignItems="center">
-          <Grid item xs={12}>
-            <Typography variant="h5" gutterBottom>
-              Company Members
-            </Typography>
-            <Typography variant="h6">
-              Company: "{company?.name}"
-            </Typography>
-          </Grid>
-          {currentUser?.id === company?.owner_id &&
-            <Box className={styles.inviteMemberButton}>
-              <Button
-                variant="outlined"
-                onClick={handleOpenMenu}
-                color="success"
-              >
-                + Invite member
-              </Button>
-              <Menu
-                anchorEl={anchorEl}
-                open={Boolean(anchorEl)}
-                onClose={handleCloseMenu}
-              >
-                {users?.map((user: UserType) => (
-                    <MenuItem
-                      key={user?.id}
-                      onClick={() => handleInviteUser(user?.id)}
-                    >
-                      {user?.username}
-                    </MenuItem>
-                  ))}
-              </Menu>
-            </Box>
-          }
+  return loading ? (
+    <Box>
+      <LinearProgress/>
+    </Box>
+  ) : (
+    <>
+      <Grid container direction="column" alignItems="center">
+        <Grid item xs={12}>
+          <Typography variant="h5" gutterBottom>
+            Company Members
+          </Typography>
+          <Typography variant="h6">Company: "{company?.name}"</Typography>
         </Grid>
-        <Paper>
-          <TableContainer className={styles.table}>
-            <Table stickyHeader aria-label="sticky table">
-              <TableHead>
-                <TableRow>
-                  {columns.map((column) => (
-                    <TableCell sx={{backgroundColor: "#a4a4a4"}}
-                               key={column.id}
-                               align={"center"}
-                               style={{minWidth: column.minWidth}}
-                    >
-                      {column.label}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              </TableHead>
-              <TableBody className={styles.tableHead}>
-                {members.map((member: memberType) => (
-                  <TableRow key={member.id} className={styles.tableRow}>
-                    <TableCell component="th" scope="row" sx={{padding: "3px"}}>
-                      <Avatar className={styles.avatar}/>
-                    </TableCell>
-                    <TableCell align="center">
-                      {member.user_username}
-                    </TableCell>
-                    <TableCell sx={{padding: "3px"}} align="center">
-                      {currentUser?.id === company?.owner_id ?
-                        <Button
-                          onClick={() => handleOpenDeleteModal(member)}
-                          variant="outlined"
-                          color="error"
-                          sx={{marginRight: 1}}
-                        >
-                          Delete member
-                        </Button>
-                        :
-                        <Button
-                          onClick={() => handleOpenLeaveModal(member)}
-                          variant="outlined"
-                          color="error"
-                          sx={{marginRight: 1}}
-                        >
-                          Leave From Company
-                        </Button>
-                      }
-                    </TableCell>
-                  </TableRow>
+        {currentUser?.id === company?.owner_id && (
+          <Box className={styles.inviteMemberButton}>
+            <Button variant="outlined" onClick={handleOpenMenu} color="success">
+              + Invite member
+            </Button>
+            <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleCloseMenu}>
+              {users?.map((user: UserType) => (
+                <MenuItem key={user?.id} onClick={() => handleInviteUser(user?.id)}>
+                  {user?.username}
+                </MenuItem>
+              ))}
+            </Menu>
+          </Box>
+        )}
+      </Grid>
+      <Paper>
+        <TableContainer className={styles.table}>
+          <Table stickyHeader aria-label="sticky table">
+            <TableHead>
+              <TableRow>
+                {columns.map((column) => (
+                  <TableCell
+                    sx={{backgroundColor: "#a4a4a4"}}
+                    key={column.id}
+                    align={"center"}
+                    style={{minWidth: column.minWidth}}
+                  >
+                    {column.label}
+                  </TableCell>
                 ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Paper>
+              </TableRow>
+            </TableHead>
+            <TableBody className={styles.tableHead}>
+              {members.map((member: memberType) => (
+                <TableRow key={member.id} className={styles.tableRow}>
+                  <TableCell component="th" scope="row" sx={{padding: "3px"}}>
+                    <Avatar className={styles.avatar}/>
+                  </TableCell>
+                  <TableCell align="center">{member.user_username}</TableCell>
+                  <TableCell sx={{padding: "3px"}} align="center">
+                    {currentUser?.id === company?.owner_id ? (
+                      <Button
+                        onClick={() => handleOpenDeleteModal(member)}
+                        variant="outlined"
+                        color="error"
+                        sx={{marginRight: 1}}
+                      >
+                        Delete member
+                      </Button>
+                    ) : currentUser?.id === member?.user_id ? (
+                      <Button
+                        onClick={() => handleOpenLeaveModal(member)}
+                        variant="outlined"
+                        color="error"
+                        sx={{marginRight: 1}}
+                      >
+                        Leave From Company
+                      </Button>
+                    ) : null}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Paper>
 
-        {/*Delete modal*/}
-        <Modal
-          open={openDeleteModal}
-          onClose={handleCloseDeleteModal}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-        >
-          <Box sx={style}>
-            <div className={styles.close}>
-              <HighlightOffIcon onClick={handleCloseDeleteModal} color={"error"}/>
-            </div>
-            <Typography id="modal-modal-title" variant="h6" component="h2">
-              <Text className={styles.title_delete}>Delete member</Text>
-              <Text>Are you sure you want to delete this member?</Text>
-            </Typography>
-            <StyledBox component="form" onSubmit={(e) => {
+      {/* Delete modal */}
+      <Modal
+        open={openDeleteModal}
+        onClose={handleCloseDeleteModal}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <div className={styles.close}>
+            <HighlightOffIcon onClick={handleCloseDeleteModal} color={"error"}/>
+          </div>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            <Text className={styles.title_delete}>Delete member</Text>
+            <Text>Are you sure you want to delete this member?</Text>
+          </Typography>
+          <StyledBox
+            component="form"
+            onSubmit={(e) => {
               e.preventDefault();
               handleDeleteMember();
-            }}>
-              <Button type="submit">
-                <DoneIcon sx={{fontSize: 40, color: "red"}}/>
-              </Button>
-            </StyledBox>
-          </Box>
-        </Modal>
+            }}
+          >
+            <Button type="submit">
+              <DoneIcon sx={{fontSize: 40, color: "red"}}/>
+            </Button>
+          </StyledBox>
+        </Box>
+      </Modal>
 
-        {/*Leave modal*/}
-        <Modal
-          open={openLeaveModal}
-          onClose={handleCloseLeaveModal}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-        >
-          <Box sx={style}>
-            <div className={styles.close}>
-              <HighlightOffIcon onClick={handleCloseLeaveModal} color={"error"}/>
-            </div>
-            <Typography id="modal-modal-title" variant="h6" component="h2">
-              <Text className={styles.title_delete}>Leave from company</Text>
-              <Text>Are you sure you want to leave from this company?</Text>
-            </Typography>
-            <StyledBox component="form" onSubmit={(e) => {
+      {/* Leave modal */}
+      <Modal
+        open={openLeaveModal}
+        onClose={handleCloseLeaveModal}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <div className={styles.close}>
+            <HighlightOffIcon onClick={handleCloseLeaveModal} color={"error"}/>
+          </div>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            <Text className={styles.title_delete}>Leave from company</Text>
+            <Text>Are you sure you want to leave from this company?</Text>
+          </Typography>
+          <StyledBox
+            component="form"
+            onSubmit={(e) => {
               e.preventDefault();
               handleLeave();
-            }}>
-              <Button type="submit">
-                <DoneIcon sx={{fontSize: 40, color: "red"}}/>
-              </Button>
-            </StyledBox>
-          </Box>
-        </Modal>
-      </>
-    )
+            }}
+          >
+            <Button type="submit">
+              <DoneIcon sx={{fontSize: 40, color: "red"}}/>
+            </Button>
+          </StyledBox>
+        </Box>
+      </Modal>
+    </>
   );
 };
 

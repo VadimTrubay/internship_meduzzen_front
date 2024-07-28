@@ -67,7 +67,7 @@ const CompanyProfilePage: React.FC = () => {
     } else if (company) {
       dispatch(deleteCompanyById(company?.id));
       navigate(companies);
-      toast.error(`Company deleted`)
+      toast.success(`Company deleted successfully`)
     }
     handleCloseDeleteModal();
   };

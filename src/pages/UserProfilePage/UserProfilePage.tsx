@@ -85,7 +85,7 @@ const UserProfilePage: React.FC = () => {
       dispatch(deleteUser(user.id));
       dispatch(logOut());
       navigate(RouterEndpoints.login);
-      toast.error(`User deleted successfully`)
+      toast.success(`User deleted successfully`)
     }
     handleCloseDeleteModal();
   };

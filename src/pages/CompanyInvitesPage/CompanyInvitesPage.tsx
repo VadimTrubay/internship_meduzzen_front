@@ -59,7 +59,7 @@ const CompanyInvitesPage: React.FC = () => {
     } else if (selectedActionId !== null) {
       dispatch(deleteInvite(selectedActionId));
       dispatch(fetchCompanyInvites(company.id));
-      toast.error(`Invite deleted successfully`)
+      toast.success(`Invite deleted successfully`)
     }
     handleCloseDeleteInviteModal();
   };

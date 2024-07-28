@@ -59,7 +59,7 @@ const MyRequestsPage: React.FC = () => {
       toast.error(`Error deleting`)
     } else if (selectedActionId !== null) {
       dispatch(deleteRequest(selectedActionId));
-      toast.error(`Request deleted successfully`)
+      toast.success(`Request deleted successfully`)
     }
     handleCloseDeleteRequestModal();
   };
