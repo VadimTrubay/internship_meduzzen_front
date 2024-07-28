@@ -144,8 +144,7 @@ const CompanyMembersPage: React.FC = () => {
                 open={Boolean(anchorEl)}
                 onClose={handleCloseMenu}
               >
-                {users?.filter((user: UserType) => user?.id !== company?.owner_id)
-                  .map((user: UserType) => (
+                {users?.map((user: UserType) => (
                     <MenuItem
                       key={user?.id}
                       onClick={() => handleInviteUser(user?.id)}

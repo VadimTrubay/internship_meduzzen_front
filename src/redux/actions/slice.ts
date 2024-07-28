@@ -131,7 +131,7 @@ const handleDeclineInviteFulfilled = (
 ) => {
   state.loading = false;
   state.error = null;
-  state.myInvites = state.myInvites.filter((invite) => invite.id !== action.payload.id);
+  state.companyRequests = state.companyRequests.filter((invite) => invite.id !== action.payload.id);
 };
 
 const handleAcceptRequestFulfilled = (
@@ -140,7 +140,7 @@ const handleAcceptRequestFulfilled = (
 ) => {
   state.loading = false;
   state.error = null;
-  state.myRequests = state.myRequests.filter((request) => request.id !== action.payload.id);
+  state.companyRequests = state.companyRequests.filter((request) => request.id !== action.payload.id);
 };
 
 const handleDeclineRequestFulfilled = (
