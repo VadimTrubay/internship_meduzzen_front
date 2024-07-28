@@ -8,7 +8,6 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DoneIcon from "@mui/icons-material/Done";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
-import {Toaster} from "react-hot-toast";
 import {AppDispatch} from "../../redux/store";
 import {deleteUser, updatePassword, updateUsername} from "../../redux/users/operations";
 import {getMe, logOut} from "../../redux/auth/operations";
@@ -17,19 +16,22 @@ import {validationSchemaUpdatePassword} from "../../validate/validationSchemaUpd
 import {initialValueUpdatePassword, initialValueUpdateUsername} from "../../initialValues/initialValues";
 import {style, StyledBox, Text} from "../../utils/BaseModal.styled";
 import {selectUserById} from "../../redux/users/selectors";
-import {selectUser} from "../../redux/auth/selectors";
+import {selectError, selectUser} from "../../redux/auth/selectors";
 import {useNavigate} from "react-router-dom";
 import {mainUrls} from "../../config/urls";
+import toast from "react-hot-toast";
+import {RouterEndpoints} from "../../config/routes";
 
 
-const UserProfilePage = () => {
+const UserProfilePage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const navigate = useNavigate();
   const currentUser = useSelector(selectUser);
-  const user = useSelector(selectUserById);
+  const navigate = useNavigate();
   const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
   const [openEditUsernameModal, setOpenEditUsernameModal] = useState<boolean>(false);
   const [openEditPasswordModal, setOpenEditPasswordModal] = useState<boolean>(false);
+  const user = useSelector(selectUser);
+  const error = useSelector<string>(selectError);
 
 
   const handleOpenEditUsernameModal = () => setOpenEditUsernameModal(true);
@@ -52,9 +54,11 @@ const UserProfilePage = () => {
     initialValues: initialValueUpdateUsername,
     validationSchema: validationSchemaUpdateUsername,
     onSubmit: (values) => {
-      if (formikEditUsername.isValid) {
-        dispatch(updateUsername(values))
-        dispatch(getMe())
+      if (error) {
+        toast.error(`Error editing`)
+      } else if (formikEditUsername.isValid) {
+        dispatch(updateUsername(values));
+        toast.success(`User edited successfully`)
       }
       handleCloseEditUsernameModal();
     },
@@ -64,17 +68,25 @@ const UserProfilePage = () => {
     initialValues: initialValueUpdatePassword,
     validationSchema: validationSchemaUpdatePassword,
     onSubmit: (values) => {
-      if (formikEditPassword.isValid) {
-        dispatch(updatePassword({id: user.id, password: values.password, new_password: values.new_password}))
-        dispatch(getMe())
+      if (error) {
+        toast.error(`Error editing`)
+      } else if (formikEditPassword.isValid) {
+        dispatch(updatePassword(values));
+        toast.success(`User edited successfully`)
       }
       handleCloseEditPasswordModal();
     },
   });
 
-  const handleDeleteContact = () => {
-    dispatch(deleteUser(user.id));
-    dispatch(logOut());
+  const handleDeleteUser = () => {
+    if (error) {
+      toast.error(`Error deleting`)
+    } else if (user.id) {
+      dispatch(deleteUser(user.id));
+      dispatch(logOut());
+      navigate(RouterEndpoints.login);
+      toast.error(`User deleted successfully`)
+    }
     handleCloseDeleteModal();
   };
 
@@ -291,15 +303,13 @@ const UserProfilePage = () => {
             <Text>Are you sure you want to delete this profile?</Text>
             <Text>&apos;{user?.username}&apos;</Text>
           </Typography>
-          <StyledBox component="form" onSubmit={handleDeleteContact}>
+          <StyledBox component="form" onSubmit={handleDeleteUser}>
             <Button type="submit">
               <DoneIcon sx={{fontSize: 40, color: "red"}}/>
             </Button>
           </StyledBox>
         </Box>
       </Modal>
-
-      <Toaster position="top-center"/>
     </>
   );
 };

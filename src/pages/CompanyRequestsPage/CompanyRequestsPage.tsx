@@ -25,7 +25,7 @@ import {selectUsers} from "../../redux/users/selectors";
 import {selectCompanyById} from "../../redux/companies/selectors";
 import {UserType} from "../../types/usersTypes";
 import {CompanyType} from "../../types/companiesTypes";
-import toast, {Toaster} from "react-hot-toast";
+import toast from "react-hot-toast";
 import {fetchUsers} from "../../redux/users/operations";
 
 // const columns = [
@@ -191,8 +191,6 @@ const CompanyRequestsPage: React.FC = () => {
     //         </StyledBox>
     //       </Box>
     //     </Modal>
-    //
-    //     <Toaster position="top-center"/>
     //   </>
     // )
   );

@@ -1,11 +1,10 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import toast from "react-hot-toast";
 import {initialActionsType, memberType} from "../../types/actionsTypes";
 import {
   acceptInvite,
-  createInvite,
+  createInvite, createRequest,
   declineInvite, deleteInvite,
-  deleteMember, fetchCompanyInvites, fetchCompanyRequests,
+  deleteMember, deleteRequest, fetchCompanyInvites, fetchCompanyRequests,
   fetchMembers,
   fetchMyInvites,
   fetchMyRequests
@@ -39,7 +38,6 @@ const handleSendInviteFulfilled = (
 ) => {
   state.loading = false;
   state.error = null;
-  toast.success(`Invite sent successfully`);
 };
 
 const handleDeleteInviteFulfilled = (
@@ -49,7 +47,22 @@ const handleDeleteInviteFulfilled = (
   state.loading = false;
   state.error = null;
   state.companyInvites = state.myInvites.filter((invite) => invite.id !== action.payload.id);
-  toast.success(`Invite deleted successfully`);
+};
+
+const handleSendRequestFulfilled = (
+  state: initialActionsType,
+) => {
+  state.loading = false;
+  state.error = null;
+};
+
+const handleDeleteRequestFulfilled = (
+  state: initialActionsType,
+  action: PayloadAction<any>
+) => {
+  state.loading = false;
+  state.error = null;
+  state.companyRequests = state.myRequests.filter((request) => request.id !== action.payload.id);
 };
 
 const handleFetchMembersFulfilled = (
@@ -104,7 +117,6 @@ const handleAcceptInviteFulfilled = (
   state.loading = false;
   state.error = null;
   state.myInvites = state.myInvites.filter((invite) => invite.id !== action.payload.id);
-  toast.success(`Invite accepted successfully`);
 };
 
 const handleDeclineInviteFulfilled = (
@@ -114,7 +126,6 @@ const handleDeclineInviteFulfilled = (
   state.loading = false;
   state.error = null;
   state.myInvites = state.myInvites.filter((invite) => invite.id !== action.payload.id);
-  toast.error(`Invite decline successfully`);
 };
 
 const handleDeleteMemberFulfilled = (
@@ -124,7 +135,6 @@ const handleDeleteMemberFulfilled = (
   state.loading = false;
   state.error = null;
   state.members = state.members.filter((member) => member.id !== action.payload.id);
-  toast.error(`Member deleted successfully`);
 };
 
 const actionsSlice = createSlice({
@@ -139,6 +149,12 @@ const actionsSlice = createSlice({
       .addCase(deleteInvite.pending, handlePending)
       .addCase(deleteInvite.fulfilled, handleDeleteInviteFulfilled)
       .addCase(deleteInvite.rejected, handleRejected)
+      .addCase(createRequest.pending, handlePending)
+      .addCase(createRequest.fulfilled, handleSendRequestFulfilled)
+      .addCase(createRequest.rejected, handleRejected)
+      .addCase(deleteRequest.pending, handlePending)
+      .addCase(deleteRequest.fulfilled, handleDeleteRequestFulfilled)
+      .addCase(deleteRequest.rejected, handleRejected)
       .addCase(fetchMembers.pending, handlePending)
       .addCase(fetchMembers.fulfilled, handleFetchMembersFulfilled)
       .addCase(fetchMembers.rejected, handleRejected)

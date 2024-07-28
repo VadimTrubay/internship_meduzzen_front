@@ -25,7 +25,7 @@ import {selectUsers} from "../../redux/users/selectors";
 import {selectCompanyById} from "../../redux/companies/selectors";
 import {UserType} from "../../types/usersTypes";
 import {CompanyType} from "../../types/companiesTypes";
-import toast, {Toaster} from "react-hot-toast";
+import toast from "react-hot-toast";
 import {fetchUsers} from "../../redux/users/operations";
 
 const columns = [
@@ -63,10 +63,13 @@ const CompanyMembersPage: React.FC = () => {
   };
 
   const handleDeleteMember = () => {
-    if (currentMember) {
+    if (error) {
+      toast.error(`Error deleting`)
+    } else if (currentMember) {
       dispatch(deleteMember(currentMember?.id));
-      handleCloseDeleteModal();
+      toast.error(`Member deleted successfully`)
     }
+    handleCloseDeleteModal();
   };
 
   const handleOpenMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -78,9 +81,13 @@ const CompanyMembersPage: React.FC = () => {
   };
 
   const handleInviteUser = (userId: string) => {
-    if (userId && company) {
+    if (error) {
+      toast.error(`User already invited`)
+    } else if (userId && company) {
       dispatch(createInvite({user_id: userId, company_id: company.id}));
+      toast.success(`Invited created successfully`)
     }
+
     handleCloseMenu();
   };
 
@@ -191,8 +198,6 @@ const CompanyMembersPage: React.FC = () => {
             </StyledBox>
           </Box>
         </Modal>
-
-        <Toaster position="top-center"/>
       </>
     )
   );

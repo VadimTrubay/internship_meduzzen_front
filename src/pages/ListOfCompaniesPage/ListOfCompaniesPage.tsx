@@ -8,22 +8,23 @@ import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import DoneIcon from "@mui/icons-material/Done";
 import {useFormik} from "formik";
 import {validationSchemaAddCompany} from "../../validate/validationSchemaAddCompany";
-import {Toaster} from "react-hot-toast";
+import toast from "react-hot-toast";
 import {style, StyledBox, Text} from "../../utils/BaseModal.styled";
 import {addCompany} from "../../redux/companies/operations";
 import {initialValues} from "../../initialValues/initialValues";
 import styles from "./ListOfCompaniesPage.module.css";
 import {selectUser} from "../../redux/auth/selectors";
-import {selectCompanies} from "../../redux/companies/selectors";
+import {selectCompanies, selectError} from "../../redux/companies/selectors";
 import {CompaniesListProps} from "../../types/companiesTypes";
 import {UserType} from "../../types/usersTypes";
 
 const ListOfCompaniesPage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const [openAddCompanyModal, setOpenAddCompanyModal] = useState<boolean>(false);
-  const [showMyCompanies, setShowMyCompanies] = useState<boolean>(false);
   const user = useSelector(selectUser) as UserType;
   const {companies} = useSelector(selectCompanies) as CompaniesListProps[];
+  const error = useSelector<string>(selectError);
+  const [showOption, setShowOption] = useState<number>(0);
 
   const handleOpenAddCompanyModal = () => {
     setOpenAddCompanyModal(true);
@@ -39,8 +40,11 @@ const ListOfCompaniesPage: React.FC = () => {
     initialValues: initialValues,
     validationSchema: validationSchemaAddCompany,
     onSubmit: (values) => {
-      if (formikAddCompany.isValid) {
+      if (error) {
+        toast.error(`Error adding`);
+      } else if (formikAddCompany.isValid) {
         dispatch(addCompany(values));
+        toast.success(`Company added successfully`);
       }
       handleCloseAddCompanyModal();
     },
@@ -51,9 +55,22 @@ const ListOfCompaniesPage: React.FC = () => {
     formikAddCompany.resetForm();
   };
 
-  const filteredCompanies = showMyCompanies
-    ? companies.filter(company => company.owner_id === user.id)
-    : companies;
+  const handleCheckboxChange = (option: number) => {
+    setShowOption(option);
+  };
+
+  const filteredCompanies = (() => {
+    switch (showOption) {
+      case 0:
+        return companies;
+      case 1:
+        return companies.filter(company => company.owner_id === user.id);
+      case 2:
+        return companies.filter(company => company.owner_id !== user.id);
+      default:
+        return companies;
+    }
+  })();
 
   return (
     <>
@@ -69,15 +86,33 @@ const ListOfCompaniesPage: React.FC = () => {
           + Add Company
         </Button>
       </Box>
-      <Box className={styles.filterMyCompanies}>
+      <Box className={styles.filterCompanies}>
         <FormControlLabel
           control={
             <Checkbox
-              checked={showMyCompanies}
-              onChange={() => setShowMyCompanies(!showMyCompanies)}
+              checked={showOption === 0}
+              onChange={() => handleCheckboxChange(0)}
             />
           }
-          label="Show Only My Companies"
+          label="All"
+        />
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={showOption === 1}
+              onChange={() => handleCheckboxChange(1)}
+            />
+          }
+          label="Me"
+        />
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={showOption === 2}
+              onChange={() => handleCheckboxChange(2)}
+            />
+          }
+          label="Others"
         />
       </Box>
       <CompaniesList companies={filteredCompanies}/>
@@ -146,8 +181,6 @@ const ListOfCompaniesPage: React.FC = () => {
           </StyledBox>
         </Box>
       </Modal>
-
-      <Toaster position="top-center"/>
     </>
   );
 };

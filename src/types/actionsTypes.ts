@@ -18,3 +18,7 @@ export interface sendInviteType {
   user_id: string;
   company_id: string;
 }
+
+export interface sendRequestType {
+  company_id: string;
+}

@@ -2,13 +2,13 @@ import React, {useEffect, useState} from "react";
 import {Box, Button, Checkbox, FormControlLabel, Grid, Modal, TextField, Typography} from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import {useDispatch, useSelector} from "react-redux";
-import {selectCompanyById} from "../../redux/companies/selectors";
+import {selectCompanyById, selectError} from "../../redux/companies/selectors";
 import {FaEye, FaEyeSlash} from "react-icons/fa";
 import {style, StyledBox, Text} from "../../utils/BaseModal.styled";
 import styles from "../UserProfilePage/UserProfilePage.module.css";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import DoneIcon from "@mui/icons-material/Done";
-import {Toaster} from "react-hot-toast";
+import toast from "react-hot-toast";
 import {deleteCompanyById, fetchCompanyById, updateCompany} from "../../redux/companies/operations";
 import {useFormik} from "formik";
 import {validationSchemaUpdateCompany} from "../../validate/validationSchemaUpdateCompany";
@@ -29,6 +29,7 @@ const CompanyProfilePage: React.FC = () => {
   const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
   const [openEditCompanyModal, setOpenEditCompanyModal] = useState<boolean>(false);
   const company = useSelector(selectCompanyById);
+  const error = useSelector(selectError);
 
   const handleOpenEditCompanyModal = () => setOpenEditCompanyModal(true);
   const handleCloseEditCompanyModal = () => {
@@ -48,21 +49,27 @@ const CompanyProfilePage: React.FC = () => {
     initialValues: initialValueUpdateCompany,
     validationSchema: validationSchemaUpdateCompany,
     onSubmit: (values) => {
-      if (formikEditCompany.isValid) {
-        dispatch(updateCompany(values))
+      if (error) {
+        toast.error(`Error updating`)
+      } else if (formikEditCompany.isValid) {
+        dispatch(updateCompany(values));
         dispatch(fetchCompanyById(company?.id));
+        navigate(mainUrls.companies.byId(company?.id));
+        toast.success(`Company edited successfully`)
       }
       handleCloseEditCompanyModal();
-      navigate(mainUrls.companies.byId(company?.id));
     },
   });
 
   const handleDeleteCompany = () => {
-    if (company) {
+    if (error) {
+      toast.error(`Error deleting`)
+    } else if (company) {
       dispatch(deleteCompanyById(company?.id));
-      handleCloseDeleteModal();
       navigate(companies);
+      toast.error(`Company deleted`)
     }
+    handleCloseDeleteModal();
   };
 
   const handleOpenCompanyMembers = () => {
@@ -260,8 +267,6 @@ const CompanyProfilePage: React.FC = () => {
           </StyledBox>
         </Box>
       </Modal>
-
-      <Toaster position="top-center"/>
     </>
   );
 };

@@ -19,6 +19,7 @@ export const initialValueUpdateUsername: { username: string } = {
 };
 
 export const initialValueUpdatePassword: PasswordUpdateType = {
+  id: "",
   password: "",
   new_password: "",
   confirmPassword: "",

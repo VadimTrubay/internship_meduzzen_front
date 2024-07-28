@@ -11,7 +11,7 @@ import {
   Typography
 } from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
-import {selectLoading, selectMyInvites} from "../../redux/actions/selectors";
+import {selectError, selectLoading, selectMyInvites} from "../../redux/actions/selectors";
 import Paper from "@mui/material/Paper";
 import styles from "./MyInvitesPage.module.css";
 import {style, StyledBox, Text} from "../../utils/BaseModal.styled";
@@ -20,9 +20,10 @@ import DoneIcon from "@mui/icons-material/Done";
 import {AppDispatch} from "../../redux/store";
 import {acceptInvite, fetchMyInvites, declineInvite} from "../../redux/actions/operations";
 import {memberType} from "../../types/actionsTypes";
-import {Toaster} from "react-hot-toast";
 import {UserType} from "../../types/usersTypes";
 import {selectUser} from "../../redux/auth/selectors";
+import toast from "react-hot-toast";
+import {string} from "yup";
 
 
 const columns = [
@@ -40,6 +41,7 @@ const MyInvitesPage: React.FC = () => {
   const [openDeclineInviteModal, setOpenDeclineInviteModal] = useState<boolean>(false);
   const [selectedActionId, setSelectedActionId] = useState<string | null>(null);
   const loading = useSelector<boolean>(selectLoading);
+  const error = useSelector<string>(selectError);
 
   useEffect(() => {
     dispatch(fetchMyInvites());
@@ -66,15 +68,21 @@ const MyInvitesPage: React.FC = () => {
   };
 
   const handleAcceptInvite = () => {
-    if (selectedActionId !== null) {
+    if (error) {
+      toast.error(`Error accepting`)
+    } else if (selectedActionId !== null) {
       dispatch(acceptInvite(selectedActionId));
+      toast.success(`Invite accept successfully`)
     }
     handleCloseAcceptInviteModal();
   };
 
   const handleDeclineInvite = () => {
-    if (selectedActionId !== null) {
+    if (error) {
+      toast.error(`Error declining`)
+    } else if (selectedActionId !== null) {
       dispatch(declineInvite(selectedActionId));
+      toast.success(`Invite decline successfully`)
     }
     handleCloseDeclineInviteModal();
   };
@@ -190,8 +198,6 @@ const MyInvitesPage: React.FC = () => {
             </StyledBox>
           </Box>
         </Modal>
-
-        <Toaster position="top-center"/>
       </>
     )
   );

@@ -2,7 +2,7 @@ import {AxiosResponse} from "axios";
 import {createAxiosInstance} from "../utils/createAxiosInstance";
 import {AsyncThunkConfig} from "@reduxjs/toolkit/dist/createAsyncThunk";
 import {mainUrls} from "../config/urls";
-import {sendInviteType} from "../types/actionsTypes";
+import {sendInviteType, sendRequestType} from "../types/actionsTypes";
 
 
 export const getMembers = async (companyId: string, thunkAPI: AsyncThunkConfig): Promise<AxiosResponse> => {
@@ -51,6 +51,18 @@ export const deleteInviteApi = async (actionId: string, thunkAPI: AsyncThunkConf
   const axiosInstance = createAxiosInstance(thunkAPI);
 
   return await axiosInstance.delete(mainUrls.actions.deleteInvite(actionId));
+};
+
+export const sendRequest = async (sendRequestData: sendRequestType, thunkAPI: AsyncThunkConfig): Promise<AxiosResponse> => {
+  const axiosInstance = createAxiosInstance(thunkAPI);
+
+  return await axiosInstance.post(mainUrls.actions.sendRequest, sendRequestData);
+};
+
+export const deleteRequestApi = async (actionId: string, thunkAPI: AsyncThunkConfig): Promise<AxiosResponse> => {
+  const axiosInstance = createAxiosInstance(thunkAPI);
+
+  return await axiosInstance.delete(mainUrls.actions.deleteRequest(actionId));
 };
 
 export const acceptInviteApi = async (actionId: string, thunkAPI: AsyncThunkConfig): Promise<AxiosResponse> => {

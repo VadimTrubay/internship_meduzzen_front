@@ -31,11 +31,11 @@ const columns = [
 
 
 const CompaniesList: React.FC<CompaniesListProps> = ({companies}) => {
+  const dispatch = useDispatch<AppDispatch>();
   const user = useSelector(selectUser);
   const totalCount: number = useSelector(selectTotalCount);
   const loading = useSelector<boolean>(selectLoading);
   const [skip, setSkip] = useState<number>(1);
-  const dispatch = useDispatch<AppDispatch>();
   const limit = 10;
 
   const countPage = Math.ceil(totalCount / limit);
@@ -44,9 +44,9 @@ const CompaniesList: React.FC<CompaniesListProps> = ({companies}) => {
     setSkip(page);
   };
 
-  const handleGetCompany = (companyid: string) => {
-    if (companyid) {
-      dispatch(fetchCompanyById(companyid));
+  const handleGetCompany = (companyId: string) => {
+    if (companyId) {
+      dispatch(fetchCompanyById(companyId));
     }
   };
 

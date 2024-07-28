@@ -8,6 +8,7 @@ import Header from "../Header/Header.jsx";
 import Footer from "../Footer/Footer";
 import styles from "../Layout/Layout.module.css";
 import {TiArrowBack} from "react-icons/ti";
+import {Toaster} from "react-hot-toast";
 
 
 export const Layout = ({children}: LayoutProps) => {
@@ -18,13 +19,16 @@ export const Layout = ({children}: LayoutProps) => {
       <Header/>
       <Navigation/>
       <div className={styles.container_back}>
-        <TiArrowBack className={styles.back} onClick={() => {navigate(-1)}}/>
+        <TiArrowBack className={styles.back} onClick={() => {
+          navigate(-1)
+        }}/>
       </div>
       <Suspense fallback={
         <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
           <LinearProgress/>
         </Box>
       }>
+        <Toaster position="top-center"/>
         <div className={styles.children}>
           {children}
         </div>

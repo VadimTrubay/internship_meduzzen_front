@@ -11,7 +11,7 @@ import {
   Typography
 } from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
-import {selectLoading, selectMyRequests} from "../../redux/actions/selectors";
+import {selectError, selectLoading, selectMyRequests} from "../../redux/actions/selectors";
 import Paper from "@mui/material/Paper";
 import styles from "./MyRequestsPage.module.css";
 import {style, StyledBox, Text} from "../../utils/BaseModal.styled";
@@ -19,10 +19,11 @@ import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import DoneIcon from "@mui/icons-material/Done";
 import {AppDispatch} from "../../redux/store";
 import {memberType} from "../../types/actionsTypes";
-import {Toaster} from "react-hot-toast";
 import {UserType} from "../../types/usersTypes";
 import {selectUser} from "../../redux/auth/selectors";
 import {fetchMyRequests} from "../../redux/actions/operations";
+import {string} from "yup";
+import toast from "react-hot-toast";
 
 
 const columns = [
@@ -38,6 +39,7 @@ const MyRequestsPage: React.FC = () => {
   const [openDeleteRequestModal, setOpenDeleteRequestModal] = useState<boolean>(false);
   const [selectedActionId, setSelectedActionId] = useState<string | null>(null);
   const loading = useSelector<boolean>(selectLoading);
+  const error = useSelector<string>(selectError);
 
   useEffect(() => {
     dispatch(fetchMyRequests());
@@ -54,8 +56,11 @@ const MyRequestsPage: React.FC = () => {
   };
 
   const handleDeleteRequest = () => {
-    if (selectedActionId !== null) {
+    if (error) {
+      toast.error(`Error deleting`)
+    } else if (selectedActionId !== null) {
       // dispatch(deleteMyRequest(selectedActionId));
+      toast.error(`Request deleted successfully`)
     }
     handleCloseDeleteRequestModal();
   };
@@ -138,8 +143,6 @@ const MyRequestsPage: React.FC = () => {
             </StyledBox>
           </Box>
         </Modal>
-
-        <Toaster position="top-center"/>
       </>
     )
   );

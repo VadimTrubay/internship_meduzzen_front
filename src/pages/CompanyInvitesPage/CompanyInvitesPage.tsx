@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {
   Box, Button,
   Grid,
@@ -11,7 +11,7 @@ import {
   Typography
 } from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
-import {selectCompanyInvites} from "../../redux/actions/selectors";
+import {selectCompanyInvites, selectError} from "../../redux/actions/selectors";
 import Paper from "@mui/material/Paper";
 import styles from "./CompanyInvitesPage.module.css";
 import {style, StyledBox, Text} from "../../utils/BaseModal.styled";
@@ -19,11 +19,12 @@ import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import DoneIcon from "@mui/icons-material/Done";
 import {AppDispatch} from "../../redux/store";
 import {memberType} from "../../types/actionsTypes";
-import {Toaster} from "react-hot-toast";
+import toast from "react-hot-toast";
 import {selectLoading} from "../../redux/actions/selectors";
 import {selectCompanyById} from "../../redux/companies/selectors";
 import {CompanyType} from "../../types/companiesTypes";
-import {deleteInvite, fetchCompanyInvites, fetchCompanyRequests, fetchMyInvites} from "../../redux/actions/operations";
+import {deleteInvite, fetchCompanyInvites} from "../../redux/actions/operations";
+import {string} from "yup";
 
 
 const columns = [
@@ -39,11 +40,8 @@ const CompanyInvitesPage: React.FC = () => {
   const [openDeleteInviteModal, setOpenDeleteInviteModal] = useState<boolean>(false);
   const [selectedActionId, setSelectedActionId] = useState<string | null>(null);
   const loading = useSelector<boolean>(selectLoading);
+  const error = useSelector<string>(selectError);
 
-
-  useEffect(() => {
-    dispatch(fetchCompanyInvites(company.id));
-  }, [dispatch, company.id]);
 
   const handleOpenDeleteInviteModal = (inviteId: string) => {
     setSelectedActionId(inviteId);
@@ -57,8 +55,12 @@ const CompanyInvitesPage: React.FC = () => {
 
 
   const handleDeleteInvite = () => {
-    if (selectedActionId !== null) {
+    if (error) {
+      toast.error(`Error deleting`)
+    } else if (selectedActionId !== null) {
       dispatch(deleteInvite(selectedActionId));
+      dispatch(fetchCompanyInvites(company.id));
+      toast.error(`Invite deleted successfully`)
     }
     handleCloseDeleteInviteModal();
   };
@@ -141,8 +143,6 @@ const CompanyInvitesPage: React.FC = () => {
             </StyledBox>
           </Box>
         </Modal>
-
-        <Toaster position="top-center"/>
       </>
     )
   );
