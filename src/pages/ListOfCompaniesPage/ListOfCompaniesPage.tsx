@@ -24,7 +24,7 @@ const ListOfCompaniesPage: React.FC = () => {
   const user = useSelector(selectUser) as UserType;
   const {companies} = useSelector(selectCompanies) as CompaniesListProps[];
   const error = useSelector<string>(selectError);
-  const [showOption, setShowOption] = useState<number>(0);
+  const [showOption, setShowOption] = useState<number>(1);
 
   const handleOpenAddCompanyModal = () => {
     setOpenAddCompanyModal(true);

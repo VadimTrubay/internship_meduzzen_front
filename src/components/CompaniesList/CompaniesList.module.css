@@ -38,3 +38,17 @@
   font-weight: 600;
   cursor: pointer;
 }
+
+.title_accept {
+  background-color: #4a853d;
+  color: #ffffff;
+  border-radius: 3px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.close {
+  display: flex;
+  justify-content: flex-end;
+  cursor: pointer;
+}

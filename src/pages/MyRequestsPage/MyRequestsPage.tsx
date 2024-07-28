@@ -21,8 +21,7 @@ import {AppDispatch} from "../../redux/store";
 import {memberType} from "../../types/actionsTypes";
 import {UserType} from "../../types/usersTypes";
 import {selectUser} from "../../redux/auth/selectors";
-import {fetchMyRequests} from "../../redux/actions/operations";
-import {string} from "yup";
+import {deleteRequest, fetchMyRequests} from "../../redux/actions/operations";
 import toast from "react-hot-toast";
 
 
@@ -59,7 +58,7 @@ const MyRequestsPage: React.FC = () => {
     if (error) {
       toast.error(`Error deleting`)
     } else if (selectedActionId !== null) {
-      // dispatch(deleteMyRequest(selectedActionId));
+      dispatch(deleteRequest(selectedActionId));
       toast.error(`Request deleted successfully`)
     }
     handleCloseDeleteRequestModal();
