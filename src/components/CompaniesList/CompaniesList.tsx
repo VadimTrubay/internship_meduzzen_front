@@ -12,14 +12,14 @@ import {
 } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import {fetchCompanies, fetchCompanyById} from "../../redux/companies/operations";
-import {selectError, selectTotalCount} from "../../redux/companies/selectors";
+import {selectTotalCount} from "../../redux/companies/selectors";
 import {selectLoading} from "../../redux/companies/selectors";
 import {AppDispatch} from "../../redux/store";
 import {CompaniesListProps, CompanyType} from "../../types/companiesTypes";
 import Avatar from "@mui/material/Avatar";
 import {NavLink} from "react-router-dom";
 import {FaEye, FaEyeSlash} from "react-icons/fa";
-import {selectUser} from "../../redux/auth/selectors";
+import {selectError, selectUser} from "../../redux/auth/selectors";
 import styles from "./CompaniesList.module.css";
 import {style, StyledBox, Text} from "../../utils/BaseModal.styled";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
@@ -27,7 +27,6 @@ import DoneIcon from "@mui/icons-material/Done";
 import toast from "react-hot-toast";
 import {createRequest, fetchMyRequests} from "../../redux/actions/operations";
 import {selectMyRequests} from "../../redux/actions/selectors";
-
 
 const columns = [
   {id: "avatar", label: "Avatar", minWidth: 50},
@@ -37,7 +36,6 @@ const columns = [
   {id: "options", label: "Options", minWidth: 50},
 ];
 
-
 const CompaniesList: React.FC<CompaniesListProps> = ({companies}) => {
   const dispatch = useDispatch<AppDispatch>();
   const user = useSelector(selectUser);
@@ -46,6 +44,7 @@ const CompaniesList: React.FC<CompaniesListProps> = ({companies}) => {
   const loading = useSelector<boolean>(selectLoading);
   const [openCreateMyRequestModal, setOpenCreateMyRequestModal] = useState<boolean>(false);
   const [selectedCompanyId, setSelectedCompanyId] = useState<string | null>(null);
+  const [selectedCompanyOwner, setSelectedCompanyOwner] = useState<string | null>(null);
   const error = useSelector<string>(selectError);
   const [skip, setSkip] = useState<number>(1);
   const limit = 10;
@@ -65,7 +64,8 @@ const CompaniesList: React.FC<CompaniesListProps> = ({companies}) => {
     dispatch(fetchCompanies({skip, limit}));
   }, [dispatch, skip, myRequests]);
 
-  const handleOpenCreateMyRequestModal = (companyId: string) => {
+  const handleOpenCreateMyRequestModal = (companyId: string, companyOwnerId: string) => {
+    setSelectedCompanyOwner(companyOwnerId);
     setSelectedCompanyId(companyId);
     setOpenCreateMyRequestModal(true);
   };
@@ -77,11 +77,11 @@ const CompaniesList: React.FC<CompaniesListProps> = ({companies}) => {
 
   const handleCreateMyRequest = () => {
     if (error) {
-      toast.error(`Error accepting`)
+      toast.error(`Error creating request`);
     } else if (selectedCompanyId !== null) {
-      dispatch(createRequest({company_id: selectedCompanyId}));
-      dispatch(fetchMyRequests())
-      toast.success(`Request create successfully`)
+      dispatch(createRequest({user_id: selectedCompanyOwner, company_id: selectedCompanyId}));
+      dispatch(fetchMyRequests());
+      toast.success(`Request created successfully`);
     }
     handleCloseCreateMyRequestModal();
   };
@@ -130,7 +130,7 @@ const CompaniesList: React.FC<CompaniesListProps> = ({companies}) => {
                     <TableCell align="center">
                       {user?.id !== company?.owner_id &&
                         <Button
-                          onClick={() => handleOpenCreateMyRequestModal(company.id)}
+                          onClick={() => handleOpenCreateMyRequestModal(company.id, company?.owner_id)}
                           variant="outlined"
                           color="success"
                           sx={{marginRight: 1}}

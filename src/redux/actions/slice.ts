@@ -2,12 +2,18 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {initialActionsType, memberType} from "../../types/actionsTypes";
 import {
   acceptInvite,
-  createInvite, createRequest,
-  declineInvite, deleteInvite,
-  deleteMember, deleteRequest, fetchCompanyInvites, fetchCompanyRequests,
+  createInvite,
+  deleteInvite,
+  deleteMember,
   fetchMembers,
+  deleteRequest,
+  createRequest,
+  declineInvite,
   fetchMyInvites,
-  fetchMyRequests
+  fetchMyRequests,
+  leaveFromCompany,
+  fetchCompanyInvites,
+  fetchCompanyRequests, acceptRequest, declineRequest
 } from "./operations";
 
 
@@ -62,7 +68,7 @@ const handleDeleteRequestFulfilled = (
 ) => {
   state.loading = false;
   state.error = null;
-  state.companyRequests = state.myRequests.filter((request) => request.id !== action.payload.id);
+  state.companyRequests = state.companyRequests.filter((request) => request.id !== action.payload.id);
 };
 
 const handleFetchMembersFulfilled = (
@@ -85,7 +91,7 @@ const handleFetchMyInvitesFulfilled = (
 
 const handleFetchMyRequestsFulfilled = (
   state: initialActionsType,
-  action: PayloadAction<memberType[]>
+  action: PayloadAction<any>
 ) => {
   state.loading = false;
   state.error = null;
@@ -103,7 +109,7 @@ const handleFetchCompanyInvitesFulfilled = (
 
 const handleFetchCompanyRequestsFulfilled = (
   state: initialActionsType,
-  action: PayloadAction<memberType[]>
+  action: PayloadAction<any>
 ) => {
   state.loading = false;
   state.error = null;
@@ -128,7 +134,34 @@ const handleDeclineInviteFulfilled = (
   state.myInvites = state.myInvites.filter((invite) => invite.id !== action.payload.id);
 };
 
+const handleAcceptRequestFulfilled = (
+  state: initialActionsType,
+  action: PayloadAction<any>
+) => {
+  state.loading = false;
+  state.error = null;
+  state.myRequests = state.myRequests.filter((request) => request.id !== action.payload.id);
+};
+
+const handleDeclineRequestFulfilled = (
+  state: initialActionsType,
+  action: PayloadAction<any>
+) => {
+  state.loading = false;
+  state.error = null;
+  state.myRequests = state.myRequests.filter((request) => request.id !== action.payload.id);
+};
+
 const handleDeleteMemberFulfilled = (
+  state: initialActionsType,
+  action: PayloadAction<any>
+) => {
+  state.loading = false;
+  state.error = null;
+  state.members = state.members.filter((member) => member.id !== action.payload.id);
+};
+
+const handleLeaveFulfilled = (
   state: initialActionsType,
   action: PayloadAction<any>
 ) => {
@@ -176,9 +209,18 @@ const actionsSlice = createSlice({
       .addCase(declineInvite.pending, handlePending)
       .addCase(declineInvite.fulfilled, handleDeclineInviteFulfilled)
       .addCase(declineInvite.rejected, handleRejected)
+      .addCase(acceptRequest.pending, handlePending)
+      .addCase(acceptRequest.fulfilled, handleAcceptRequestFulfilled)
+      .addCase(acceptRequest.rejected, handleRejected)
+      .addCase(declineRequest.pending, handlePending)
+      .addCase(declineRequest.fulfilled, handleDeclineRequestFulfilled)
+      .addCase(declineRequest.rejected, handleRejected)
       .addCase(deleteMember.pending, handlePending)
       .addCase(deleteMember.fulfilled, handleDeleteMemberFulfilled)
       .addCase(deleteMember.rejected, handleRejected)
+      .addCase(leaveFromCompany.pending, handlePending)
+      .addCase(leaveFromCompany.fulfilled, handleLeaveFulfilled)
+      .addCase(leaveFromCompany.rejected, handleRejected)
 });
 
 export const actionsReducer = actionsSlice.reducer;

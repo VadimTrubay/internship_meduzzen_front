@@ -6,7 +6,13 @@ import {
   getMyInvites,
   getMyRequests,
   acceptInviteApi,
-  declineInviteApi, getCompanyInvites, getCompanyRequests, deleteInviteApi, sendRequest, deleteRequestApi
+  declineInviteApi,
+  getCompanyInvites,
+  getCompanyRequests,
+  deleteInviteApi,
+  sendRequest,
+  deleteRequestApi,
+  leaveFromCompanyApi, acceptRequestApi, declineRequestApi
 } from "../../api/api_actions";
 import {sendInviteType, sendRequestType} from "../../types/actionsTypes";
 
@@ -143,11 +149,47 @@ export const declineInvite = createAsyncThunk(
   }
 );
 
+export const acceptRequest = createAsyncThunk(
+  "actions/acceptRequest",
+  async (actionId: string, thunkAPI) => {
+    try {
+      const response = await acceptRequestApi(actionId, thunkAPI)
+      return response.data;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+export const declineRequest = createAsyncThunk(
+  "actions/declineRequest",
+  async (actionId: string, thunkAPI) => {
+    try {
+      const response = await declineRequestApi(actionId, thunkAPI)
+      return response.data;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
 export const deleteMember = createAsyncThunk(
   "actions/deleteMember",
   async (actionId: string, thunkAPI) => {
     try {
       const response = await removeMember(actionId, thunkAPI);
+      return response.data;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+export const leaveFromCompany = createAsyncThunk(
+  "actions/leaveFromCompany",
+  async (actionId: string, thunkAPI) => {
+    try {
+      const response = await leaveFromCompanyApi(actionId, thunkAPI);
       return response.data;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.message);

@@ -64,9 +64,9 @@ const ListOfCompaniesPage: React.FC = () => {
       case 0:
         return companies;
       case 1:
-        return companies.filter(company => company.owner_id === user.id);
+        return companies?.filter(company => company.owner_id === user.id);
       case 2:
-        return companies.filter(company => company.owner_id !== user.id);
+        return companies?.filter(company => company.owner_id !== user.id);
       default:
         return companies;
     }

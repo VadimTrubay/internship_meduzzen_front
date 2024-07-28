@@ -35,12 +35,6 @@ export const getCompanyRequests = async (companyId: string, thunkAPI: AsyncThunk
   return await axiosInstance.get(mainUrls.actions.companyRequests(companyId))
 };
 
-export const removeMember = async (actionId: string, thunkAPI: AsyncThunkConfig): Promise<AxiosResponse> => {
-  const axiosInstance = createAxiosInstance(thunkAPI);
-
-  return await axiosInstance.delete(mainUrls.actions.kick(actionId));
-};
-
 export const sendInvite = async (sendInviteData: sendInviteType, thunkAPI: AsyncThunkConfig): Promise<AxiosResponse> => {
   const axiosInstance = createAxiosInstance(thunkAPI);
 
@@ -75,4 +69,28 @@ export const declineInviteApi = async (actionId: string, thunkAPI: AsyncThunkCon
   const axiosInstance = createAxiosInstance(thunkAPI);
 
   return await axiosInstance.post(mainUrls.actions.declineInvite(actionId));
+};
+
+export const acceptRequestApi = async (actionId: string, thunkAPI: AsyncThunkConfig): Promise<AxiosResponse> => {
+  const axiosInstance = createAxiosInstance(thunkAPI);
+
+  return await axiosInstance.post(mainUrls.actions.acceptRequest(actionId));
+};
+
+export const declineRequestApi = async (actionId: string, thunkAPI: AsyncThunkConfig): Promise<AxiosResponse> => {
+  const axiosInstance = createAxiosInstance(thunkAPI);
+
+  return await axiosInstance.post(mainUrls.actions.declineRequest(actionId));
+};
+
+export const removeMember = async (actionId: string, thunkAPI: AsyncThunkConfig): Promise<AxiosResponse> => {
+  const axiosInstance = createAxiosInstance(thunkAPI);
+
+  return await axiosInstance.delete(mainUrls.actions.kick(actionId));
+};
+
+export const leaveFromCompanyApi = async (actionId: string, thunkAPI: AsyncThunkConfig): Promise<AxiosResponse> => {
+  const axiosInstance = createAxiosInstance(thunkAPI);
+
+  return await axiosInstance.delete(mainUrls.actions.leave(actionId));
 };

@@ -102,16 +102,16 @@ const CompanyProfilePage: React.FC = () => {
             Company Profile
           </Typography>
         </Grid>
+        <Button
+          variant="outlined"
+          color="success"
+          sx={{margin: 1}}
+          onClick={() => handleOpenCompanyMembers()}
+        >
+          Company Members
+        </Button>
         {currentUser?.id === company?.owner_id &&
           <Box>
-            <Button
-              variant="outlined"
-              color="success"
-              sx={{margin: 1}}
-              onClick={() => handleOpenCompanyMembers()}
-            >
-              Company Members
-            </Button>
             <Button
               variant="outlined"
               color="success"

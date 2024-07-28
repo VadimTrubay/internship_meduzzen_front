@@ -23,7 +23,6 @@ import {memberType} from "../../types/actionsTypes";
 import {UserType} from "../../types/usersTypes";
 import {selectUser} from "../../redux/auth/selectors";
 import toast from "react-hot-toast";
-import {string} from "yup";
 
 
 const columns = [
@@ -42,6 +41,7 @@ const MyInvitesPage: React.FC = () => {
   const [selectedActionId, setSelectedActionId] = useState<string | null>(null);
   const loading = useSelector<boolean>(selectLoading);
   const error = useSelector<string>(selectError);
+
 
   useEffect(() => {
     dispatch(fetchMyInvites());
@@ -123,8 +123,8 @@ const MyInvitesPage: React.FC = () => {
               <TableBody className={styles.tableHead}>
                 {myInvites.map((invite: memberType) => (
                   <TableRow key={invite.id} className={styles.tableRow}>
-                    <TableCell sx={{padding: "3px"}} align="center">
-                      {invite.user_username}
+                    <TableCell align="center">
+                      {invite.company_name}
                     </TableCell>
                     <TableCell align="center">
                       <Button
@@ -136,7 +136,7 @@ const MyInvitesPage: React.FC = () => {
                         Accept
                       </Button>
                     </TableCell>
-                    <TableCell sx={{padding: "3px"}} align="center">
+                    <TableCell align="center">
                       <Button
                         onClick={() => handleOpenDeclineInviteModal(invite.id)}
                         variant="outlined"

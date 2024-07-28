@@ -24,7 +24,6 @@ import {selectLoading} from "../../redux/actions/selectors";
 import {selectCompanyById} from "../../redux/companies/selectors";
 import {CompanyType} from "../../types/companiesTypes";
 import {deleteInvite, fetchCompanyInvites} from "../../redux/actions/operations";
-import {string} from "yup";
 
 
 const columns = [
@@ -134,7 +133,7 @@ const CompanyInvitesPage: React.FC = () => {
             </div>
             <Typography id="modal-modal-title" variant="h6" component="h2">
               <Text className={styles.title_decline}>Delete Invite</Text>
-              <Text>Are you sure you want to decline this invite?</Text>
+              <Text>Are you sure you want to delete this invite?</Text>
             </Typography>
             <StyledBox>
               <Button onClick={handleDeleteInvite} type="button">

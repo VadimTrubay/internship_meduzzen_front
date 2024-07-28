@@ -21,9 +21,9 @@ const ListOfUsersPage: React.FC = () => {
       case 0:
         return users;
       case 1:
-        return users.filter(user => user.id === currentUser.id);
+        return users?.filter(user => user.id === currentUser.id);
       case 2:
-        return users.filter(user => user.id !== currentUser.id);
+        return users?.filter(user => user.id !== currentUser.id);
       default:
         return users;
     }

@@ -12,6 +12,8 @@ export interface memberType {
   id: string;
   user_id: string;
   user_username: string;
+  company_id: string;
+  company_name: string;
 }
 
 export interface myRequestsType {
@@ -28,5 +30,6 @@ export interface sendInviteType {
 }
 
 export interface sendRequestType {
+  user_id: string;
   company_id: string | null;
 }

@@ -101,7 +101,7 @@ const MyRequestsPage: React.FC = () => {
                 {myRequests.map((invite: memberType) => (
                   <TableRow key={invite.id} className={styles.tableRow}>
                     <TableCell sx={{padding: "3px"}} align="center">
-                      {invite.user_username}
+                      {invite.company_name}
                     </TableCell>
                     <TableCell align="center">
                       <Button
