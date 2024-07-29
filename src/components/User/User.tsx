@@ -1,7 +1,7 @@
 import React from "react";
 import TableCell from "@mui/material/TableCell";
 import Avatar from "@mui/material/Avatar";
-import {useNavigate} from "react-router-dom";
+import {NavLink, useNavigate} from "react-router-dom";
 import {fetchUserById} from "../../redux/users/operations";
 import {useDispatch} from "react-redux";
 import {AppDispatch} from "../../redux/store";
@@ -27,9 +27,10 @@ const User: React.FC<UserProps> = ({user}) => {
         <Avatar className={styles.avatar}/>
       </TableCell>
       <TableCell sx={{padding: "3px"}} align="center">
-        <span className={styles.link} onClick={() => handleGetUser(user?.id)}>
+        <NavLink className={styles.link} to={mainUrls.users.byId(user?.id)}
+                 onClick={() => handleGetUser(user?.id)}>
           {user?.username}
-        </span>
+        </NavLink>
       </TableCell>
       <TableCell sx={{padding: "3px"}} align="center">
         {user?.email}

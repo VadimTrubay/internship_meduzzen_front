@@ -83,23 +83,23 @@ const App: React.FC = () => {
               element={<PrivateRoute redirectTo={RouterEndpoints.login} component={<CompanyProfilePage/>}/>}
             />
             <Route
-              path={`${RouterEndpoints.membersCompany}`}
+              path={`${RouterEndpoints.actions}/${RouterEndpoints.company}/${RouterEndpoints.id}/${RouterEndpoints.members}`}
               element={<PrivateRoute redirectTo={RouterEndpoints.login} component={<CompanyMembersPage/>}/>}
             />
             <Route
-              path={`${RouterEndpoints.myInvites}`}
+              path={`${RouterEndpoints.actions}/${RouterEndpoints.company}/${RouterEndpoints.my}/${RouterEndpoints.invites}`}
               element={<PrivateRoute redirectTo={RouterEndpoints.login} component={<MyInvitesPage/>}/>}
             />
             <Route
-              path={`${RouterEndpoints.myRequests}`}
+              path={`${RouterEndpoints.actions}/${RouterEndpoints.company}/${RouterEndpoints.my}/${RouterEndpoints.requests}`}
               element={<PrivateRoute redirectTo={RouterEndpoints.login} component={<MyRequestsPage/>}/>}
             />
             <Route
-              path={`${RouterEndpoints.companyInvites}`}
+              path={`${RouterEndpoints.actions}/${RouterEndpoints.company}/${RouterEndpoints.id}/${RouterEndpoints.invites}`}
               element={<PrivateRoute redirectTo={RouterEndpoints.login} component={<CompanyInvitesPage/>}/>}
             />
             <Route
-              path={`${RouterEndpoints.companyRequests}`}
+              path={`${RouterEndpoints.actions}/${RouterEndpoints.company}/${RouterEndpoints.id}/${RouterEndpoints.requests}`}
               element={<PrivateRoute redirectTo={RouterEndpoints.login} component={<CompanyRequestsPage/>}/>}
             />
             <Route path={RouterEndpoints.terms} element={<TermsPage/>}/>

@@ -101,6 +101,30 @@ export const deleteInvite = createAsyncThunk(
   }
 );
 
+export const acceptInvite = createAsyncThunk(
+  "actions/acceptInvite",
+  async (actionId: string, thunkAPI) => {
+    try {
+      const response = await acceptInviteApi(actionId, thunkAPI)
+      return response.data;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+export const declineInvite = createAsyncThunk(
+  "actions/declineInvite",
+  async (actionId: string, thunkAPI) => {
+    try {
+      const response = await declineInviteApi(actionId, thunkAPI)
+      return response.data;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
 export const createRequest = createAsyncThunk(
   "actions/createRequest",
   async (sendRequestData: sendRequestType, thunkAPI) => {
@@ -125,29 +149,6 @@ export const deleteRequest = createAsyncThunk(
   }
 );
 
-export const acceptInvite = createAsyncThunk(
-  "actions/acceptInvite",
-  async (actionId: string, thunkAPI) => {
-    try {
-      const response = await acceptInviteApi(actionId, thunkAPI)
-      return response.data;
-    } catch (error: any) {
-      return thunkAPI.rejectWithValue(error.message);
-    }
-  }
-);
-
-export const declineInvite = createAsyncThunk(
-  "actions/declineInvite",
-  async (actionId: string, thunkAPI) => {
-    try {
-      const response = await declineInviteApi(actionId, thunkAPI)
-      return response.data;
-    } catch (error: any) {
-      return thunkAPI.rejectWithValue(error.message);
-    }
-  }
-);
 
 export const acceptRequest = createAsyncThunk(
   "actions/acceptRequest",
@@ -173,18 +174,6 @@ export const declineRequest = createAsyncThunk(
   }
 );
 
-export const deleteMember = createAsyncThunk(
-  "actions/deleteMember",
-  async (actionId: string, thunkAPI) => {
-    try {
-      const response = await removeMember(actionId, thunkAPI);
-      return response.data;
-    } catch (error: any) {
-      return thunkAPI.rejectWithValue(error.message);
-    }
-  }
-);
-
 export const leaveFromCompany = createAsyncThunk(
   "actions/leaveFromCompany",
   async (actionId: string, thunkAPI) => {
@@ -197,3 +186,14 @@ export const leaveFromCompany = createAsyncThunk(
   }
 );
 
+export const deleteMember = createAsyncThunk(
+  "actions/deleteMember",
+  async (actionId: string, thunkAPI) => {
+    try {
+      const response = await removeMember(actionId, thunkAPI);
+      return response.data;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);

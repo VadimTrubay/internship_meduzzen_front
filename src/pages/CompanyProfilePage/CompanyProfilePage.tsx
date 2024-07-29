@@ -18,7 +18,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import {useNavigate} from "react-router-dom";
 import {initialValueUpdateCompany} from "../../initialValues/initialValues";
 import {selectUser} from "../../redux/auth/selectors";
-import {companies, mainUrls, membersCompany} from "../../config/urls";
+import {companies, mainUrls} from "../../config/urls";
 import {fetchCompanyInvites, fetchCompanyRequests, fetchMembers} from "../../redux/actions/operations";
 
 
@@ -75,7 +75,7 @@ const CompanyProfilePage: React.FC = () => {
   const handleOpenCompanyMembers = () => {
     if (company) {
       dispatch(fetchMembers(company?.id));
-      navigate(membersCompany);
+      navigate(mainUrls.actions.membersCompany(company?.id));
     }
   };
 

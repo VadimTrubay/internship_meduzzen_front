@@ -25,11 +25,11 @@ export interface myRequestsType {
 }
 
 export interface sendInviteType {
-  user_id: string;
-  company_id: string;
+  userId: string;
+  companyId: string;
 }
 
 export interface sendRequestType {
-  user_id: string;
-  company_id: string | null;
+  userId: string | null;
+  companyId: string | null;
 }

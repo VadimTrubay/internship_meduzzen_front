@@ -27,6 +27,7 @@ import DoneIcon from "@mui/icons-material/Done";
 import toast from "react-hot-toast";
 import {createRequest, fetchMyRequests} from "../../redux/actions/operations";
 import {selectMyRequests} from "../../redux/actions/selectors";
+import {mainUrls} from "../../config/urls";
 
 const columns = [
   {id: "avatar", label: "Avatar", minWidth: 50},
@@ -79,7 +80,7 @@ const CompaniesList: React.FC<CompaniesListProps> = ({companies}) => {
     if (error) {
       toast.error(`Error creating request`);
     } else if (selectedCompanyId !== null) {
-      dispatch(createRequest({user_id: selectedCompanyOwner, company_id: selectedCompanyId}));
+      dispatch(createRequest({userId: selectedCompanyOwner, companyId: selectedCompanyId}));
       dispatch(fetchMyRequests());
       toast.success(`Request created successfully`);
     }
@@ -116,8 +117,9 @@ const CompaniesList: React.FC<CompaniesListProps> = ({companies}) => {
                     <TableCell component="th" scope="row" sx={{padding: "3px"}}>
                       <Avatar className={styles.avatar}/>
                     </TableCell>
-                    <TableCell align="center">
-                      <NavLink className={styles.link} to={company.id} onClick={() => handleGetCompany(company.id)}>
+                    <TableCell sx={{padding: "3px"}} align="center">
+                      <NavLink className={styles.link} to={mainUrls.companies.byId(company.id)}
+                               onClick={() => handleGetCompany(company.id)}>
                         {company.name}
                       </NavLink>
                     </TableCell>

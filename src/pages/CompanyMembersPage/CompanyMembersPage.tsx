@@ -111,7 +111,7 @@ const CompanyMembersPage: React.FC = () => {
     if (error) {
       toast.error(`User already invited`);
     } else if (userId && company) {
-      dispatch(createInvite({user_id: userId, company_id: company.id}));
+      dispatch(createInvite({userId: userId, companyId: company.id}));
       toast.success(`Invite created successfully`);
     }
     handleCloseMenu();

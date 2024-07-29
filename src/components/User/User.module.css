@@ -8,11 +8,13 @@
 
 .link {
   text-decoration: none;
-  font-size: 15px;
+  font-size: 18px;
+  color: var(--action-background-color);
 }
 
 .link:hover {
+  text-decoration: none;
   color: var(--link-hover);
-  font-weight: bold;
+  font-weight: 600;
   cursor: pointer;
 }
