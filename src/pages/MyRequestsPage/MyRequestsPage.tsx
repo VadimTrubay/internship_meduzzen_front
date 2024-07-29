@@ -23,6 +23,7 @@ import {UserType} from "../../types/usersTypes";
 import {selectUser} from "../../redux/auth/selectors";
 import {deleteRequest, fetchMyRequests} from "../../redux/actions/operations";
 import toast from "react-hot-toast";
+import {m} from "./testServerConnection-CLJOcN3M";
 
 
 const columns = [
@@ -59,6 +60,7 @@ const MyRequestsPage: React.FC = () => {
       toast.error(`Error deleting`)
     } else if (selectedActionId !== null) {
       dispatch(deleteRequest(selectedActionId));
+      dispatch(fetchMyRequests());
       toast.success(`Request deleted successfully`)
     }
     handleCloseDeleteRequestModal();

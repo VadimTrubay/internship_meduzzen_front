@@ -21,16 +21,18 @@ import {useNavigate} from "react-router-dom";
 import {mainUrls} from "../../config/urls";
 import toast from "react-hot-toast";
 import {RouterEndpoints} from "../../config/routes";
+import {UserType} from "../../types/usersTypes";
+import {getUserById} from "../../api/api_users";
 
 
 const UserProfilePage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const currentUser = useSelector(selectUser);
   const navigate = useNavigate();
   const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
   const [openEditUsernameModal, setOpenEditUsernameModal] = useState<boolean>(false);
   const [openEditPasswordModal, setOpenEditPasswordModal] = useState<boolean>(false);
-  const user = useSelector(selectUser);
+  const currentUser = useSelector(selectUser) as UserType;
+  const userById = useSelector(selectUserById) as UserType;
   const error = useSelector<string>(selectError);
 
 
@@ -45,10 +47,11 @@ const UserProfilePage: React.FC = () => {
   const handleCloseDeleteModal = () => setOpenDeleteModal(false);
 
   useEffect(() => {
-    if (user) {
-      formikEditUsername.setValues(user);
+    if (currentUser) {
+      formikEditUsername.setValues(currentUser);
     }
-  }, [user])
+  }, [currentUser])
+
 
   const formikEditUsername = useFormik({
     initialValues: initialValueUpdateUsername,
@@ -58,6 +61,7 @@ const UserProfilePage: React.FC = () => {
         toast.error(`Error editing`)
       } else if (formikEditUsername.isValid) {
         dispatch(updateUsername(values));
+        console.log(currentUser.id)
         toast.success(`User edited successfully`)
       }
       handleCloseEditUsernameModal();
@@ -81,8 +85,8 @@ const UserProfilePage: React.FC = () => {
   const handleDeleteUser = () => {
     if (error) {
       toast.error(`Error deleting`)
-    } else if (user.id) {
-      dispatch(deleteUser(user.id));
+    } else if (currentUser.id) {
+      dispatch(deleteUser(currentUser.id));
       dispatch(logOut());
       navigate(RouterEndpoints.login);
       toast.success(`User deleted successfully`)
@@ -104,7 +108,7 @@ const UserProfilePage: React.FC = () => {
             User Profile
           </Typography>
         </Grid>
-        {user?.id === currentUser?.id &&
+        {userById?.id === currentUser?.id &&
           <Box marginRight={2}>
             {/*MY INVITES*/}
             <Button
@@ -139,7 +143,7 @@ const UserProfilePage: React.FC = () => {
             Username:
           </Typography>
           <Typography color="textSecondary">
-            {user?.username}
+            {currentUser?.username}
           </Typography>
         </Grid>
         <Grid item xs={12}>
@@ -147,7 +151,7 @@ const UserProfilePage: React.FC = () => {
             Email:
           </Typography>
           <Typography color="textSecondary">
-            {user?.email}
+            {currentUser?.email}
           </Typography>
         </Grid>
         <Grid item xs={12}>
@@ -155,10 +159,10 @@ const UserProfilePage: React.FC = () => {
             Role:
           </Typography>
           <Typography color="textSecondary">
-            {user?.is_admin ? "admin" : "user"}
+            {currentUser?.is_admin ? "admin" : "user"}
           </Typography>
         </Grid>
-        {user?.id === currentUser?.id &&
+        {userById?.id === currentUser?.id &&
           <Box marginRight={2}>
             <Button
               onClick={handleOpenEditUsernameModal}
@@ -301,7 +305,7 @@ const UserProfilePage: React.FC = () => {
           <Typography id="modal-modal-title" variant="h6" component="h2">
             <Text className={styles.title_delete}>Delete profile</Text>
             <Text>Are you sure you want to delete this profile?</Text>
-            <Text>&apos;{user?.username}&apos;</Text>
+            <Text>&apos;{currentUser?.username}&apos;</Text>
           </Typography>
           <StyledBox component="form" onSubmit={handleDeleteUser}>
             <Button type="submit">

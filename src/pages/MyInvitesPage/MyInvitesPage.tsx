@@ -72,6 +72,7 @@ const MyInvitesPage: React.FC = () => {
       toast.error(`Error accepting`)
     } else if (selectedActionId !== null) {
       dispatch(acceptInvite(selectedActionId));
+      dispatch(fetchMyInvites());
       toast.success(`Invite accept successfully`)
     }
     handleCloseAcceptInviteModal();
@@ -82,6 +83,7 @@ const MyInvitesPage: React.FC = () => {
       toast.error(`Error declining`)
     } else if (selectedActionId !== null) {
       dispatch(declineInvite(selectedActionId));
+      dispatch(fetchMyInvites());
       toast.success(`Invite decline successfully`)
     }
     handleCloseDeclineInviteModal();

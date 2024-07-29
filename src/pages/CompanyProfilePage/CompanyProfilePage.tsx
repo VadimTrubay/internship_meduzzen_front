@@ -24,11 +24,11 @@ import {fetchCompanyInvites, fetchCompanyRequests, fetchMembers} from "../../red
 
 const CompanyProfilePage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const currentUser = useSelector(selectUser);
   const navigate = useNavigate();
   const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
   const [openEditCompanyModal, setOpenEditCompanyModal] = useState<boolean>(false);
-  const company = useSelector(selectCompanyById);
+  const currentUser = useSelector(selectUser);
+  const companyById = useSelector(selectCompanyById);
   const error = useSelector(selectError);
 
   const handleOpenEditCompanyModal = () => setOpenEditCompanyModal(true);
@@ -40,10 +40,10 @@ const CompanyProfilePage: React.FC = () => {
   const handleCloseDeleteModal = () => setOpenDeleteModal(false);
 
   useEffect(() => {
-    if (company) {
-      formikEditCompany.setValues(company);
+    if (companyById) {
+      formikEditCompany.setValues(companyById);
     }
-  }, [company])
+  }, [companyById])
 
   const formikEditCompany = useFormik({
     initialValues: initialValueUpdateCompany,
@@ -53,8 +53,8 @@ const CompanyProfilePage: React.FC = () => {
         toast.error(`Error updating`)
       } else if (formikEditCompany.isValid) {
         dispatch(updateCompany(values));
-        dispatch(fetchCompanyById(company?.id));
-        navigate(mainUrls.companies.byId(company?.id));
+        dispatch(fetchCompanyById(companyById?.id));
+        navigate(mainUrls.companies.byId(companyById?.id));
         toast.success(`Company edited successfully`)
       }
       handleCloseEditCompanyModal();
@@ -64,8 +64,8 @@ const CompanyProfilePage: React.FC = () => {
   const handleDeleteCompany = () => {
     if (error) {
       toast.error(`Error deleting`)
-    } else if (company) {
-      dispatch(deleteCompanyById(company?.id));
+    } else if (companyById) {
+      dispatch(deleteCompanyById(companyById?.id));
       navigate(companies);
       toast.success(`Company deleted successfully`)
     }
@@ -73,20 +73,20 @@ const CompanyProfilePage: React.FC = () => {
   };
 
   const handleOpenCompanyMembers = () => {
-    if (company) {
-      dispatch(fetchMembers(company?.id));
-      navigate(mainUrls.actions.membersCompany(company?.id));
+    if (companyById) {
+      dispatch(fetchMembers(companyById?.id));
+      navigate(mainUrls.actions.membersCompany(companyById?.id));
     }
   };
 
   const handleOpenCompanyInvites = () => {
-    dispatch(fetchCompanyInvites(company?.id))
-    navigate(mainUrls.actions.companyInvites(company?.id));
+    dispatch(fetchCompanyInvites(companyById?.id))
+    navigate(mainUrls.actions.companyInvites(companyById?.id));
   };
 
   const handleOpenCompanyRequests = () => {
-    dispatch(fetchCompanyRequests(company?.id))
-    navigate(mainUrls.actions.companyRequests(company?.id));
+    dispatch(fetchCompanyRequests(companyById?.id))
+    navigate(mainUrls.actions.companyRequests(companyById?.id));
   };
 
   const closeModal = () => {
@@ -110,7 +110,7 @@ const CompanyProfilePage: React.FC = () => {
         >
           Company Members
         </Button>
-        {currentUser?.id === company?.owner_id &&
+        {currentUser?.id === companyById?.owner_id &&
           <Box>
             <Button
               variant="outlined"
@@ -138,7 +138,7 @@ const CompanyProfilePage: React.FC = () => {
             Name:
           </Typography>
           <Typography color="textSecondary">
-            {company ? company?.name : null}
+            {companyById ? companyById?.name : null}
           </Typography>
         </Grid>
         <Grid item xs={12}>
@@ -146,7 +146,7 @@ const CompanyProfilePage: React.FC = () => {
             Description:
           </Typography>
           <Typography color="textSecondary">
-            {company ? company?.description : null}
+            {companyById ? companyById?.description : null}
           </Typography>
         </Grid>
         <Grid item xs={12}>
@@ -154,10 +154,10 @@ const CompanyProfilePage: React.FC = () => {
             Visible:
           </Typography>
           <Typography color="textSecondary">
-            {company ? company?.visible ? <FaEye/> : <FaEyeSlash/> : null}
+            {companyById ? companyById?.visible ? <FaEye/> : <FaEyeSlash/> : null}
           </Typography>
         </Grid>
-        {currentUser?.id === company?.owner_id &&
+        {currentUser?.id === companyById?.owner_id &&
           <Box marginTop={2}>
             <Button
               onClick={handleOpenEditCompanyModal}
@@ -193,7 +193,7 @@ const CompanyProfilePage: React.FC = () => {
           <Typography id="modal-modal-title" variant="h6" component="h2">
             <Text className={styles.title_delete}>Delete company</Text>
             <Text>Are you sure you want to delete this company?</Text>
-            <Text>&apos;{company?.name}&apos;</Text>
+            <Text>&apos;{companyById?.name}&apos;</Text>
           </Typography>
           <StyledBox component="form" onSubmit={handleDeleteCompany}>
             <Button type="submit">

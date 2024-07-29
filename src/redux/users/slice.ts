@@ -34,7 +34,7 @@ const handleFetchUsersFulfilled = (
 
 const handleGetUserByIdFulfilled = (
   state: initialUsersType,
-  action: PayloadAction<any>
+  action: PayloadAction<null>
 ) => {
   state.loading = false;
   state.error = null;

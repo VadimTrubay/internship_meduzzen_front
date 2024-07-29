@@ -11,11 +11,11 @@ export const RouterEndpoints = {
     companies: "companies",
 
     actions: "actions",
-    company: "/company",
-    members: "/members",
-    invites: "/invites",
-    requests: "/requests",
-    my: "/my",
+    company: "company",
+    members: "members",
+    invites: "invites",
+    requests: "requests",
+    my: "my",
 
     terms: "terms",
     notFound: "*",

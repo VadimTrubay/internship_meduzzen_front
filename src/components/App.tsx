@@ -87,11 +87,11 @@ const App: React.FC = () => {
               element={<PrivateRoute redirectTo={RouterEndpoints.login} component={<CompanyMembersPage/>}/>}
             />
             <Route
-              path={`${RouterEndpoints.actions}/${RouterEndpoints.company}/${RouterEndpoints.my}/${RouterEndpoints.invites}`}
+              path={`${RouterEndpoints.actions}/${RouterEndpoints.my}/${RouterEndpoints.invites}`}
               element={<PrivateRoute redirectTo={RouterEndpoints.login} component={<MyInvitesPage/>}/>}
             />
             <Route
-              path={`${RouterEndpoints.actions}/${RouterEndpoints.company}/${RouterEndpoints.my}/${RouterEndpoints.requests}`}
+              path={`${RouterEndpoints.actions}/${RouterEndpoints.my}/${RouterEndpoints.requests}`}
               element={<PrivateRoute redirectTo={RouterEndpoints.login} component={<MyRequestsPage/>}/>}
             />
             <Route
