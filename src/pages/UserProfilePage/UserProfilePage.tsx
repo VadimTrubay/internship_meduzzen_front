@@ -57,12 +57,14 @@ const UserProfilePage: React.FC = () => {
     initialValues: initialValueUpdateUsername,
     validationSchema: validationSchemaUpdateUsername,
     onSubmit: (values) => {
-      if (error) {
-        toast.error(`Error editing`)
-      } else if (formikEditUsername.isValid) {
-        dispatch(updateUsername(values));
-        console.log(currentUser.id)
-        toast.success(`User edited successfully`)
+      if (formikEditUsername.isValid) {
+        dispatch(updateUsername({id: values.id, username: values.username}));
+        console.log(values);
+        if (error) {
+          toast.error(`Error editing`);
+        } else {
+          toast.success(`User edited successfully`);
+        }
       }
       handleCloseEditUsernameModal();
     },
@@ -72,24 +74,28 @@ const UserProfilePage: React.FC = () => {
     initialValues: initialValueUpdatePassword,
     validationSchema: validationSchemaUpdatePassword,
     onSubmit: (values) => {
-      if (error) {
-        toast.error(`Error editing`)
-      } else if (formikEditPassword.isValid) {
-        dispatch(updatePassword(values));
-        toast.success(`User edited successfully`)
+      if (formikEditPassword.isValid) {
+        dispatch(updatePassword({id: values.id, password: values.password, new_password: values.new_password}));
+        if (error) {
+          toast.error(`Error editing`);
+        } else {
+          toast.success(`User edited successfully`);
+        }
       }
       handleCloseEditPasswordModal();
     },
   });
 
   const handleDeleteUser = () => {
-    if (error) {
-      toast.error(`Error deleting`)
-    } else if (currentUser.id) {
+    if (currentUser.id) {
       dispatch(deleteUser(currentUser.id));
       dispatch(logOut());
       navigate(RouterEndpoints.login);
-      toast.success(`User deleted successfully`)
+      if (error) {
+        toast.error(`Error deleting`);
+      } else {
+        toast.success(`User deleted successfully`);
+      }
     }
     handleCloseDeleteModal();
   };

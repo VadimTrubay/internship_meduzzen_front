@@ -45,7 +45,7 @@ const MyInvitesPage: React.FC = () => {
 
   useEffect(() => {
     dispatch(fetchMyInvites());
-  }, [dispatch]);
+  }, [dispatch, error]);
 
   const handleOpenAcceptInviteModal = (inviteId: string) => {
     setSelectedActionId(inviteId);
@@ -68,23 +68,27 @@ const MyInvitesPage: React.FC = () => {
   };
 
   const handleAcceptInvite = () => {
-    if (error) {
-      toast.error(`Error accepting`)
-    } else if (selectedActionId !== null) {
+    if (selectedActionId !== null) {
       dispatch(acceptInvite(selectedActionId));
       dispatch(fetchMyInvites());
-      toast.success(`Invite accept successfully`)
+      if (error) {
+        toast.error(`Error accepting`);
+      } else {
+        toast.success(`Invite accept successfully`);
+      }
     }
     handleCloseAcceptInviteModal();
   };
 
   const handleDeclineInvite = () => {
-    if (error) {
-      toast.error(`Error declining`)
-    } else if (selectedActionId !== null) {
+    if (selectedActionId !== null) {
       dispatch(declineInvite(selectedActionId));
       dispatch(fetchMyInvites());
-      toast.success(`Invite decline successfully`)
+      if (error) {
+        toast.error(`Error declining`);
+      } else {
+        toast.success(`Invite decline successfully`);
+      }
     }
     handleCloseDeclineInviteModal();
   };

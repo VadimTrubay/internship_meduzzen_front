@@ -57,7 +57,7 @@ const CompanyMembersPage: React.FC = () => {
 
   useEffect(() => {
     dispatch(fetchUsers({skip, limit}));
-  }, [dispatch]);
+  }, [dispatch, error]);
 
   const handleOpenDeleteModal = (member: memberType) => {
     setCurrentMember(member);
@@ -70,11 +70,13 @@ const CompanyMembersPage: React.FC = () => {
   };
 
   const handleDeleteMember = () => {
-    if (error) {
-      toast.error(`Error deleting`);
-    } else if (currentMember) {
+    if (currentMember) {
       dispatch(deleteMember(currentMember.id));
-      toast.success(`Member deleted successfully`);
+      if (error) {
+        toast.error(`Error deleting`);
+      } else {
+        toast.success(`Member deleted successfully`);
+      }
     }
     handleCloseDeleteModal();
   };
@@ -90,11 +92,13 @@ const CompanyMembersPage: React.FC = () => {
   };
 
   const handleLeave = () => {
-    if (error) {
-      toast.error(`Error leaving from company`);
-    } else if (currentMember) {
+    if (currentMember) {
       dispatch(leaveFromCompany(currentMember.id));
-      toast.success(`Member left successfully`);
+      if (error) {
+        toast.error(`Error leaving from company`);
+      } else {
+        toast.success(`Member left successfully`);
+      }
     }
     handleCloseLeaveModal();
   };
@@ -108,11 +112,13 @@ const CompanyMembersPage: React.FC = () => {
   };
 
   const handleInviteUser = (userId: string) => {
-    if (error) {
-      toast.error(`User already invited`);
-    } else if (userId && company) {
+    if (userId && company) {
       dispatch(createInvite({userId: userId, companyId: company.id}));
-      toast.success(`Invite created successfully`);
+      if (error) {
+        toast.error(`User already invited`);
+      } else {
+        toast.success(`Invite created successfully`);
+      }
     }
     handleCloseMenu();
   };

@@ -19,7 +19,8 @@ import {CompaniesListProps, CompanyType} from "../../types/companiesTypes";
 import Avatar from "@mui/material/Avatar";
 import {NavLink} from "react-router-dom";
 import {FaEye, FaEyeSlash} from "react-icons/fa";
-import {selectError, selectUser} from "../../redux/auth/selectors";
+import {selectUser} from "../../redux/auth/selectors";
+import {selectError} from "../../redux/actions/selectors";
 import styles from "./CompaniesList.module.css";
 import {style, StyledBox, Text} from "../../utils/BaseModal.styled";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
@@ -63,7 +64,7 @@ const CompaniesList: React.FC<CompaniesListProps> = ({companies}) => {
 
   useEffect(() => {
     dispatch(fetchCompanies({skip, limit}));
-  }, [dispatch, skip, myRequests]);
+  }, [dispatch, skip, myRequests, error]);
 
   const handleOpenCreateMyRequestModal = (companyId: string, companyOwnerId: string) => {
     setSelectedCompanyOwner(companyOwnerId);
@@ -77,12 +78,14 @@ const CompaniesList: React.FC<CompaniesListProps> = ({companies}) => {
   };
 
   const handleCreateMyRequest = () => {
-    if (error) {
-      toast.error(`Error creating request`);
-    } else if (selectedCompanyId !== null) {
+    if (selectedCompanyId !== null) {
       dispatch(createRequest({userId: selectedCompanyOwner, companyId: selectedCompanyId}));
       dispatch(fetchMyRequests());
-      toast.success(`Request created successfully`);
+      if (error) {
+        toast.error(`User already requested`);
+      } else {
+        toast.success(`Request created successfully`);
+      }
     }
     handleCloseCreateMyRequestModal();
   };

@@ -13,8 +13,8 @@ import {style, StyledBox, Text} from "../../utils/BaseModal.styled";
 import {addCompany} from "../../redux/companies/operations";
 import {initialValues} from "../../initialValues/initialValues";
 import styles from "./ListOfCompaniesPage.module.css";
-import {selectUser} from "../../redux/auth/selectors";
-import {selectCompanies, selectError} from "../../redux/companies/selectors";
+import {selectError, selectUser} from "../../redux/auth/selectors";
+import {selectCompanies} from "../../redux/companies/selectors";
 import {CompaniesListProps} from "../../types/companiesTypes";
 import {UserType} from "../../types/usersTypes";
 
@@ -40,11 +40,13 @@ const ListOfCompaniesPage: React.FC = () => {
     initialValues: initialValues,
     validationSchema: validationSchemaAddCompany,
     onSubmit: (values) => {
-      if (error) {
-        toast.error(`Error adding`);
-      } else if (formikAddCompany.isValid) {
+      if (formikAddCompany.isValid) {
         dispatch(addCompany(values));
-        toast.success(`Company added successfully`);
+        if (error) {
+          toast.error(`Error adding`);
+        } else {
+          toast.success(`Company added successfully`);
+        }
       }
       handleCloseAddCompanyModal();
     },

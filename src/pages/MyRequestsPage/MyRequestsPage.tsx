@@ -23,7 +23,6 @@ import {UserType} from "../../types/usersTypes";
 import {selectUser} from "../../redux/auth/selectors";
 import {deleteRequest, fetchMyRequests} from "../../redux/actions/operations";
 import toast from "react-hot-toast";
-import {m} from "./testServerConnection-CLJOcN3M";
 
 
 const columns = [
@@ -43,7 +42,7 @@ const MyRequestsPage: React.FC = () => {
 
   useEffect(() => {
     dispatch(fetchMyRequests());
-  }, [dispatch]);
+  }, [dispatch, error]);
 
   const handleOpenDeleteRequestModal = (requestId: string) => {
     setSelectedActionId(requestId);
@@ -56,12 +55,14 @@ const MyRequestsPage: React.FC = () => {
   };
 
   const handleDeleteRequest = () => {
-    if (error) {
-      toast.error(`Error deleting`)
-    } else if (selectedActionId !== null) {
+    if (selectedActionId !== null) {
       dispatch(deleteRequest(selectedActionId));
       dispatch(fetchMyRequests());
-      toast.success(`Request deleted successfully`)
+      if (error) {
+        toast.error(`Error deleting`);
+      } else {
+        toast.success(`Request deleted successfully`);
+      }
     }
     handleCloseDeleteRequestModal();
   };

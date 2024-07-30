@@ -46,7 +46,7 @@ const CompanyRequestsPage: React.FC = () => {
 
   useEffect(() => {
     dispatch(fetchCompanyRequests(company?.id));
-  }, [dispatch]);
+  }, [dispatch, error]);
 
   const handleOpenAcceptRequestModal = (requestId: string) => {
     setSelectedActionId(requestId);
@@ -69,21 +69,25 @@ const CompanyRequestsPage: React.FC = () => {
   };
 
   const handleAcceptRequest = () => {
-    if (error) {
-      toast.error(`Error accepting`)
-    } else if (selectedActionId !== null) {
+    if (selectedActionId !== null) {
       dispatch(acceptRequest(selectedActionId));
-      toast.success(`Request accept successfully`)
+      if (error) {
+        toast.error(`Error accepting`);
+      } else {
+        toast.success(`Request accept successfully`);
+      }
     }
     handleCloseAcceptRequestModal();
   };
 
   const handleDeclineRequest = () => {
-    if (error) {
-      toast.error(`Error declining`)
-    } else if (selectedActionId !== null) {
+    if (selectedActionId !== null) {
       dispatch(declineRequest(selectedActionId));
-      toast.success(`Request decline successfully`)
+      if (error) {
+        toast.error(`Error declining`);
+      } else {
+        toast.success(`Request decline successfully`);
+      }
     }
     handleCloseDeclineRequestModal();
   };

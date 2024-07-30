@@ -20,6 +20,8 @@ import {initialValueUpdateCompany} from "../../initialValues/initialValues";
 import {selectUser} from "../../redux/auth/selectors";
 import {companies, mainUrls} from "../../config/urls";
 import {fetchCompanyInvites, fetchCompanyRequests, fetchMembers} from "../../redux/actions/operations";
+import {UserType} from "../../types/usersTypes";
+import {CompanyType, CompanyUpdateType} from "../../types/companiesTypes";
 
 
 const CompanyProfilePage: React.FC = () => {
@@ -27,9 +29,9 @@ const CompanyProfilePage: React.FC = () => {
   const navigate = useNavigate();
   const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
   const [openEditCompanyModal, setOpenEditCompanyModal] = useState<boolean>(false);
-  const currentUser = useSelector(selectUser);
-  const companyById = useSelector(selectCompanyById);
-  const error = useSelector(selectError);
+  const currentUser = useSelector(selectUser) as UserType;
+  const companyById = useSelector(selectCompanyById) as CompanyUpdateType | CompanyType;
+  const error = useSelector<string>(selectError);
 
   const handleOpenEditCompanyModal = () => setOpenEditCompanyModal(true);
   const handleCloseEditCompanyModal = () => {
@@ -49,25 +51,29 @@ const CompanyProfilePage: React.FC = () => {
     initialValues: initialValueUpdateCompany,
     validationSchema: validationSchemaUpdateCompany,
     onSubmit: (values) => {
-      if (error) {
-        toast.error(`Error updating`)
-      } else if (formikEditCompany.isValid) {
+      if (formikEditCompany.isValid) {
         dispatch(updateCompany(values));
         dispatch(fetchCompanyById(companyById?.id));
         navigate(mainUrls.companies.byId(companyById?.id));
-        toast.success(`Company edited successfully`)
+        if (error) {
+          toast.error(`Error updating`)
+        } else {
+          toast.success(`Company edited successfully`)
+        }
       }
       handleCloseEditCompanyModal();
     },
   });
 
   const handleDeleteCompany = () => {
-    if (error) {
-      toast.error(`Error deleting`)
-    } else if (companyById) {
+    if (companyById) {
       dispatch(deleteCompanyById(companyById?.id));
       navigate(companies);
-      toast.success(`Company deleted successfully`)
+      if (error) {
+        toast.error(`Error deleting`)
+      } else {
+        toast.success(`Company deleted successfully`)
+      }
     }
     handleCloseDeleteModal();
   };
