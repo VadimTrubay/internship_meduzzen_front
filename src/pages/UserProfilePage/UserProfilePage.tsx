@@ -59,7 +59,6 @@ const UserProfilePage: React.FC = () => {
     onSubmit: (values) => {
       if (formikEditUsername.isValid) {
         dispatch(updateUsername({id: values.id, username: values.username}));
-        console.log(values);
         if (error) {
           toast.error(`Error editing`);
         } else {
