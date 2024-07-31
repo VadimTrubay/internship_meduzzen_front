@@ -26,7 +26,7 @@ const ListOfCompaniesPage: React.FC = () => {
   const error = useSelector<string>(selectError);
   const [showOption, setShowOption] = useState<number>(1);
 
-  
+
   const handleOpenAddCompanyModal = () => {
     setOpenAddCompanyModal(true);
     formikAddCompany.resetForm();

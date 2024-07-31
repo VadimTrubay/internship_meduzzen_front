@@ -14,6 +14,7 @@ export interface memberType {
   user_username: string;
   company_id: string;
   company_name: string;
+  role: string;
 }
 
 export interface myRequestsType {

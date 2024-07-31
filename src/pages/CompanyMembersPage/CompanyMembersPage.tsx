@@ -37,6 +37,7 @@ import {selectUser} from "../../redux/auth/selectors";
 const columns = [
   {id: "avatar", label: "Avatar", minWidth: 50},
   {id: "username", label: "Name", minWidth: 120},
+  {id: "role", label: "Role", minWidth: 80},
   {id: "options", label: "Options", minWidth: 120},
 ];
 
@@ -144,11 +145,11 @@ const CompanyMembersPage: React.FC = () => {
             </Button>
             <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleCloseMenu}>
               {users?.filter((user: UserType) => user?.id !== company?.owner_id)
-                  .map((user: UserType) => (
-                <MenuItem key={user?.id} onClick={() => handleInviteUser(user?.id)}>
-                  {user?.username}
-                </MenuItem>
-              ))}
+                .map((user: UserType) => (
+                  <MenuItem key={user?.id} onClick={() => handleInviteUser(user?.id)}>
+                    {user?.username}
+                  </MenuItem>
+                ))}
             </Menu>
           </Box>
         )}
@@ -177,8 +178,9 @@ const CompanyMembersPage: React.FC = () => {
                     <Avatar className={styles.avatar}/>
                   </TableCell>
                   <TableCell align="center">{member.user_username}</TableCell>
+                  <TableCell align="center">{member.role}</TableCell>
                   <TableCell sx={{padding: "3px"}} align="center">
-                    {currentUser?.id === company?.owner_id ? (
+                    {currentUser?.id === company?.owner_id && currentUser?.id !== member?.user_id ? (
                       <Button
                         onClick={() => handleOpenDeleteModal(member)}
                         variant="outlined"
