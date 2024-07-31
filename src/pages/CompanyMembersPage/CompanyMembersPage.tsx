@@ -55,6 +55,7 @@ const CompanyMembersPage: React.FC = () => {
   const limit = 100;
   const error = useSelector<boolean>(selectError);
 
+
   useEffect(() => {
     dispatch(fetchUsers({skip, limit}));
   }, [dispatch, error]);
@@ -142,7 +143,8 @@ const CompanyMembersPage: React.FC = () => {
               + Invite member
             </Button>
             <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleCloseMenu}>
-              {users?.map((user: UserType) => (
+              {users?.filter((user: UserType) => user?.id !== company?.owner_id)
+                  .map((user: UserType) => (
                 <MenuItem key={user?.id} onClick={() => handleInviteUser(user?.id)}>
                   {user?.username}
                 </MenuItem>
