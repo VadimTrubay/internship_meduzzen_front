@@ -13,7 +13,7 @@ import {
   fetchMyRequests,
   leaveFromCompany,
   fetchCompanyInvites,
-  fetchCompanyRequests, acceptRequest, declineRequest
+  fetchCompanyRequests, acceptRequest, declineRequest, addAdminRole
 } from "./operations";
 
 
@@ -170,6 +170,21 @@ const handleLeaveFulfilled = (
   state.members = state.members.filter((member) => member.id !== action.payload.id);
 };
 
+const handleAddAdminRoleFulfilled = (
+  state: initialActionsType,
+  action: PayloadAction<any>
+) => {
+  state.loading = false;
+  state.error = null;
+  state.members = state.members.map((member) => {
+      if (member.id == action.payload.id) {
+        return {...member, role: action.payload.role};
+      }
+    }
+  );
+};
+
+
 const actionsSlice = createSlice({
   name: "actions",
   initialState: initialActions,
@@ -221,6 +236,9 @@ const actionsSlice = createSlice({
       .addCase(leaveFromCompany.pending, handlePending)
       .addCase(leaveFromCompany.fulfilled, handleLeaveFulfilled)
       .addCase(leaveFromCompany.rejected, handleRejected)
+      .addCase(addAdminRole.pending, handlePending)
+      .addCase(addAdminRole.fulfilled, handleAddAdminRoleFulfilled)
+      .addCase(addAdminRole.rejected, handleRejected)
 });
 
 export const actionsReducer = actionsSlice.reducer;

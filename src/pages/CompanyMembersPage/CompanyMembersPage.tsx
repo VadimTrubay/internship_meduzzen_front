@@ -24,7 +24,7 @@ import styles from "./CompanyMembersPage.module.css";
 import {style, StyledBox, Text} from "../../utils/BaseModal.styled";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import DoneIcon from "@mui/icons-material/Done";
-import {createInvite, deleteMember, leaveFromCompany} from "../../redux/actions/operations";
+import {addAdminRole, createInvite, deleteMember, fetchMembers, leaveFromCompany} from "../../redux/actions/operations";
 import {AppDispatch} from "../../redux/store";
 import {selectUsers} from "../../redux/users/selectors";
 import {selectCompanyById} from "../../redux/companies/selectors";
@@ -38,7 +38,8 @@ const columns = [
   {id: "avatar", label: "Avatar", minWidth: 50},
   {id: "username", label: "Name", minWidth: 120},
   {id: "role", label: "Role", minWidth: 80},
-  {id: "options", label: "Options", minWidth: 120},
+  {id: "change_role", label: "Change role", minWidth: 80},
+  {id: "options", label: "Options", minWidth: 80},
 ];
 
 const CompanyMembersPage: React.FC = () => {
@@ -49,6 +50,7 @@ const CompanyMembersPage: React.FC = () => {
   const [currentMember, setCurrentMember] = useState<memberType | null>(null);
   const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
   const [openLeaveModal, setOpenLeaveModal] = useState<boolean>(false);
+  const [openAddAdminRoleModal, setOpenAddAdminRoleModal] = useState<boolean>(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const company = useSelector(selectCompanyById) as CompanyType;
   const loading = useSelector<boolean>(selectLoading);
@@ -60,6 +62,12 @@ const CompanyMembersPage: React.FC = () => {
   useEffect(() => {
     dispatch(fetchUsers({skip, limit}));
   }, [dispatch, error]);
+
+  useEffect(() => {
+    if (company?.id) {
+      dispatch(fetchMembers(company.id));
+    }
+  }, [dispatch, company?.id]);
 
   const handleOpenDeleteModal = (member: memberType) => {
     setCurrentMember(member);
@@ -103,6 +111,29 @@ const CompanyMembersPage: React.FC = () => {
       }
     }
     handleCloseLeaveModal();
+  };
+
+    const handleOpenAddAdminRoleModal = (member: memberType) => {
+    setCurrentMember(member);
+    setOpenAddAdminRoleModal(true);
+  };
+
+  const handleCloseAddAdminRoleModal = () => {
+    setOpenAddAdminRoleModal(false);
+    setCurrentMember(null);
+  };
+
+  const handleAddAdminRole = () => {
+    if (currentMember) {
+      dispatch(addAdminRole({companyId: currentMember?.company_id, userId: currentMember?.user_id}));
+      dispatch(fetchMembers(company.id))
+      if (error) {
+        toast.error(`Error change role from user`);
+      } else {
+        toast.success(`Change role successfully`);
+      }
+    }
+    handleCloseAddAdminRoleModal();
   };
 
   const handleOpenMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -173,12 +204,21 @@ const CompanyMembersPage: React.FC = () => {
             </TableHead>
             <TableBody className={styles.tableHead}>
               {members.map((member: memberType) => (
-                <TableRow key={member.id} className={styles.tableRow}>
+                <TableRow key={member?.id} className={styles.tableRow}>
                   <TableCell component="th" scope="row" sx={{padding: "3px"}}>
                     <Avatar className={styles.avatar}/>
                   </TableCell>
-                  <TableCell align="center">{member.user_username}</TableCell>
-                  <TableCell align="center">{member.role}</TableCell>
+                  <TableCell align="center">{member?.user_username}</TableCell>
+                  <TableCell align="center">{member?.role}</TableCell>
+                  <TableCell align="center">
+                    <Button
+                        onClick={() => handleOpenAddAdminRoleModal(member)}
+                        variant="outlined"
+                        color="primary"
+                        sx={{marginRight: 1}}
+                      >
+                        Change Role
+                      </Button></TableCell>
                   <TableCell sx={{padding: "3px"}} align="center">
                     {currentUser?.id === company?.owner_id && currentUser?.id !== member?.user_id ? (
                       <Button
@@ -260,6 +300,35 @@ const CompanyMembersPage: React.FC = () => {
           >
             <Button type="submit">
               <DoneIcon sx={{fontSize: 40, color: "red"}}/>
+            </Button>
+          </StyledBox>
+        </Box>
+      </Modal>
+
+      {/* Change role modal */}
+      <Modal
+        open={openAddAdminRoleModal}
+        onClose={handleCloseAddAdminRoleModal}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <div className={styles.close}>
+            <HighlightOffIcon onClick={handleCloseAddAdminRoleModal} color={"primary"}/>
+          </div>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            <Text className={styles.title_change_role}>Change Role Admin</Text>
+            <Text>Are you sure you want to change role admin from this user?</Text>
+          </Typography>
+          <StyledBox
+            component="form"
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleAddAdminRole();
+            }}
+          >
+            <Button type="submit">
+              <DoneIcon sx={{fontSize: 40, color: "blue"}}/>
             </Button>
           </StyledBox>
         </Box>

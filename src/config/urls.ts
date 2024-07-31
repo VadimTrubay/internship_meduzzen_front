@@ -42,5 +42,6 @@ export const mainUrls = {
     companyInvites: (companyId: string) => `${actions}/company/${companyId}/invites`,
     companyRequests: (companyId: string) => `${actions}/company/${companyId}/requests`,
     membersCompany: (companyId: string) => `${actions}/company/${companyId}/members`,
+    addAdminRole: (companyId: string, userId: string) => `${actions}/company/${companyId}/add_admin/user/${userId}`,
   }
 }

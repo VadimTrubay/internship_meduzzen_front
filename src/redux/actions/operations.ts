@@ -12,9 +12,9 @@ import {
   deleteInviteApi,
   sendRequest,
   deleteRequestApi,
-  leaveFromCompanyApi, acceptRequestApi, declineRequestApi
+  leaveFromCompanyApi, acceptRequestApi, declineRequestApi, addAdminRoleApi
 } from "../../api/api_actions";
-import {sendInviteType, sendRequestType} from "../../types/actionsTypes";
+import {addAdminRoleType, sendInviteType, sendRequestType} from "../../types/actionsTypes";
 
 
 export const fetchMembers = createAsyncThunk(
@@ -191,6 +191,18 @@ export const deleteMember = createAsyncThunk(
   async (actionId: string, thunkAPI) => {
     try {
       const response = await removeMember(actionId, thunkAPI);
+      return response.data;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+export const addAdminRole = createAsyncThunk(
+  "actions/addAdminRole",
+  async (sendInviteData: addAdminRoleType, thunkAPI) => {
+    try {
+      const response = await addAdminRoleApi(sendInviteData, thunkAPI);
       return response.data;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.message);

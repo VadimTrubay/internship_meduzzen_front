@@ -2,7 +2,7 @@ import {AxiosResponse} from "axios";
 import {createAxiosInstance} from "../utils/createAxiosInstance";
 import {AsyncThunkConfig} from "@reduxjs/toolkit/dist/createAsyncThunk";
 import {mainUrls} from "../config/urls";
-import {sendInviteType, sendRequestType} from "../types/actionsTypes";
+import {addAdminRoleType, sendInviteType, sendRequestType} from "../types/actionsTypes";
 
 
 export const getMembers = async (companyId: string, thunkAPI: AsyncThunkConfig): Promise<AxiosResponse> => {
@@ -80,4 +80,10 @@ export const leaveFromCompanyApi = async (actionId: string, thunkAPI: AsyncThunk
 export const removeMember = async (actionId: string, thunkAPI: AsyncThunkConfig): Promise<AxiosResponse> => {
   const axiosInstance = createAxiosInstance(thunkAPI);
   return await axiosInstance.delete(mainUrls.actions.kick(actionId));
+};
+
+export const addAdminRoleApi = async (sendInviteData: addAdminRoleType, thunkAPI: AsyncThunkConfig): Promise<AxiosResponse> => {
+  const axiosInstance = createAxiosInstance(thunkAPI);
+  const {companyId, userId} = sendInviteData;
+  return await axiosInstance.patch(mainUrls.actions.addAdminRole(companyId, userId));
 };

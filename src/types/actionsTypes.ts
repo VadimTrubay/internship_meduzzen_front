@@ -30,6 +30,11 @@ export interface sendInviteType {
   companyId: string;
 }
 
+export interface addAdminRoleType {
+  userId: string;
+  companyId: string;
+}
+
 export interface sendRequestType {
   userId: string | null;
   companyId: string | null;

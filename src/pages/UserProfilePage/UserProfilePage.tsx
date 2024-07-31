@@ -148,7 +148,7 @@ const UserProfilePage: React.FC = () => {
             Username:
           </Typography>
           <Typography color="textSecondary">
-            {currentUser?.username}
+            {userById?.username}
           </Typography>
         </Grid>
         <Grid item xs={12}>
@@ -156,16 +156,10 @@ const UserProfilePage: React.FC = () => {
             Email:
           </Typography>
           <Typography color="textSecondary">
-            {currentUser?.email}
+            {userById?.email}
           </Typography>
         </Grid>
         <Grid item xs={12}>
-          <Typography variant="h6" fontWeight="bold">
-            Role:
-          </Typography>
-          <Typography color="textSecondary">
-            {currentUser?.is_admin ? "admin" : "user"}
-          </Typography>
         </Grid>
         {userById?.id === currentUser?.id &&
           <Box marginRight={2}>
