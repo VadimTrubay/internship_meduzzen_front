@@ -65,3 +65,9 @@
   margin-top: 10px;
   margin-bottom: 10px;
 }
+
+.done_leave {
+  color: red;
+  font-size: 40px;
+}
+

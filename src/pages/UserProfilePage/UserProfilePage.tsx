@@ -23,6 +23,7 @@ import toast from "react-hot-toast";
 import {RouterEndpoints} from "../../config/routes";
 import {UserType} from "../../types/usersTypes";
 import {getUserById} from "../../api/api_users";
+import BaseModalWindow from "../../components/BaseModalWindow/BaseModalWindow";
 
 
 const UserProfilePage: React.FC = () => {
@@ -39,12 +40,11 @@ const UserProfilePage: React.FC = () => {
   const handleOpenEditUsernameModal = () => setOpenEditUsernameModal(true);
   const handleCloseEditUsernameModal = () => setOpenEditUsernameModal(false);
   const handleOpenEditPasswordModal = () => setOpenEditPasswordModal(true);
+  const handleOpenDeleteModal = () => setOpenDeleteModal(true);
   const handleCloseEditPasswordModal = () => {
     formikEditPassword.resetForm();
     setOpenEditPasswordModal(false);
   };
-  const handleOpenDeleteModal = () => setOpenDeleteModal(true);
-  const handleCloseDeleteModal = () => setOpenDeleteModal(false);
 
   useEffect(() => {
     if (currentUser) {
@@ -96,7 +96,7 @@ const UserProfilePage: React.FC = () => {
         toast.success(`User deleted successfully`);
       }
     }
-    handleCloseDeleteModal();
+    closeModal();
   };
 
   const closeModal = () => {
@@ -291,28 +291,17 @@ const UserProfilePage: React.FC = () => {
       </Modal>
 
       {/*Delete modal*/}
-      <Modal
-        open={openDeleteModal}
-        onClose={handleCloseDeleteModal}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-          <div className={styles.close}>
-            <HighlightOffIcon onClick={closeModal} color={"error"}/>
-          </div>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            <Text className={styles.title_delete}>Delete profile</Text>
-            <Text>Are you sure you want to delete this profile?</Text>
-            <Text>&apos;{currentUser?.username}&apos;</Text>
-          </Typography>
-          <StyledBox component="form" onSubmit={handleDeleteUser}>
-            <Button type="submit">
-              <DoneIcon sx={{fontSize: 40, color: "red"}}/>
-            </Button>
-          </StyledBox>
-        </Box>
-      </Modal>
+      <BaseModalWindow
+        openModal={openDeleteModal}
+        closeModal={closeModal}
+        style_close={styles.close}
+        color_off={"error"}
+        style_title={styles.title_delete}
+        title={"Delete profile"}
+        text={"Are you sure you want to delete this profile?"}
+        onSubmit={handleDeleteUser}
+        style_done={styles.done_leave}
+      />
     </>
   );
 };

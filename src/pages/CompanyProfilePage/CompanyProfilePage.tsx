@@ -22,6 +22,7 @@ import {companies, mainUrls} from "../../config/urls";
 import {fetchCompanyInvites, fetchCompanyRequests, fetchMembers} from "../../redux/actions/operations";
 import {UserType} from "../../types/usersTypes";
 import {CompanyType, CompanyUpdateType} from "../../types/companiesTypes";
+import BaseModalWindow from "../../components/BaseModalWindow/BaseModalWindow";
 
 
 const CompanyProfilePage: React.FC = () => {
@@ -39,7 +40,6 @@ const CompanyProfilePage: React.FC = () => {
     setOpenEditCompanyModal(false);
   };
   const handleOpenDeleteModal = () => setOpenDeleteModal(true);
-  const handleCloseDeleteModal = () => setOpenDeleteModal(false);
 
   useEffect(() => {
     if (companyById) {
@@ -75,7 +75,7 @@ const CompanyProfilePage: React.FC = () => {
         toast.success(`Company deleted successfully`)
       }
     }
-    handleCloseDeleteModal();
+    closeModal();
   };
 
   const handleOpenCompanyMembers = () => {
@@ -185,30 +185,6 @@ const CompanyProfilePage: React.FC = () => {
           </Box>}
       </Grid>
 
-      {/*Delete modal*/}
-      <Modal
-        open={openDeleteModal}
-        onClose={handleCloseDeleteModal}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-          <div className={styles.close}>
-            <HighlightOffIcon onClick={closeModal} color={"error"}/>
-          </div>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            <Text className={styles.title_delete}>Delete company</Text>
-            <Text>Are you sure you want to delete this company?</Text>
-            <Text>&apos;{companyById?.name}&apos;</Text>
-          </Typography>
-          <StyledBox component="form" onSubmit={handleDeleteCompany}>
-            <Button type="submit">
-              <DoneIcon sx={{fontSize: 40, color: "red"}}/>
-            </Button>
-          </StyledBox>
-        </Box>
-      </Modal>
-
       {/*Edit modal*/}
       <Modal
         open={openEditCompanyModal}
@@ -273,6 +249,19 @@ const CompanyProfilePage: React.FC = () => {
           </StyledBox>
         </Box>
       </Modal>
+
+      {/*Delete modal*/}
+      <BaseModalWindow
+        openModal={openDeleteModal}
+        closeModal={closeModal}
+        style_close={styles.close}
+        color_off={"error"}
+        style_title={styles.title_delete}
+        title={"Delete company"}
+        text={"Are you sure you want to delete this company?"}
+        onSubmit={handleDeleteCompany}
+        style_done={styles.done_leave}
+      />
     </>
   );
 };

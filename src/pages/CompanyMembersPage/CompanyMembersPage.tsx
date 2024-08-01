@@ -6,7 +6,6 @@ import {
   LinearProgress,
   Menu,
   MenuItem,
-  Modal,
   Table,
   TableBody,
   TableCell,
@@ -21,9 +20,6 @@ import {useDispatch, useSelector} from "react-redux";
 import {memberType} from "../../types/actionsTypes";
 import {selectMembers, selectLoading, selectError} from "../../redux/actions/selectors";
 import styles from "./CompanyMembersPage.module.css";
-import {style, StyledBox, Text} from "../../utils/BaseModal.styled";
-import HighlightOffIcon from "@mui/icons-material/HighlightOff";
-import DoneIcon from "@mui/icons-material/Done";
 import {
   addAdminRole,
   deleteAdminRole,
@@ -42,6 +38,7 @@ import {fetchUsers} from "../../redux/users/operations";
 import {selectUser} from "../../redux/auth/selectors";
 import {useNavigate} from "react-router-dom";
 import {mainUrls} from "../../config/urls";
+import BaseModalWindow from "../../components/BaseModalWindow/BaseModalWindow";
 
 const columns = [
   {id: "avatar", label: "Avatar", minWidth: 50},
@@ -82,7 +79,9 @@ const CompanyMembersPage: React.FC = () => {
     setOpenDeleteModal(true);
   };
 
-  const handleCloseDeleteModal = () => {
+  const closeModal = () => {
+    setOpenChangeRoleModal(false);
+    setOpenLeaveModal(false);
     setOpenDeleteModal(false);
     setCurrentMember(null);
   };
@@ -96,17 +95,12 @@ const CompanyMembersPage: React.FC = () => {
         toast.success(`Member deleted successfully`);
       }
     }
-    handleCloseDeleteModal();
+    closeModal();
   };
 
   const handleOpenLeaveModal = (member: memberType) => {
     setCurrentMember(member);
     setOpenLeaveModal(true);
-  };
-
-  const handleCloseLeaveModal = () => {
-    setOpenLeaveModal(false);
-    setCurrentMember(null);
   };
 
   const handleLeave = () => {
@@ -118,17 +112,12 @@ const CompanyMembersPage: React.FC = () => {
         toast.success(`Member left successfully`);
       }
     }
-    handleCloseLeaveModal();
+    closeModal();
   };
 
   const handleOpenChangeRoleModal = (member: memberType) => {
     setCurrentMember(member);
     setOpenChangeRoleModal(true);
-  };
-
-  const handleCloseChangeRoleModal = () => {
-    setOpenChangeRoleModal(false);
-    setCurrentMember(null);
   };
 
   const handleChangeRole = () => {
@@ -146,7 +135,7 @@ const CompanyMembersPage: React.FC = () => {
         toast.success(`Change role successfully`);
       }
     }
-    handleCloseChangeRoleModal();
+    closeModal();
   };
 
   const handleOpenMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -179,7 +168,6 @@ const CompanyMembersPage: React.FC = () => {
         toast.success(`Get admins from company successfully`);
       }
     }
-    handleCloseLeaveModal();
   };
 
   return loading ? (
@@ -280,91 +268,52 @@ const CompanyMembersPage: React.FC = () => {
       </Paper>
 
       {/* Delete modal */}
-      <Modal
-        open={openDeleteModal}
-        onClose={handleCloseDeleteModal}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-          <div className={styles.close}>
-            <HighlightOffIcon onClick={handleCloseDeleteModal} color={"error"}/>
-          </div>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            <Text className={styles.title_delete}>Delete member</Text>
-            <Text>Are you sure you want to delete this member?</Text>
-          </Typography>
-          <StyledBox
-            component="form"
-            onSubmit={(e) => {
-              e.preventDefault();
-              handleDeleteMember();
-            }}
-          >
-            <Button type="submit">
-              <DoneIcon sx={{fontSize: 40, color: "red"}}/>
-            </Button>
-          </StyledBox>
-        </Box>
-      </Modal>
+      <BaseModalWindow
+        openModal={openDeleteModal}
+        closeModal={closeModal}
+        style_close={styles.close}
+        color_off={"error"}
+        style_title={styles.title_delete}
+        title={"Delete member"}
+        text={"Are you sure you want to delete this member?"}
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleDeleteMember();
+        }}
+        style_done={styles.done_leave}
+      />
 
       {/* Leave modal */}
-      <Modal
-        open={openLeaveModal}
-        onClose={handleCloseLeaveModal}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-          <div className={styles.close}>
-            <HighlightOffIcon onClick={handleCloseLeaveModal} color={"error"}/>
-          </div>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            <Text className={styles.title_delete}>Leave from company</Text>
-            <Text>Are you sure you want to leave from this company?</Text>
-          </Typography>
-          <StyledBox
-            component="form"
-            onSubmit={(e) => {
-              e.preventDefault();
-              handleLeave();
-            }}
-          >
-            <Button type="submit">
-              <DoneIcon sx={{fontSize: 40, color: "red"}}/>
-            </Button>
-          </StyledBox>
-        </Box>
-      </Modal>
+      <BaseModalWindow
+        openModal={openLeaveModal}
+        closeModal={closeModal}
+        style_close={styles.close}
+        color_off={"error"}
+        style_title={styles.title_delete}
+        title={"Leave from company"}
+        text={"Are you sure you want to leave from this company?"}
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleLeave();
+        }}
+        style_done={styles.done_leave}
+      />
 
       {/* Change role modal */}
-      <Modal
-        open={openChangeRoleModal}
-        onClose={handleCloseChangeRoleModal}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-          <div className={styles.close}>
-            <HighlightOffIcon onClick={handleCloseChangeRoleModal} color={"primary"}/>
-          </div>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            <Text className={styles.title_change_role}>Change Role</Text>
-            <Text>Are you sure you want to change role from this user?</Text>
-          </Typography>
-          <StyledBox
-            component="form"
-            onSubmit={(e) => {
-              e.preventDefault();
-              handleChangeRole();
-            }}
-          >
-            <Button type="submit">
-              <DoneIcon sx={{fontSize: 40, color: "blue"}}/>
-            </Button>
-          </StyledBox>
-        </Box>
-      </Modal>
+      <BaseModalWindow
+        openModal={openChangeRoleModal}
+        closeModal={closeModal}
+        style_close={styles.close}
+        color_off={"primary"}
+        style_title={styles.title_change_role}
+        title={"Change Role"}
+        text={"Are you sure you want to change role from this user?"}
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleChangeRole();
+        }}
+        style_done={styles.done_change_role}
+      />
     </>
   );
 };
