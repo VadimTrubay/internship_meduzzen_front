@@ -1,20 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {
-  Box,
-  Button,
-  Grid,
-  LinearProgress,
-  Menu,
-  MenuItem,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Typography,
-  Paper,
-  Avatar,
+  Box, Button, Grid, LinearProgress, Menu, MenuItem, Table, TableBody,
+  TableCell, TableContainer, TableHead, TableRow, Typography, Paper, Avatar
 } from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
 import {memberType} from "../../types/actionsTypes";

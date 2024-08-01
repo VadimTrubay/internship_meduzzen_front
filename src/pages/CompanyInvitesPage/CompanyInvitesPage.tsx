@@ -24,6 +24,7 @@ import {selectLoading} from "../../redux/actions/selectors";
 import {selectCompanyById} from "../../redux/companies/selectors";
 import {CompanyType} from "../../types/companiesTypes";
 import {deleteInvite, fetchCompanyInvites} from "../../redux/actions/operations";
+import BaseModalWindow from "../../components/BaseModalWindow/BaseModalWindow";
 
 
 const columns = [
@@ -47,7 +48,7 @@ const CompanyInvitesPage: React.FC = () => {
     setOpenDeleteInviteModal(true);
   };
 
-  const handleCloseDeleteInviteModal = () => {
+  const closeModal = () => {
     setOpenDeleteInviteModal(false);
     setSelectedActionId(null);
   };
@@ -63,7 +64,7 @@ const CompanyInvitesPage: React.FC = () => {
         toast.success(`Invite deleted successfully`);
       }
     }
-    handleCloseDeleteInviteModal();
+    closeModal();
   };
 
   return (
@@ -123,27 +124,17 @@ const CompanyInvitesPage: React.FC = () => {
         </Paper>
 
         {/* Delete Invite Modal */}
-        <Modal
-          open={openDeleteInviteModal}
-          onClose={handleCloseDeleteInviteModal}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-        >
-          <Box sx={style}>
-            <div className={styles.close}>
-              <HighlightOffIcon onClick={handleCloseDeleteInviteModal} color={"error"}/>
-            </div>
-            <Typography id="modal-modal-title" variant="h6" component="h2">
-              <Text className={styles.title_decline}>Delete Invite</Text>
-              <Text>Are you sure you want to delete this invite?</Text>
-            </Typography>
-            <StyledBox>
-              <Button onClick={handleDeleteInvite} type="button">
-                <DoneIcon sx={{fontSize: 40, color: "red"}}/>
-              </Button>
-            </StyledBox>
-          </Box>
-        </Modal>
+        <BaseModalWindow
+          openModal={openDeleteInviteModal}
+          closeModal={closeModal}
+          style_close={styles.close}
+          color_off={"error"}
+          style_title={styles.title_delete}
+          title={"Delete Invite"}
+          text={"Are you sure you want to delete this invite?"}
+          onSubmit={handleDeleteInvite}
+          style_done={styles.done_leave}
+        />
       </>
     )
   );
