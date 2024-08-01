@@ -1,5 +1,7 @@
 export const selectMembers = (state) => state.actions.members;
 
+export const selectAdmins = (state) => state.actions.admins;
+
 export const selectMyInvites = (state) => state.actions.myInvites;
 
 export const selectMyRequests = (state) => state.actions.myRequests;

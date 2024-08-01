@@ -24,7 +24,14 @@ import styles from "./CompanyMembersPage.module.css";
 import {style, StyledBox, Text} from "../../utils/BaseModal.styled";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import DoneIcon from "@mui/icons-material/Done";
-import {addAdminRole, createInvite, deleteMember, fetchMembers, leaveFromCompany} from "../../redux/actions/operations";
+import {
+  addAdminRole,
+  deleteAdminRole,
+  createInvite,
+  deleteMember,
+  fetchMembers,
+  leaveFromCompany, fetchAdmins
+} from "../../redux/actions/operations";
 import {AppDispatch} from "../../redux/store";
 import {selectUsers} from "../../redux/users/selectors";
 import {selectCompanyById} from "../../redux/companies/selectors";
@@ -33,6 +40,8 @@ import {CompanyType} from "../../types/companiesTypes";
 import toast from "react-hot-toast";
 import {fetchUsers} from "../../redux/users/operations";
 import {selectUser} from "../../redux/auth/selectors";
+import {useNavigate} from "react-router-dom";
+import {mainUrls} from "../../config/urls";
 
 const columns = [
   {id: "avatar", label: "Avatar", minWidth: 50},
@@ -45,15 +54,16 @@ const columns = [
 const CompanyMembersPage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const members = useSelector(selectMembers) as memberType[];
-  const users = useSelector(selectUsers);
-  const currentUser = useSelector(selectUser);
+  const users = useSelector(selectUsers) as UserType[];
+  const currentUser = useSelector(selectUser) as UserType;
   const [currentMember, setCurrentMember] = useState<memberType | null>(null);
   const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
   const [openLeaveModal, setOpenLeaveModal] = useState<boolean>(false);
-  const [openAddAdminRoleModal, setOpenAddAdminRoleModal] = useState<boolean>(false);
+  const [openChangeRoleModal, setOpenChangeRoleModal] = useState<boolean>(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const company = useSelector(selectCompanyById) as CompanyType;
   const loading = useSelector<boolean>(selectLoading);
+  const navigate = useNavigate();
   const skip = 1;
   const limit = 100;
   const error = useSelector<boolean>(selectError);
@@ -64,10 +74,8 @@ const CompanyMembersPage: React.FC = () => {
   }, [dispatch, error]);
 
   useEffect(() => {
-    if (company?.id) {
-      dispatch(fetchMembers(company.id));
-    }
-  }, [dispatch, company?.id]);
+    dispatch(fetchMembers(company.id));
+  }, [dispatch, currentMember]);
 
   const handleOpenDeleteModal = (member: memberType) => {
     setCurrentMember(member);
@@ -113,27 +121,32 @@ const CompanyMembersPage: React.FC = () => {
     handleCloseLeaveModal();
   };
 
-    const handleOpenAddAdminRoleModal = (member: memberType) => {
+  const handleOpenChangeRoleModal = (member: memberType) => {
     setCurrentMember(member);
-    setOpenAddAdminRoleModal(true);
+    setOpenChangeRoleModal(true);
   };
 
-  const handleCloseAddAdminRoleModal = () => {
-    setOpenAddAdminRoleModal(false);
+  const handleCloseChangeRoleModal = () => {
+    setOpenChangeRoleModal(false);
     setCurrentMember(null);
   };
 
-  const handleAddAdminRole = () => {
+  const handleChangeRole = () => {
     if (currentMember) {
-      dispatch(addAdminRole({companyId: currentMember?.company_id, userId: currentMember?.user_id}));
-      dispatch(fetchMembers(company.id))
+      dispatch(fetchMembers(company?.id))
+      if (currentMember?.role === "user") {
+        dispatch(addAdminRole({companyId: currentMember?.company_id, userId: currentMember?.user_id}));
+      }
+      if (currentMember?.role === "admin") {
+        dispatch(deleteAdminRole({companyId: currentMember?.company_id, userId: currentMember?.user_id}));
+      }
       if (error) {
         toast.error(`Error change role from user`);
       } else {
         toast.success(`Change role successfully`);
       }
     }
-    handleCloseAddAdminRoleModal();
+    handleCloseChangeRoleModal();
   };
 
   const handleOpenMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -156,6 +169,19 @@ const CompanyMembersPage: React.FC = () => {
     handleCloseMenu();
   };
 
+  const handleCompanyAdmins = () => {
+    if (company) {
+      dispatch(fetchAdmins(company.id));
+      navigate(mainUrls.actions.adminsCompany(company.id))
+      if (error) {
+        toast.error(`Error get admins from company`);
+      } else {
+        toast.success(`Get admins from company successfully`);
+      }
+    }
+    handleCloseLeaveModal();
+  };
+
   return loading ? (
     <Box>
       <LinearProgress/>
@@ -171,8 +197,11 @@ const CompanyMembersPage: React.FC = () => {
         </Grid>
         {currentUser?.id === company?.owner_id && (
           <Box className={styles.inviteMemberButton}>
-            <Button variant="outlined" onClick={handleOpenMenu} color="success">
+            <Button variant="outlined" onClick={handleOpenMenu} color="success" sx={{marginRight: 1}}>
               + Invite member
+            </Button>
+            <Button variant="outlined" onClick={handleCompanyAdmins} color="primary">
+              Company Admins
             </Button>
             <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleCloseMenu}>
               {users?.filter((user: UserType) => user?.id !== company?.owner_id)
@@ -211,14 +240,17 @@ const CompanyMembersPage: React.FC = () => {
                   <TableCell align="center">{member?.user_username}</TableCell>
                   <TableCell align="center">{member?.role}</TableCell>
                   <TableCell align="center">
-                    <Button
-                        onClick={() => handleOpenAddAdminRoleModal(member)}
+                    {currentUser?.id === company?.owner_id &&
+                      <Button
+                        onClick={() => handleOpenChangeRoleModal(member)}
                         variant="outlined"
                         color="primary"
                         sx={{marginRight: 1}}
                       >
                         Change Role
-                      </Button></TableCell>
+                      </Button>
+                    }
+                  </TableCell>
                   <TableCell sx={{padding: "3px"}} align="center">
                     {currentUser?.id === company?.owner_id && currentUser?.id !== member?.user_id ? (
                       <Button
@@ -307,24 +339,24 @@ const CompanyMembersPage: React.FC = () => {
 
       {/* Change role modal */}
       <Modal
-        open={openAddAdminRoleModal}
-        onClose={handleCloseAddAdminRoleModal}
+        open={openChangeRoleModal}
+        onClose={handleCloseChangeRoleModal}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
           <div className={styles.close}>
-            <HighlightOffIcon onClick={handleCloseAddAdminRoleModal} color={"primary"}/>
+            <HighlightOffIcon onClick={handleCloseChangeRoleModal} color={"primary"}/>
           </div>
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            <Text className={styles.title_change_role}>Change Role Admin</Text>
-            <Text>Are you sure you want to change role admin from this user?</Text>
+            <Text className={styles.title_change_role}>Change Role</Text>
+            <Text>Are you sure you want to change role from this user?</Text>
           </Typography>
           <StyledBox
             component="form"
             onSubmit={(e) => {
               e.preventDefault();
-              handleAddAdminRole();
+              handleChangeRole();
             }}
           >
             <Button type="submit">

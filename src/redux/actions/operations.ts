@@ -1,20 +1,11 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import {
-  getMembers,
-  removeMember,
-  sendInvite,
-  getMyInvites,
-  getMyRequests,
-  acceptInviteApi,
-  declineInviteApi,
-  getCompanyInvites,
-  getCompanyRequests,
-  deleteInviteApi,
-  sendRequest,
-  deleteRequestApi,
-  leaveFromCompanyApi, acceptRequestApi, declineRequestApi, addAdminRoleApi
+  getMembers, removeMember, sendInvite, getMyInvites, getMyRequests,
+  acceptInviteApi, declineInviteApi, getCompanyInvites, getCompanyRequests,
+  deleteInviteApi, sendRequest, deleteRequestApi, leaveFromCompanyApi,
+  acceptRequestApi, declineRequestApi, addAdminRoleApi, removeAdminRole, getAdmins
 } from "../../api/api_actions";
-import {addAdminRoleType, sendInviteType, sendRequestType} from "../../types/actionsTypes";
+import {changeRoleType, sendInviteType, sendRequestType} from "../../types/actionsTypes";
 
 
 export const fetchMembers = createAsyncThunk(
@@ -22,6 +13,18 @@ export const fetchMembers = createAsyncThunk(
   async (companyId: string, thunkAPI) => {
     try {
       const response = await getMembers(companyId, thunkAPI)
+      return response.data;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+export const fetchAdmins = createAsyncThunk(
+  "actions/fetchAdmins",
+  async (companyId: string, thunkAPI) => {
+    try {
+      const response = await getAdmins(companyId, thunkAPI)
       return response.data;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.message);
@@ -200,9 +203,21 @@ export const deleteMember = createAsyncThunk(
 
 export const addAdminRole = createAsyncThunk(
   "actions/addAdminRole",
-  async (sendInviteData: addAdminRoleType, thunkAPI) => {
+  async (sendInviteData: changeRoleType, thunkAPI) => {
     try {
       const response = await addAdminRoleApi(sendInviteData, thunkAPI);
+      return response.data;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+export const deleteAdminRole = createAsyncThunk(
+  "actions/deleteAdminRole",
+  async (sendInviteData: changeRoleType, thunkAPI) => {
+    try {
+      const response = await removeAdminRole(sendInviteData, thunkAPI);
       return response.data;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.message);

@@ -33,7 +33,7 @@ export const mainUrls = {
     deleteInvite: (actionId: string) => `${actions}/${actionId}/invite`,
     acceptInvite: (actionId: string) => `${actions}/${actionId}/invite/accept`,
     declineInvite: (actionId: string) => `${actions}/${actionId}/invite/decline`,
-    sendRequest: (companyId: string, userId: string) => `${actions}/company/${companyId}/request/user/${userId}`,
+    sendRequest: (companyId: string | null, userId: string | null) => `${actions}/company/${companyId}/request/user/${userId}`,
     deleteRequest: (actionId: string) => `${actions}/${actionId}/request`,
     acceptRequest: (actionId: string) => `${actions}/${actionId}/request/accept`,
     declineRequest: (actionId: string) => `${actions}/${actionId}/request/decline`,
@@ -42,6 +42,8 @@ export const mainUrls = {
     companyInvites: (companyId: string) => `${actions}/company/${companyId}/invites`,
     companyRequests: (companyId: string) => `${actions}/company/${companyId}/requests`,
     membersCompany: (companyId: string) => `${actions}/company/${companyId}/members`,
-    addAdminRole: (companyId: string, userId: string) => `${actions}/company/${companyId}/add_admin/user/${userId}`,
+    adminsCompany: (companyId: string) => `${actions}/company/${companyId}/admins`,
+    addAdminRole: (companyId: string, userId: string) => `${actions}/company/${companyId}/add/admin/user/${userId}`,
+    removeAdminRole: (companyId: string, userId: string) => `${actions}/company/${companyId}/remove/admin/user/${userId}`,
   }
 }

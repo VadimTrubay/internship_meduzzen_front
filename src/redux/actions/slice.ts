@@ -1,24 +1,17 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {initialActionsType, memberType} from "../../types/actionsTypes";
 import {
-  acceptInvite,
-  createInvite,
-  deleteInvite,
-  deleteMember,
-  fetchMembers,
-  deleteRequest,
-  createRequest,
-  declineInvite,
-  fetchMyInvites,
-  fetchMyRequests,
-  leaveFromCompany,
-  fetchCompanyInvites,
-  fetchCompanyRequests, acceptRequest, declineRequest, addAdminRole
+  acceptInvite, createInvite, deleteInvite, deleteMember,
+  fetchMembers, deleteRequest, createRequest, declineInvite,
+  fetchMyInvites, fetchMyRequests, leaveFromCompany,
+  fetchCompanyInvites, fetchCompanyRequests, acceptRequest,
+  declineRequest, addAdminRole, deleteAdminRole, fetchAdmins
 } from "./operations";
 
 
 const initialActions: initialActionsType = {
   members: [],
+  admins: [],
   myInvites: [],
   myRequests: [],
   companyInvites: [],
@@ -78,6 +71,16 @@ const handleFetchMembersFulfilled = (
   state.loading = false;
   state.error = null;
   state.members = action.payload;
+};
+
+
+const handleFetchAdminsFulfilled = (
+  state: initialActionsType,
+  action: PayloadAction<memberType[]>
+) => {
+  state.loading = false;
+  state.error = null;
+  state.admins = action.payload;
 };
 
 const handleFetchMyInvitesFulfilled = (
@@ -180,6 +183,22 @@ const handleAddAdminRoleFulfilled = (
       if (member.id == action.payload.id) {
         return {...member, role: action.payload.role};
       }
+      return member;
+    }
+  );
+};
+
+const handleDeleteAdminRoleFulfilled = (
+  state: initialActionsType,
+  action: PayloadAction<any>
+) => {
+  state.loading = false;
+  state.error = null;
+  state.members = state.members.map((member) => {
+      if (member.id == action.payload.id) {
+        return {...member, role: action.payload.role};
+      }
+      return member;
     }
   );
 };
@@ -206,6 +225,9 @@ const actionsSlice = createSlice({
       .addCase(fetchMembers.pending, handlePending)
       .addCase(fetchMembers.fulfilled, handleFetchMembersFulfilled)
       .addCase(fetchMembers.rejected, handleRejected)
+      .addCase(fetchAdmins.pending, handlePending)
+      .addCase(fetchAdmins.fulfilled, handleFetchAdminsFulfilled)
+      .addCase(fetchAdmins.rejected, handleRejected)
       .addCase(fetchMyInvites.pending, handlePending)
       .addCase(fetchMyInvites.fulfilled, handleFetchMyInvitesFulfilled)
       .addCase(fetchMyInvites.rejected, handleRejected)
@@ -239,6 +261,9 @@ const actionsSlice = createSlice({
       .addCase(addAdminRole.pending, handlePending)
       .addCase(addAdminRole.fulfilled, handleAddAdminRoleFulfilled)
       .addCase(addAdminRole.rejected, handleRejected)
+      .addCase(deleteAdminRole.pending, handlePending)
+      .addCase(deleteAdminRole.fulfilled, handleDeleteAdminRoleFulfilled)
+      .addCase(deleteAdminRole.rejected, handleRejected)
 });
 
 export const actionsReducer = actionsSlice.reducer;

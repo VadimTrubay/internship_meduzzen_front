@@ -1,5 +1,6 @@
 export interface initialActionsType {
   members: memberType[];
+  admins: memberType[];
   myInvites: memberType[];
   myRequests: myRequestsType[];
   companyInvites: memberType[];
@@ -30,7 +31,7 @@ export interface sendInviteType {
   companyId: string;
 }
 
-export interface addAdminRoleType {
+export interface changeRoleType {
   userId: string;
   companyId: string;
 }
