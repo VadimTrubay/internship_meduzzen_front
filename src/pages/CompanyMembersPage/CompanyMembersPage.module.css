@@ -47,11 +47,29 @@
   margin-bottom: 10px;
 }
 
+.title_change_role {
+  background-color: #496cbd;
+  color: #ffffff;
+  border-radius: 3px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
 .close {
   display: flex;
   justify-content: flex-end;
   color: var(--brand-color-contactbook);
   cursor: pointer;
+}
+
+.done_change_role {
+  color: var(--brand-color-contactbook);
+  font-size: 40px;
+}
+
+.done_leave {
+  color: red;
+  font-size: 40px;
 }
 
 .inviteMemberButton {

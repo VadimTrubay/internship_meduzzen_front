@@ -6,8 +6,6 @@ import styles from "./HomePage.module.css";
 import {selectTestString} from "../../redux/test_string/selectors";
 import {updateTestString} from "../../redux/test_string/slice";
 import {AppDispatch} from "../../redux/store";
-import {getMe} from "../../redux/auth/operations";
-import {selectIsLoggedIn} from "../../redux/auth/selectors";
 
 
 const HomePage: React.FC = () => {
