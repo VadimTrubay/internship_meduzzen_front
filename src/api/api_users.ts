@@ -16,19 +16,16 @@ export const getUserById = async (id: string): Promise<AxiosResponse> => {
 export const editUserUsername = async (userData: UsernameUpdateType, thunkAPI: AsyncThunkConfig): Promise<AxiosResponse> => {
   const axiosInstance = createAxiosInstance(thunkAPI);
   const {id} = userData;
-
   return await axiosInstance.patch(mainUrls.users.byId(id), userData);
 };
 
 export const editUserPassword = async (userData: PasswordUpdateBackType, thunkAPI: AsyncThunkConfig): Promise<AxiosResponse> => {
   const axiosInstance = createAxiosInstance(thunkAPI);
   const {id} = userData;
-
   return await axiosInstance.patch(mainUrls.users.byId(id), userData);
 };
 
 export const removeUser = async (id: string, thunkAPI: AsyncThunkConfig): Promise<AxiosResponse> => {
   const axiosInstance = createAxiosInstance(thunkAPI);
-
   return await axiosInstance.delete(mainUrls.users.byId(id));
 };
