@@ -23,7 +23,8 @@ import toast from "react-hot-toast";
 import {selectLoading} from "../../redux/actions/selectors";
 import {selectCompanyById} from "../../redux/companies/selectors";
 import {CompanyType} from "../../types/companiesTypes";
-import {acceptRequest, declineRequest, fetchCompanyRequests} from "../../redux/actions/operations";
+import {acceptRequest, declineRequest, fetchCompanyInvites, fetchCompanyRequests} from "../../redux/actions/operations";
+import {useParams} from "react-router-dom";
 
 
 const columns = [
@@ -35,6 +36,7 @@ const columns = [
 
 const CompanyRequestsPage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const {id} = useParams<{id: string}>();
   const company = useSelector(selectCompanyById) as CompanyType;
   const companyRequests = useSelector(selectCompanyRequests) as memberType[];
   const [openAcceptRequestModal, setOpenAcceptRequestModal] = useState<boolean>(false)
@@ -45,8 +47,17 @@ const CompanyRequestsPage: React.FC = () => {
 
 
   useEffect(() => {
-    dispatch(fetchCompanyRequests(company?.id));
-  }, [dispatch, error]);
+    if (id){
+      dispatch(fetchCompanyRequests(id));
+    }
+  }, [id, dispatch])
+
+   useEffect(() => {
+    if (error) {
+      toast.error(`Error fetching invites`);
+    }
+  }, [error]);
+
 
   const handleOpenAcceptRequestModal = (requestId: string) => {
     setSelectedActionId(requestId);

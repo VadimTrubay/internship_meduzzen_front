@@ -6,33 +6,32 @@ import {Layout} from "./Layout/Layout";
 import {RestrictedRoute} from "./RestrictedRoute/RestrictedRoute";
 import {PrivateRoute} from "./PrivateRoute/PrivateRoute";
 import HealthCheck from "./HealthCheck/HealthCheck";
-import UserRegistrationPage from "../pages/UserRegistrationPage/UserRegistrationPage";
-import UserAuthorizationPage from "../pages/UserAuthorizationPage/UserAuthorizationPage";
-import ListOfUsersPage from "../pages/ListOfUsersPage/ListOfUsersPage";
-import ListOfCompaniesPage from "../pages/ListOfCompaniesPage/ListOfCompaniesPage";
-import CompanyProfilePage from "../pages/CompanyProfilePage/CompanyProfilePage";
-import CompanyMembersPage from "../pages/CompanyMembersPage/CompanyMembersPage";
 import {selectLoading, selectIsLoggedIn} from "../redux/auth/selectors";
 import {useDispatch, useSelector} from "react-redux";
 import {getMe} from "../redux/auth/operations";
 import {Box, LinearProgress} from "@mui/material";
 import {AppDispatch} from "../redux/store";
-import UserProfilePage from "../pages/UserProfilePage/UserProfilePage";
 import {useAuth0} from "@auth0/auth0-react";
 import {RouterEndpoints} from "../config/routes";
-import MyInvitesPage from "../pages/MyInvitesPage/MyInvitesPage";
-import MyRequestsPage from "../pages/MyRequestsPage/MyRequestsPage";
-import CompanyInvitesPage from "../pages/CompanyInvitesPage/CompanyInvitesPage";
-import CompanyRequestsPage from "../pages/CompanyRequestsPage/CompanyRequestsPage";
-import CompanyGetAdminsPage from "../pages/CompanyGetAdminsPage/CompanyGetAdminsPage";
-
 
 const HomePage = lazy(() => import("../pages/HomePage/HomePage"));
 const AboutPage = lazy(() => import("../pages/AboutPage/AboutPage"));
+const UserProfilePage = lazy(() => import("../pages/UserProfilePage/UserProfilePage"));
+const CompanyProfilePage = lazy(() => import("../pages/CompanyProfilePage/CompanyProfilePage"));
+const ListOfUsersPage = lazy(() => import("../pages/ListOfUsersPage/ListOfUsersPage"));
+const ListOfCompaniesPage = lazy(() => import("../pages/ListOfCompaniesPage/ListOfCompaniesPage"));
+const MyInvitesPage = lazy(() => import("../pages/MyInvitesPage/MyInvitesPage"));
+const MyRequestsPage = lazy(() => import("../pages/MyRequestsPage/MyRequestsPage"));
+const CompanyMembersPage = lazy(() => import("../pages/CompanyMembersPage/CompanyMembersPage"));
+const CompanyGetAdminsPage = lazy(() => import("../pages/CompanyGetAdminsPage/CompanyGetAdminsPage"));
+const CompanyInvitesPage = lazy(() => import("../pages/CompanyInvitesPage/CompanyInvitesPage"));
+const CompanyRequestsPage = lazy(() => import("../pages/CompanyRequestsPage/CompanyRequestsPage"));
+const UserRegistrationPage = lazy(() => import("../pages/UserRegistrationPage/UserRegistrationPage"));
+const UserAuthorizationPage = lazy(() => import("../pages/UserAuthorizationPage/UserAuthorizationPage"));
 const TermsPage = lazy(() => import("../pages/TermsPage/TermsPage"));
 const NotFoundPage = lazy(() => import("../pages/NotFoundPage/NotFoundPage"));
 
-const App: React.FC = () => {
+const App = () => {
   const dispatch = useDispatch<AppDispatch>();
   const isLoggedIn = useSelector<boolean>(selectIsLoggedIn);
   const {isAuthenticated} = useAuth0()
@@ -50,6 +49,7 @@ const App: React.FC = () => {
           <LinearProgress/>
         </Box>
       ) : (
+        isLoggedIn &&
         <Layout className={styles.container}>
           <Routes>
             <Route path={RouterEndpoints.index} element={<HomePage/>}/>
@@ -110,7 +110,8 @@ const App: React.FC = () => {
             <Route path={RouterEndpoints.terms} element={<TermsPage/>}/>
             <Route path={RouterEndpoints.notFound} element={<NotFoundPage/>}/>
           </Routes>
-        </Layout>)
+        </Layout>
+      )
   )
 };
 

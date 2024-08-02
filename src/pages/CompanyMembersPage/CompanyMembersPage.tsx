@@ -21,9 +21,8 @@ import {selectCompanyById} from "../../redux/companies/selectors";
 import {UserType} from "../../types/usersTypes";
 import {CompanyType} from "../../types/companiesTypes";
 import toast from "react-hot-toast";
-import {fetchUsers} from "../../redux/users/operations";
 import {selectUser} from "../../redux/auth/selectors";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {mainUrls} from "../../config/urls";
 import BaseModalWindow from "../../components/BaseModalWindow/BaseModalWindow";
 
@@ -37,6 +36,7 @@ const columns = [
 
 const CompanyMembersPage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const {id} = useParams<{ id: string }>();
   const members = useSelector(selectMembers) as memberType[];
   const users = useSelector(selectUsers) as UserType[];
   const currentUser = useSelector(selectUser) as UserType;
@@ -46,20 +46,21 @@ const CompanyMembersPage: React.FC = () => {
   const [openChangeRoleModal, setOpenChangeRoleModal] = useState<boolean>(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const company = useSelector(selectCompanyById) as CompanyType;
-  const loading = useSelector<boolean>(selectLoading);
+  const loading = useSelector(selectLoading);
   const navigate = useNavigate();
-  const skip = 1;
-  const limit = 100;
-  const error = useSelector<boolean>(selectError);
-
+  const error = useSelector(selectError);
 
   useEffect(() => {
-    dispatch(fetchUsers({skip, limit}));
-  }, [dispatch, error]);
+    if (id) {
+      dispatch(fetchMembers(id));
+    }
+  }, [id, dispatch]);
 
   useEffect(() => {
-    dispatch(fetchMembers(company.id));
-  }, [dispatch, currentMember]);
+    if (error) {
+      toast.error(`Error: ${error}`);
+    }
+  }, [error]);
 
   const handleOpenDeleteModal = (member: memberType) => {
     setCurrentMember(member);
@@ -76,11 +77,7 @@ const CompanyMembersPage: React.FC = () => {
   const handleDeleteMember = () => {
     if (currentMember) {
       dispatch(deleteMember(currentMember.id));
-      if (error) {
-        toast.error(`Error deleting`);
-      } else {
-        toast.success(`Member deleted successfully`);
-      }
+      toast.success(`Member deleted successfully`);
     }
     closeModal();
   };
@@ -93,11 +90,7 @@ const CompanyMembersPage: React.FC = () => {
   const handleLeave = () => {
     if (currentMember) {
       dispatch(leaveFromCompany(currentMember.id));
-      if (error) {
-        toast.error(`Error leaving from company`);
-      } else {
-        toast.success(`Member left successfully`);
-      }
+      toast.success(`Member left successfully`);
     }
     closeModal();
   };
@@ -109,18 +102,12 @@ const CompanyMembersPage: React.FC = () => {
 
   const handleChangeRole = () => {
     if (currentMember) {
-      dispatch(fetchMembers(company?.id))
-      if (currentMember?.role === "user") {
-        dispatch(addAdminRole({companyId: currentMember?.company_id, userId: currentMember?.user_id}));
+      if (currentMember.role === "user") {
+        dispatch(addAdminRole({companyId: currentMember.company_id, userId: currentMember.user_id}));
+      } else if (currentMember.role === "admin") {
+        dispatch(deleteAdminRole({companyId: currentMember.company_id, userId: currentMember.user_id}));
       }
-      if (currentMember?.role === "admin") {
-        dispatch(deleteAdminRole({companyId: currentMember?.company_id, userId: currentMember?.user_id}));
-      }
-      if (error) {
-        toast.error(`Error change role from user`);
-      } else {
-        toast.success(`Change role successfully`);
-      }
+      toast.success(`Role changed successfully`);
     }
     closeModal();
   };
@@ -136,11 +123,7 @@ const CompanyMembersPage: React.FC = () => {
   const handleInviteUser = (userId: string) => {
     if (userId && company) {
       dispatch(createInvite({userId: userId, companyId: company.id}));
-      if (error) {
-        toast.error(`User already invited`);
-      } else {
-        toast.success(`Invite created successfully`);
-      }
+      toast.success(`Invite created successfully`);
     }
     handleCloseMenu();
   };
@@ -148,12 +131,8 @@ const CompanyMembersPage: React.FC = () => {
   const handleCompanyAdmins = () => {
     if (company) {
       dispatch(fetchAdmins(company.id));
-      navigate(mainUrls.actions.adminsCompany(company.id))
-      if (error) {
-        toast.error(`Error get admins from company`);
-      } else {
-        toast.success(`Get admins from company successfully`);
-      }
+      navigate(mainUrls.actions.adminsCompany(company.id));
+      toast.success(`Fetched admins successfully`);
     }
   };
 

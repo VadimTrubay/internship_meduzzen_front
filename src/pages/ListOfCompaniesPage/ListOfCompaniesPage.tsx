@@ -22,9 +22,9 @@ const ListOfCompaniesPage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const [openAddCompanyModal, setOpenAddCompanyModal] = useState<boolean>(false);
   const user = useSelector(selectUser) as UserType;
-  const {companies} = useSelector(selectCompanies) as CompaniesListProps[];
+  const {companies} = useSelector(selectCompanies) as CompaniesListProps;
   const error = useSelector<string>(selectError);
-  const [showOption, setShowOption] = useState<number>(1);
+  const [showOption, setShowOption] = useState<number>(0);
 
 
   const handleOpenAddCompanyModal = () => {

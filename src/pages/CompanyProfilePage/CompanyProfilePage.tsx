@@ -1,13 +1,10 @@
 import React, {useEffect, useState} from "react";
-import {Box, Button, Checkbox, FormControlLabel, Grid, Modal, TextField, Typography} from "@mui/material";
+import {Box, Button, Grid, LinearProgress, Typography} from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import {useDispatch, useSelector} from "react-redux";
-import {selectCompanyById, selectError} from "../../redux/companies/selectors";
+import {selectCompanyById, selectError, selectLoading} from "../../redux/companies/selectors";
 import {FaEye, FaEyeSlash} from "react-icons/fa";
-import {style, StyledBox, Text} from "../../utils/BaseModal.styled";
 import styles from "../UserProfilePage/UserProfilePage.module.css";
-import HighlightOffIcon from "@mui/icons-material/HighlightOff";
-import DoneIcon from "@mui/icons-material/Done";
 import toast from "react-hot-toast";
 import {deleteCompanyById, fetchCompanyById, updateCompany} from "../../redux/companies/operations";
 import {useFormik} from "formik";
@@ -15,7 +12,7 @@ import {validationSchemaUpdateCompany} from "../../validate/validationSchemaUpda
 import {AppDispatch} from "../../redux/store";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {initialValueUpdateCompany} from "../../initialValues/initialValues";
 import {selectUser} from "../../redux/auth/selectors";
 import {companies, mainUrls} from "../../config/urls";
@@ -29,10 +26,12 @@ import EditCompanyModal from "../../components/EditCompanyModal/EditCompanyModal
 const CompanyProfilePage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
+  const {id} = useParams<{ id: string }>();
   const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
   const [openEditCompanyModal, setOpenEditCompanyModal] = useState<boolean>(false);
   const currentUser = useSelector(selectUser) as UserType;
   const companyById = useSelector(selectCompanyById) as CompanyUpdateType | CompanyType;
+  const loading = useSelector<boolean>(selectLoading);
   const error = useSelector<string>(selectError);
 
   const handleOpenEditCompanyModal = () => setOpenEditCompanyModal(true);
@@ -41,6 +40,15 @@ const CompanyProfilePage: React.FC = () => {
     setOpenEditCompanyModal(false);
   };
   const handleOpenDeleteModal = () => setOpenDeleteModal(true);
+
+  useEffect(() => {
+    if (id) {
+      dispatch(fetchCompanyById(id));
+      if (error) {
+        toast.error(`Error fetching company`);
+      }
+    }
+  }, [id, dispatch])
 
   useEffect(() => {
     if (companyById) {
@@ -102,118 +110,125 @@ const CompanyProfilePage: React.FC = () => {
   };
 
   return (
-    <>
-      <Grid container direction="column" alignItems="center">
-        <Grid item xs={12}>
-          <Typography variant="h5" gutterBottom>
-            Company Profile
-          </Typography>
-        </Grid>
-        <Button
-          variant="outlined"
-          color="success"
-          sx={{margin: 1}}
-          onClick={() => handleOpenCompanyMembers()}
-        >
-          Company Members
-        </Button>
-        {currentUser?.id === companyById?.owner_id &&
-          <Box>
+    loading ?
+      (
+        <Box>
+          <LinearProgress/>
+        </Box>
+      ) : (
+        <>
+          <Grid container direction="column" alignItems="center">
+            <Grid item xs={12}>
+              <Typography variant="h5" gutterBottom>
+                Company Profile
+              </Typography>
+            </Grid>
             <Button
               variant="outlined"
               color="success"
               sx={{margin: 1}}
-              onClick={() => handleOpenCompanyInvites()}
+              onClick={() => handleOpenCompanyMembers()}
             >
-              Company Invites
+              Company Members
             </Button>
-            <Button
-              variant="outlined"
-              color="success"
-              sx={{margin: 1}}
-              onClick={() => handleOpenCompanyRequests()}
-            >
-              Company Requests
-            </Button>
-          </Box>
-        }
-        <Grid item xs={12}>
-          <Avatar/>
-        </Grid>
-        <Grid item xs={12}>
-          <Typography variant="h6" fontWeight="bold">
-            Name:
-          </Typography>
-          <Typography color="textSecondary">
-            {companyById ? companyById?.name : null}
-          </Typography>
-        </Grid>
-        <Grid item xs={12}>
-          <Typography variant="h6" fontWeight="bold">
-            Description:
-          </Typography>
-          <Typography color="textSecondary">
-            {companyById ? companyById?.description : null}
-          </Typography>
-        </Grid>
-        <Grid item xs={12}>
-          <Typography variant="h6" fontWeight="bold">
-            Visible:
-          </Typography>
-          <Typography color="textSecondary">
-            {companyById ? companyById?.visible ? <FaEye/> : <FaEyeSlash/> : null}
-          </Typography>
-        </Grid>
-        {currentUser?.id === companyById?.owner_id &&
-          <Box marginTop={2}>
-            <Button
-              onClick={handleOpenEditCompanyModal}
-              variant="outlined"
-              startIcon={<EditIcon/>}
-              color="primary"
-              sx={{marginRight: 1}}
-            >
-              Edit Company
-            </Button>
-            <Button
-              onClick={handleOpenDeleteModal}
-              variant="outlined"
-              startIcon={<DeleteIcon/>}
-              color="error"
-            >
-              Delete Company
-            </Button>
-          </Box>}
-      </Grid>
+            {currentUser?.id === companyById?.owner_id &&
+              <Box>
+                <Button
+                  variant="outlined"
+                  color="success"
+                  sx={{margin: 1}}
+                  onClick={() => handleOpenCompanyInvites()}
+                >
+                  Company Invites
+                </Button>
+                <Button
+                  variant="outlined"
+                  color="success"
+                  sx={{margin: 1}}
+                  onClick={() => handleOpenCompanyRequests()}
+                >
+                  Company Requests
+                </Button>
+              </Box>
+            }
+            <Grid item xs={12}>
+              <Avatar/>
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant="h6" fontWeight="bold">
+                Name:
+              </Typography>
+              <Typography color="textSecondary">
+                {companyById ? companyById?.name : null}
+              </Typography>
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant="h6" fontWeight="bold">
+                Description:
+              </Typography>
+              <Typography color="textSecondary">
+                {companyById ? companyById?.description : null}
+              </Typography>
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant="h6" fontWeight="bold">
+                Visible:
+              </Typography>
+              <Typography color="textSecondary">
+                {companyById ? companyById?.visible ? <FaEye/> : <FaEyeSlash/> : null}
+              </Typography>
+            </Grid>
+            {currentUser?.id === companyById?.owner_id &&
+              <Box marginTop={2}>
+                <Button
+                  onClick={handleOpenEditCompanyModal}
+                  variant="outlined"
+                  startIcon={<EditIcon/>}
+                  color="primary"
+                  sx={{marginRight: 1}}
+                >
+                  Edit Company
+                </Button>
+                <Button
+                  onClick={handleOpenDeleteModal}
+                  variant="outlined"
+                  startIcon={<DeleteIcon/>}
+                  color="error"
+                >
+                  Delete Company
+                </Button>
+              </Box>}
+          </Grid>
 
-      {/*Edit modal*/}
-      <EditCompanyModal
-        openModal={openEditCompanyModal}
-        closeModal={handleCloseEditCompanyModal}
-        style_close={styles.close}
-        color_off={"primary"}
-        style_title={styles.title_add_company}
-        title={"Edit company"}
-        formikEditCompany={formikEditCompany}
-        name={"Name:"}
-        description={"Description:"}
-        visible={"Visible:"}
-        style_done={styles.edit}
-      />
+          {/*Edit modal*/}
+          <EditCompanyModal
+            openModal={openEditCompanyModal}
+            closeModal={handleCloseEditCompanyModal}
+            style_close={styles.close}
+            color_off={"primary"}
+            style_title={styles.title_add_company}
+            title={"Edit company"}
+            formikEditCompany={formikEditCompany}
+            name={"Name:"}
+            description={"Description:"}
+            visible={"Visible:"}
+            style_done={styles.edit}
+          />
 
-      {/*Delete modal*/}
-      <BaseModalWindow
-        openModal={openDeleteModal}
-        closeModal={closeModal}
-        style_close={styles.close}
-        color_off={"error"}
-        style_title={styles.title_delete}
-        title={"Delete company"}
-        text={"Are you sure you want to delete this company?"}
-        onSubmit={handleDeleteCompany}
-        style_done={styles.done_leave}
-      />
-    </>
+          {/*Delete modal*/}
+          <BaseModalWindow
+            openModal={openDeleteModal}
+            closeModal={closeModal}
+            style_close={styles.close}
+            color_off={"error"}
+            style_title={styles.title_delete}
+            title={"Delete company"}
+            text={"Are you sure you want to delete this company?"}
+            onSubmit={handleDeleteCompany}
+            style_done={styles.done_leave}
+          />
+        </>
+      )
   );
 };
 

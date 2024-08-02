@@ -56,12 +56,6 @@ const CompaniesList: React.FC<CompaniesListProps> = ({companies}) => {
     setSkip(page);
   };
 
-  const handleGetCompany = (companyId: string) => {
-    if (companyId) {
-      dispatch(fetchCompanyById(companyId));
-    }
-  };
-
   useEffect(() => {
     dispatch(fetchCompanies({skip, limit}));
   }, [dispatch, skip, myRequests, error]);
@@ -121,8 +115,7 @@ const CompaniesList: React.FC<CompaniesListProps> = ({companies}) => {
                       <Avatar className={styles.avatar}/>
                     </TableCell>
                     <TableCell sx={{padding: "3px"}} align="center">
-                      <NavLink className={styles.link} to={mainUrls.companies.byId(company.id)}
-                               onClick={() => handleGetCompany(company.id)}>
+                      <NavLink className={styles.link} to={mainUrls.companies.byId(company.id)}>
                         {company.name}
                       </NavLink>
                     </TableCell>
