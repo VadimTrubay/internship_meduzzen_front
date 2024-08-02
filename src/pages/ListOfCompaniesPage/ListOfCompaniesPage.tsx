@@ -8,7 +8,6 @@ import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import DoneIcon from "@mui/icons-material/Done";
 import {useFormik} from "formik";
 import {validationSchemaAddCompany} from "../../validate/validationSchemaAddCompany";
-import toast from "react-hot-toast";
 import {style, StyledBox, Text} from "../../utils/BaseModal.styled";
 import {addCompany} from "../../redux/companies/operations";
 import {initialValues} from "../../initialValues/initialValues";
@@ -43,11 +42,6 @@ const ListOfCompaniesPage: React.FC = () => {
     onSubmit: (values) => {
       if (formikAddCompany.isValid) {
         dispatch(addCompany(values));
-        if (error) {
-          toast.error(`Error adding`);
-        } else {
-          toast.success(`Company added successfully`);
-        }
       }
       handleCloseAddCompanyModal();
     },

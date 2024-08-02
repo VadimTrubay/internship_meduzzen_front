@@ -11,7 +11,7 @@ export const fetchUsers = createAsyncThunk(
       const response = await getUsers(skip, limit);
       return response.data;
     } catch (error: any) {
-      return thunkAPI.rejectWithValue(error.message);
+      return thunkAPI.rejectWithValue(error.response.data.detail);
     }
   }
 );
@@ -23,7 +23,7 @@ export const fetchUserById = createAsyncThunk(
       const response = await getUserById(id);
       return response.data;
     } catch (error: any) {
-      return thunkAPI.rejectWithValue(error.message);
+      return thunkAPI.rejectWithValue(error.response.data.detail);
     }
   }
 )
@@ -35,7 +35,7 @@ export const updateUsername = createAsyncThunk(
       const res = await editUserUsername(userData, thunkAPI);
       return res.data;
     } catch (error: any) {
-      return thunkAPI.rejectWithValue(error.message);
+      return thunkAPI.rejectWithValue(error.response.data.detail);
     }
   }
 );
@@ -47,7 +47,7 @@ export const updatePassword = createAsyncThunk(
       const res = await editUserPassword(userData, thunkAPI);
       return res.data;
     } catch (error: any) {
-      return thunkAPI.rejectWithValue(error.message);
+      return thunkAPI.rejectWithValue(error.response.data.detail);
     }
   }
 );
@@ -59,7 +59,7 @@ export const deleteUser = createAsyncThunk(
       const res = await removeUser(id, thunkAPI);
       return res.data;
     } catch (error: any) {
-      return thunkAPI.rejectWithValue(error.message);
+      return thunkAPI.rejectWithValue(error.response.data.detail);
     }
   }
 );

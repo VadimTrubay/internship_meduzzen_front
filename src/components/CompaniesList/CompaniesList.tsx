@@ -25,7 +25,6 @@ import styles from "./CompaniesList.module.css";
 import {style, StyledBox, Text} from "../../utils/BaseModal.styled";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import DoneIcon from "@mui/icons-material/Done";
-import toast from "react-hot-toast";
 import {createRequest, fetchMyRequests} from "../../redux/actions/operations";
 import {selectMyRequests} from "../../redux/actions/selectors";
 import {mainUrls} from "../../config/urls";
@@ -75,11 +74,6 @@ const CompaniesList: React.FC<CompaniesListProps> = ({companies}) => {
     if (selectedCompanyId !== null) {
       dispatch(createRequest({userId: selectedCompanyOwner, companyId: selectedCompanyId}));
       dispatch(fetchMyRequests());
-      if (error) {
-        toast.error(`User already requested`);
-      } else {
-        toast.success(`Request created successfully`);
-      }
     }
     handleCloseCreateMyRequestModal();
   };

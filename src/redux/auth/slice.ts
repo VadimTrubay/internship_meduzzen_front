@@ -2,6 +2,7 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {signUp, signIn, logOut, getMe} from "./operations";
 import {authType, initialAuthType, PasswordUpdateType, UsernameUpdateType} from "../../types/authTypes";
 import {updatePassword, updateUsername} from "../users/operations";
+import toast from "react-hot-toast";
 
 const initialAuth: initialAuthType = {
   user: {
@@ -25,6 +26,7 @@ const handlePending = (state: initialAuthType) => {
 const handleRejected = (state: initialAuthType, action: PayloadAction<any>) => {
   state.loading = false;
   state.error = action.payload;
+  // toast.error(action.payload);
 };
 
 const handleSignUpFulfilled = (state: initialAuthType, action: PayloadAction<initialAuthType>) => {
@@ -56,6 +58,7 @@ const handleUpdateUsernameFulfilled = (state: initialAuthType, action: PayloadAc
   state.error = null;
   state.user.id = action.payload.id;
   state.user.username = action.payload.username;
+  toast.success(`Update username successfully`);
 };
 
 const handleUpdatePasswordFulfilled = (state: initialAuthType, action: PayloadAction<PasswordUpdateType>) => {
@@ -64,6 +67,7 @@ const handleUpdatePasswordFulfilled = (state: initialAuthType, action: PayloadAc
   state.user.id = action.payload.id;
   state.user.password = "";
   state.user.new_password = "";
+  toast.success(`Update password successfully`);
 };
 
 const handleLogOutFulfilled = (state: initialAuthType) => {

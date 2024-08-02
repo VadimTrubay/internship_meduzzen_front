@@ -16,7 +16,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import {validationSchemaRegistration} from "../../validate/validationSchemaRegistration.js";
 import {LoginButtonAuth0} from "../../components/LoginButtonAuth0/LoginButtonAuth0";
 import {signUp} from "../../redux/auth/operations";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 import {AppDispatch} from "../../redux/store";
 import styles from "../UserRegistrationPage/UserRegistrationPage.module.css";
 import {initialValueUserRegistration} from "../../initialValues/initialValues";

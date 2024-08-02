@@ -16,7 +16,6 @@ import Paper from "@mui/material/Paper";
 import styles from "./CompanyInvitesPage.module.css";
 import {AppDispatch} from "../../redux/store";
 import {memberType} from "../../types/actionsTypes";
-import toast from "react-hot-toast";
 import {selectLoading} from "../../redux/actions/selectors";
 import {selectCompanyById} from "../../redux/companies/selectors";
 import {CompanyType} from "../../types/companiesTypes";
@@ -39,7 +38,6 @@ const CompanyInvitesPage: React.FC = () => {
   const [openDeleteInviteModal, setOpenDeleteInviteModal] = useState<boolean>(false);
   const [selectedActionId, setSelectedActionId] = useState<string | null>(null);
   const loading = useSelector<boolean>(selectLoading);
-  const error = useSelector<string>(selectError);
 
 
   useEffect(() => {
@@ -47,12 +45,6 @@ const CompanyInvitesPage: React.FC = () => {
       dispatch(fetchCompanyInvites(id));
     }
   }, [id, dispatch])
-
-   useEffect(() => {
-    if (error) {
-      toast.error(`Error fetching invites`);
-    }
-  }, [error]);
 
   const handleOpenDeleteInviteModal = (inviteId: string) => {
     setSelectedActionId(inviteId);
@@ -69,11 +61,6 @@ const CompanyInvitesPage: React.FC = () => {
     if (id && selectedActionId !== null) {
       dispatch(deleteInvite(selectedActionId));
       dispatch(fetchCompanyInvites(id));
-      if (error) {
-        toast.error(`Error deleting`);
-      } else {
-        toast.success(`Invite deleted successfully`);
-      }
     }
     closeModal();
   };

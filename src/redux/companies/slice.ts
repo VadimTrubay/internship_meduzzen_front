@@ -7,6 +7,7 @@ import {
   addCompany
 } from "./operations";
 import { initialCompaniesType, CompanyUpdateType, CompanyType } from "../../types/companiesTypes";
+import toast from "react-hot-toast";
 
 
 const initialCompanies: initialCompaniesType = {
@@ -27,6 +28,7 @@ const handleRejected = (
 ) => {
   state.loading = false;
   state.error = action.payload;
+  toast.error(action.payload);
 };
 
 const handleFetchCompaniesFulfilled = (
@@ -45,7 +47,8 @@ const handleAddCompanyFulfilled = (
 ) => {
   state.loading = false;
   state.error = null;
-  state.items.companies.push(action.payload);
+  state.items.push(action.payload);
+  toast.success(`Company added successfully`);
 };
 
 const handleGetCompanyByIdFulfilled = (
@@ -63,10 +66,11 @@ const handleUpdateCompanyFulfilled = (
 ) => {
   state.loading = false;
   state.error = null;
-  const index = state.items.companies.findIndex(company => company.id === action.payload.id);
+  const index = state.items.findIndex(company => company.id === action.payload.id);
   if (index !== -1) {
     state.items[index] = { ...state.items[index], ...action.payload };
   }
+  toast.success(`Company updated successfully`);
 };
 
 const handleDeleteCompanyByIdFulfilled = (
@@ -75,7 +79,8 @@ const handleDeleteCompanyByIdFulfilled = (
 ) => {
   state.loading = false;
   state.error = null;
-  state.items = state.items.companies.filter(company => company.id !== action.payload.id);
+  state.items = state.items.filter(company => company.id !== action.payload.id);
+  toast.success(`Company deleted successfully`);
 };
 
 const companiesSlice = createSlice({

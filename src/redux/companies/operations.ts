@@ -14,7 +14,7 @@ export const addCompany = createAsyncThunk(
       const response = await submitCompany(companyData, thunkAPI);
       return response.data;
     } catch (error: any) {
-      return thunkAPI.rejectWithValue(error.message);
+      return thunkAPI.rejectWithValue(error.response.data.detail);
     }
   }
 );
@@ -26,7 +26,7 @@ export const fetchCompanies = createAsyncThunk(
       const response = await getCompanies(skip, limit)
       return response.data;
     } catch (error: any) {
-      return thunkAPI.rejectWithValue(error.message);
+      return thunkAPI.rejectWithValue(error.response.data.detail);
     }
   }
 );
@@ -38,7 +38,7 @@ export const fetchCompanyById = createAsyncThunk(
       const response = await getCompanyById(id, thunkAPI);
       return response.data;
     } catch (error: any) {
-      return thunkAPI.rejectWithValue(error.message);
+      return thunkAPI.rejectWithValue(error.response.data.detail);
     }
   }
 );
@@ -50,7 +50,7 @@ export const updateCompany = createAsyncThunk(
       const response = await editCompany(companyData, thunkAPI)
       return response.data;
     } catch (error: any) {
-      return thunkAPI.rejectWithValue(error.message);
+      return thunkAPI.rejectWithValue(error.response.data.detail);
     }
   }
 );
@@ -62,7 +62,7 @@ export const deleteCompanyById = createAsyncThunk(
       const response = await removeCompany(id, thunkAPI);
       return response.data;
     } catch (error: any) {
-      return thunkAPI.rejectWithValue(error.message);
+      return thunkAPI.rejectWithValue(error.response.data.detail);
     }
   }
 );

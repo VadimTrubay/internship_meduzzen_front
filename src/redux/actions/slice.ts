@@ -7,6 +7,7 @@ import {
   fetchCompanyInvites, fetchCompanyRequests, acceptRequest,
   declineRequest, addAdminRole, deleteAdminRole, fetchAdmins
 } from "./operations";
+import toast from "react-hot-toast";
 
 
 const initialActions: initialActionsType = {
@@ -30,6 +31,8 @@ const handleRejected = (
 ) => {
   state.loading = false;
   state.error = action.payload;
+  toast.error(action.payload);
+
 };
 
 const handleSendInviteFulfilled = (
@@ -37,6 +40,7 @@ const handleSendInviteFulfilled = (
 ) => {
   state.loading = false;
   state.error = null;
+  toast.success(`Invite created successfully`);
 };
 
 const handleDeleteInviteFulfilled = (
@@ -46,6 +50,7 @@ const handleDeleteInviteFulfilled = (
   state.loading = false;
   state.error = null;
   state.companyInvites = state.myInvites.filter((invite) => invite.id !== action.payload.id);
+  toast.success(`Invite deleted successfully`);
 };
 
 const handleSendRequestFulfilled = (
@@ -53,6 +58,7 @@ const handleSendRequestFulfilled = (
 ) => {
   state.loading = false;
   state.error = null;
+  toast.success(`Request send successfully`);
 };
 
 const handleDeleteRequestFulfilled = (
@@ -62,6 +68,7 @@ const handleDeleteRequestFulfilled = (
   state.loading = false;
   state.error = null;
   state.companyRequests = state.companyRequests.filter((request) => request.id !== action.payload.id);
+  toast.success(`Request deleted successfully`);
 };
 
 const handleFetchMembersFulfilled = (
@@ -126,6 +133,7 @@ const handleAcceptInviteFulfilled = (
   state.loading = false;
   state.error = null;
   state.myInvites = state.myInvites.filter((invite) => invite.id !== action.payload.id);
+  toast.success(`Invite accepted successfully`);
 };
 
 const handleDeclineInviteFulfilled = (
@@ -135,6 +143,7 @@ const handleDeclineInviteFulfilled = (
   state.loading = false;
   state.error = null;
   state.companyRequests = state.companyRequests.filter((invite) => invite.id !== action.payload.id);
+  toast.success(`Invite declined successfully`);
 };
 
 const handleAcceptRequestFulfilled = (
@@ -144,6 +153,7 @@ const handleAcceptRequestFulfilled = (
   state.loading = false;
   state.error = null;
   state.companyRequests = state.companyRequests.filter((request) => request.id !== action.payload.id);
+  toast.success(`Request accepted successfully`);
 };
 
 const handleDeclineRequestFulfilled = (
@@ -153,6 +163,7 @@ const handleDeclineRequestFulfilled = (
   state.loading = false;
   state.error = null;
   state.myRequests = state.myRequests.filter((request) => request.id !== action.payload.id);
+  toast.success(`Request declined successfully`);
 };
 
 const handleDeleteMemberFulfilled = (
@@ -162,6 +173,7 @@ const handleDeleteMemberFulfilled = (
   state.loading = false;
   state.error = null;
   state.members = state.members.filter((member) => member.id !== action.payload.id);
+  toast.success(`Member deleted successfully`);
 };
 
 const handleLeaveFulfilled = (
@@ -171,6 +183,7 @@ const handleLeaveFulfilled = (
   state.loading = false;
   state.error = null;
   state.members = state.members.filter((member) => member.id !== action.payload.id);
+  toast.success(`Leave from company successfully`);
 };
 
 const handleAddAdminRoleFulfilled = (
@@ -186,6 +199,7 @@ const handleAddAdminRoleFulfilled = (
       return member;
     }
   );
+  toast.success(`Change role successfully`);
 };
 
 const handleDeleteAdminRoleFulfilled = (
@@ -201,6 +215,7 @@ const handleDeleteAdminRoleFulfilled = (
       return member;
     }
   );
+  toast.success(`Change role successfully`);
 };
 
 

@@ -5,7 +5,7 @@ import {
 } from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
 import {memberType} from "../../types/actionsTypes";
-import {selectMembers, selectLoading, selectError} from "../../redux/actions/selectors";
+import {selectMembers, selectLoading} from "../../redux/actions/selectors";
 import styles from "./CompanyMembersPage.module.css";
 import {
   addAdminRole,
@@ -20,8 +20,9 @@ import {selectUsers} from "../../redux/users/selectors";
 import {selectCompanyById} from "../../redux/companies/selectors";
 import {UserType} from "../../types/usersTypes";
 import {CompanyType} from "../../types/companiesTypes";
-import toast from "react-hot-toast";
+import {fetchUsers} from "../../redux/users/operations";
 import {selectUser} from "../../redux/auth/selectors";
+import {selectError} from "../../redux/actions/selectors";
 import {useNavigate, useParams} from "react-router-dom";
 import {mainUrls} from "../../config/urls";
 import BaseModalWindow from "../../components/BaseModalWindow/BaseModalWindow";
@@ -46,21 +47,18 @@ const CompanyMembersPage: React.FC = () => {
   const [openChangeRoleModal, setOpenChangeRoleModal] = useState<boolean>(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const company = useSelector(selectCompanyById) as CompanyType;
-  const loading = useSelector(selectLoading);
+  const loading = useSelector<boolean>(selectLoading);
   const navigate = useNavigate();
-  const error = useSelector(selectError);
+  const skip = 1;
+  const limit = 100;
+
 
   useEffect(() => {
     if (id) {
       dispatch(fetchMembers(id));
+      dispatch(fetchUsers({skip, limit}));
     }
-  }, [id, dispatch]);
-
-  useEffect(() => {
-    if (error) {
-      toast.error(`Error: ${error}`);
-    }
-  }, [error]);
+  }, [id, dispatch, currentMember]);
 
   const handleOpenDeleteModal = (member: memberType) => {
     setCurrentMember(member);
@@ -76,8 +74,7 @@ const CompanyMembersPage: React.FC = () => {
 
   const handleDeleteMember = () => {
     if (currentMember) {
-      dispatch(deleteMember(currentMember.id));
-      toast.success(`Member deleted successfully`);
+      dispatch(deleteMember(currentMember?.id));
     }
     closeModal();
   };
@@ -89,8 +86,7 @@ const CompanyMembersPage: React.FC = () => {
 
   const handleLeave = () => {
     if (currentMember) {
-      dispatch(leaveFromCompany(currentMember.id));
-      toast.success(`Member left successfully`);
+      dispatch(leaveFromCompany(currentMember?.id));
     }
     closeModal();
   };
@@ -102,12 +98,13 @@ const CompanyMembersPage: React.FC = () => {
 
   const handleChangeRole = () => {
     if (currentMember) {
-      if (currentMember.role === "user") {
-        dispatch(addAdminRole({companyId: currentMember.company_id, userId: currentMember.user_id}));
-      } else if (currentMember.role === "admin") {
-        dispatch(deleteAdminRole({companyId: currentMember.company_id, userId: currentMember.user_id}));
+      dispatch(fetchMembers(company?.id))
+      if (currentMember?.role === "user") {
+        dispatch(addAdminRole({companyId: currentMember?.company_id, userId: currentMember?.user_id}));
       }
-      toast.success(`Role changed successfully`);
+      if (currentMember?.role === "admin") {
+        dispatch(deleteAdminRole({companyId: currentMember?.company_id, userId: currentMember?.user_id}));
+      }
     }
     closeModal();
   };
@@ -123,7 +120,6 @@ const CompanyMembersPage: React.FC = () => {
   const handleInviteUser = (userId: string) => {
     if (userId && company) {
       dispatch(createInvite({userId: userId, companyId: company.id}));
-      toast.success(`Invite created successfully`);
     }
     handleCloseMenu();
   };
@@ -131,8 +127,7 @@ const CompanyMembersPage: React.FC = () => {
   const handleCompanyAdmins = () => {
     if (company) {
       dispatch(fetchAdmins(company.id));
-      navigate(mainUrls.actions.adminsCompany(company.id));
-      toast.success(`Fetched admins successfully`);
+      navigate(mainUrls.actions.adminsCompany(company.id))
     }
   };
 
@@ -147,7 +142,6 @@ const CompanyMembersPage: React.FC = () => {
           <Typography variant="h5" gutterBottom>
             Company Members
           </Typography>
-          <Typography variant="h6">Company: "{company?.name}"</Typography>
         </Grid>
         {currentUser?.id === company?.owner_id && (
           <Box className={styles.inviteMemberButton}>

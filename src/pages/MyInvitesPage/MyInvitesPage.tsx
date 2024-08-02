@@ -22,7 +22,6 @@ import {acceptInvite, fetchMyInvites, declineInvite} from "../../redux/actions/o
 import {memberType} from "../../types/actionsTypes";
 import {UserType} from "../../types/usersTypes";
 import {selectUser} from "../../redux/auth/selectors";
-import toast from "react-hot-toast";
 
 
 const columns = [
@@ -71,11 +70,6 @@ const MyInvitesPage: React.FC = () => {
     if (selectedActionId !== null) {
       dispatch(acceptInvite(selectedActionId));
       dispatch(fetchMyInvites());
-      if (error) {
-        toast.error(`Error accepting`);
-      } else {
-        toast.success(`Invite accept successfully`);
-      }
     }
     handleCloseAcceptInviteModal();
   };
@@ -84,11 +78,6 @@ const MyInvitesPage: React.FC = () => {
     if (selectedActionId !== null) {
       dispatch(declineInvite(selectedActionId));
       dispatch(fetchMyInvites());
-      if (error) {
-        toast.error(`Error declining`);
-      } else {
-        toast.success(`Invite decline successfully`);
-      }
     }
     handleCloseDeclineInviteModal();
   };

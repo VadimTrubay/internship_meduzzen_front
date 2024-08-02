@@ -2,10 +2,9 @@ import React, {useEffect, useState} from "react";
 import {Box, Button, Grid, LinearProgress, Typography} from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import {useDispatch, useSelector} from "react-redux";
-import {selectCompanyById, selectError, selectLoading} from "../../redux/companies/selectors";
+import {selectCompanyById, selectLoading} from "../../redux/companies/selectors";
 import {FaEye, FaEyeSlash} from "react-icons/fa";
 import styles from "../UserProfilePage/UserProfilePage.module.css";
-import toast from "react-hot-toast";
 import {deleteCompanyById, fetchCompanyById, updateCompany} from "../../redux/companies/operations";
 import {useFormik} from "formik";
 import {validationSchemaUpdateCompany} from "../../validate/validationSchemaUpdateCompany";
@@ -32,7 +31,6 @@ const CompanyProfilePage: React.FC = () => {
   const currentUser = useSelector(selectUser) as UserType;
   const companyById = useSelector(selectCompanyById) as CompanyUpdateType | CompanyType;
   const loading = useSelector<boolean>(selectLoading);
-  const error = useSelector<string>(selectError);
 
   const handleOpenEditCompanyModal = () => setOpenEditCompanyModal(true);
   const handleCloseEditCompanyModal = () => {
@@ -44,9 +42,6 @@ const CompanyProfilePage: React.FC = () => {
   useEffect(() => {
     if (id) {
       dispatch(fetchCompanyById(id));
-      if (error) {
-        toast.error(`Error fetching company`);
-      }
     }
   }, [id, dispatch])
 
@@ -64,11 +59,6 @@ const CompanyProfilePage: React.FC = () => {
         dispatch(updateCompany(values));
         dispatch(fetchCompanyById(companyById?.id));
         navigate(mainUrls.companies.byId(companyById?.id));
-        if (error) {
-          toast.error(`Error updating`)
-        } else {
-          toast.success(`Company edited successfully`)
-        }
       }
       handleCloseEditCompanyModal();
     },
@@ -78,11 +68,6 @@ const CompanyProfilePage: React.FC = () => {
     if (companyById) {
       dispatch(deleteCompanyById(companyById?.id));
       navigate(companies);
-      if (error) {
-        toast.error(`Error deleting`)
-      } else {
-        toast.success(`Company deleted successfully`)
-      }
     }
     closeModal();
   };

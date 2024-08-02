@@ -19,11 +19,10 @@ import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import DoneIcon from "@mui/icons-material/Done";
 import {AppDispatch} from "../../redux/store";
 import {memberType} from "../../types/actionsTypes";
-import toast from "react-hot-toast";
 import {selectLoading} from "../../redux/actions/selectors";
 import {selectCompanyById} from "../../redux/companies/selectors";
 import {CompanyType} from "../../types/companiesTypes";
-import {acceptRequest, declineRequest, fetchCompanyInvites, fetchCompanyRequests} from "../../redux/actions/operations";
+import {acceptRequest, declineRequest, fetchCompanyRequests} from "../../redux/actions/operations";
 import {useParams} from "react-router-dom";
 
 
@@ -43,7 +42,6 @@ const CompanyRequestsPage: React.FC = () => {
   const [openDeclineRequestModal, setOpenDeclineRequestModal] = useState<boolean>(false);
   const [selectedActionId, setSelectedActionId] = useState<string | null>(null);
   const loading = useSelector<boolean>(selectLoading);
-  const error = useSelector<string>(selectError);
 
 
   useEffect(() => {
@@ -51,13 +49,6 @@ const CompanyRequestsPage: React.FC = () => {
       dispatch(fetchCompanyRequests(id));
     }
   }, [id, dispatch])
-
-   useEffect(() => {
-    if (error) {
-      toast.error(`Error fetching invites`);
-    }
-  }, [error]);
-
 
   const handleOpenAcceptRequestModal = (requestId: string) => {
     setSelectedActionId(requestId);
@@ -82,11 +73,6 @@ const CompanyRequestsPage: React.FC = () => {
   const handleAcceptRequest = () => {
     if (selectedActionId !== null) {
       dispatch(acceptRequest(selectedActionId));
-      if (error) {
-        toast.error(`Error accepting`);
-      } else {
-        toast.success(`Request accept successfully`);
-      }
     }
     handleCloseAcceptRequestModal();
   };
@@ -94,11 +80,6 @@ const CompanyRequestsPage: React.FC = () => {
   const handleDeclineRequest = () => {
     if (selectedActionId !== null) {
       dispatch(declineRequest(selectedActionId));
-      if (error) {
-        toast.error(`Error declining`);
-      } else {
-        toast.success(`Request decline successfully`);
-      }
     }
     handleCloseDeclineRequestModal();
   };

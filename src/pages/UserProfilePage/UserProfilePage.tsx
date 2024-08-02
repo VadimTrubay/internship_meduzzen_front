@@ -19,7 +19,6 @@ import {selectUserById} from "../../redux/users/selectors";
 import {selectError, selectLoading, selectUser} from "../../redux/auth/selectors";
 import {useNavigate, useParams} from "react-router-dom";
 import {mainUrls} from "../../config/urls";
-import toast from "react-hot-toast";
 import {RouterEndpoints} from "../../config/routes";
 import {UserType} from "../../types/usersTypes";
 import BaseModalWindow from "../../components/BaseModalWindow/BaseModalWindow";
@@ -50,9 +49,6 @@ const UserProfilePage: React.FC = () => {
   useEffect(() => {
     if (id) {
       dispatch(fetchUserById(id));
-      if (error) {
-        toast.error(`Error fetching user`);
-      }
     }
   }, [id, dispatch])
 
@@ -69,11 +65,6 @@ const UserProfilePage: React.FC = () => {
     onSubmit: (values) => {
       if (formikEditUsername.isValid) {
         dispatch(updateUsername({id: values.id, username: values.username}));
-        if (error) {
-          toast.error(`Error editing`);
-        } else {
-          toast.success(`User edited successfully`);
-        }
       }
       handleCloseEditUsernameModal();
     },
@@ -85,11 +76,6 @@ const UserProfilePage: React.FC = () => {
     onSubmit: (values) => {
       if (formikEditPassword.isValid) {
         dispatch(updatePassword({id: values.id, password: values.password, new_password: values.new_password}));
-        if (error) {
-          toast.error(`Error editing`);
-        } else {
-          toast.success(`User edited successfully`);
-        }
       }
       handleCloseEditPasswordModal();
     },
@@ -100,11 +86,6 @@ const UserProfilePage: React.FC = () => {
       dispatch(deleteUser(currentUser.id));
       dispatch(logOut());
       navigate(RouterEndpoints.login);
-      if (error) {
-        toast.error(`Error deleting`);
-      } else {
-        toast.success(`User deleted successfully`);
-      }
     }
     closeModal();
   };
