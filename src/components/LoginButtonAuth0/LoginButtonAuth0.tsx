@@ -3,10 +3,12 @@ import {useDispatch} from "react-redux";
 import Button from "@mui/material/Button";
 import {Box} from "@mui/material";
 import {useAuth0} from "@auth0/auth0-react";
-import {loginAuth0} from "../../redux/auth/slice";
-import {setAuthHeader} from "../../utils/auth_utils";
+import {setAccessToken} from "../../redux/auth/slice";
+import {getMe} from "../../redux/auth/operations";
 import styles from "./LoginButtonAuth0.module.css";
 import {AppDispatch} from "../../redux/store";
+
+const audience = process.env.REACT_APP_AUTH0_AUDIENCE as string;
 
 export const LoginButtonAuth0 = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -15,9 +17,14 @@ export const LoginButtonAuth0 = () => {
   useEffect(() => {
     const fetchToken = async () => {
       try {
-        const token = await getAccessTokenSilently();
-        setAuthHeader(token);
-        dispatch(loginAuth0(true));
+        const token = await getAccessTokenSilently({
+          authorizationParams: {
+            audience: audience,
+            prompt: "consent",
+          },
+        });
+        dispatch(setAccessToken(token));
+        dispatch(getMe(token));
       } catch (error) {
         console.error('Error fetching access token:', error);
       }

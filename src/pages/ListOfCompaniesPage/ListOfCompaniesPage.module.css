@@ -18,3 +18,8 @@
   margin-top: 10px;
   margin-bottom: 10px;
 }
+
+.filterCompanies {
+  display: flex;
+  justify-content: center;
+}

@@ -1,6 +1,4 @@
-import axios from "axios";
 import {createAsyncThunk} from "@reduxjs/toolkit";
-import {baseURL} from "../../utils/process_base_url";
 import {
   CompanyAddType,
   CompanyUpdateType,
@@ -8,7 +6,6 @@ import {
 } from "../../types/companiesTypes";
 import {editCompany, getCompanies, getCompanyById, removeCompany, submitCompany} from "../../api/api_companies";
 
-axios.defaults.baseURL = baseURL;
 
 export const addCompany = createAsyncThunk(
   "companies/addCompany",

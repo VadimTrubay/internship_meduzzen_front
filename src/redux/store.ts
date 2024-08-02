@@ -14,6 +14,8 @@ import {authReducer} from "./auth/slice";
 import testReducer from "./test_string/slice";
 import {usersReducer} from "./users/slice";
 import {companiesReducer} from "./companies/slice";
+import {actionsReducer} from "./actions/slice";
+
 
 const authPersistConfig = {
   key: "auth",
@@ -29,6 +31,7 @@ export const store = configureStore({
     test: testReducer,
     users: usersReducer,
     companies: companiesReducer,
+    actions: actionsReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

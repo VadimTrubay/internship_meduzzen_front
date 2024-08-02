@@ -1,11 +1,16 @@
 import React from "react";
 import Button from "@mui/material/Button";
 import styles from "./TermsPage.module.css";
+import {Grid, Typography} from "@mui/material";
 
 const TermsPage: React.FC = () => {
   return (
     <div className={styles.container}>
-      <h1>Terms</h1>
+      <Grid item xs={12}>
+        <Typography variant="h5" gutterBottom>
+          Terms
+        </Typography>
+      </Grid>
       <h2>Website Terms of Service</h2>
       <p>
         Last updated <span>2024-03-02</span>
@@ -1439,8 +1444,8 @@ const TermsPage: React.FC = () => {
       </p>
       <div className={styles.button}>
         <Button className={styles.button}
-          href="/register"
-          variant="contained"
+                href="/register"
+                variant="contained"
         >
           Go back
         </Button>

@@ -1,20 +1,24 @@
 import React from "react";
 import TableCell from "@mui/material/TableCell";
 import Avatar from "@mui/material/Avatar";
-import {useNavigate} from "react-router-dom";
+import {NavLink, useNavigate} from "react-router-dom";
 import {fetchUserById} from "../../redux/users/operations";
 import {useDispatch} from "react-redux";
 import {AppDispatch} from "../../redux/store";
 import styles from "./User.module.css";
+import {mainUrls} from "../../config/urls";
+import {UserProps} from "../../types/usersTypes";
 
 
-const User: React.FC = ({user}) => {
+const User: React.FC<UserProps> = ({user}) => {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
 
-  const handleGetUser = (id: string) => {
-    dispatch(fetchUserById(id));
-    navigate(`/user/${id}`);
+  const handleGetUser = (userid: string) => {
+    if (userid) {
+      dispatch(fetchUserById(userid));
+      navigate(mainUrls.users.byId(userid));
+    }
   };
 
   return (
@@ -23,9 +27,10 @@ const User: React.FC = ({user}) => {
         <Avatar className={styles.avatar}/>
       </TableCell>
       <TableCell sx={{padding: "3px"}} align="center">
-        <span className={styles.link} onClick={() => handleGetUser(user?.id)}>
+        <NavLink className={styles.link} to={mainUrls.users.byId(user?.id)}
+                 onClick={() => handleGetUser(user?.id)}>
           {user?.username}
-        </span>
+        </NavLink>
       </TableCell>
       <TableCell sx={{padding: "3px"}} align="center">
         {user?.email}

@@ -11,12 +11,20 @@ import UserAuthorizationPage from "../pages/UserAuthorizationPage/UserAuthorizat
 import ListOfUsersPage from "../pages/ListOfUsersPage/ListOfUsersPage";
 import ListOfCompaniesPage from "../pages/ListOfCompaniesPage/ListOfCompaniesPage";
 import CompanyProfilePage from "../pages/CompanyProfilePage/CompanyProfilePage";
+import CompanyMembersPage from "../pages/CompanyMembersPage/CompanyMembersPage";
 import {selectLoading, selectIsLoggedIn} from "../redux/auth/selectors";
 import {useDispatch, useSelector} from "react-redux";
 import {getMe} from "../redux/auth/operations";
 import {Box, LinearProgress} from "@mui/material";
 import {AppDispatch} from "../redux/store";
 import UserProfilePage from "../pages/UserProfilePage/UserProfilePage";
+import {useAuth0} from "@auth0/auth0-react";
+import {RouterEndpoints} from "../config/routes";
+import MyInvitesPage from "../pages/MyInvitesPage/MyInvitesPage";
+import MyRequestsPage from "../pages/MyRequestsPage/MyRequestsPage";
+import CompanyInvitesPage from "../pages/CompanyInvitesPage/CompanyInvitesPage";
+import CompanyRequestsPage from "../pages/CompanyRequestsPage/CompanyRequestsPage";
+
 
 const HomePage = lazy(() => import("../pages/HomePage/HomePage"));
 const AboutPage = lazy(() => import("../pages/AboutPage/AboutPage"));
@@ -26,12 +34,13 @@ const NotFoundPage = lazy(() => import("../pages/NotFoundPage/NotFoundPage"));
 const App: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const isLoggedIn = useSelector<boolean>(selectIsLoggedIn);
+  const {isAuthenticated} = useAuth0()
   const loading = useSelector(selectLoading);
 
 
   useEffect(() => {
     dispatch(getMe());
-  }, [dispatch, isLoggedIn]);
+  }, [isAuthenticated, isLoggedIn, dispatch]);
 
   return (
     loading ?
@@ -42,39 +51,59 @@ const App: React.FC = () => {
       ) : (
         <Layout className={styles.container}>
           <Routes>
-            <Route path="/" element={<HomePage/>}/>
-            <Route path="about" element={<AboutPage/>}/>
-            <Route path="healthcheck" element={<HealthCheck/>}/>
+            <Route path={RouterEndpoints.index} element={<HomePage/>}/>
+            <Route path={RouterEndpoints.about} element={<AboutPage/>}/>
+            <Route path={RouterEndpoints.healthcheck} element={<HealthCheck/>}/>
             <Route
-              path="signup"
+              path={RouterEndpoints.signup}
               element={
-                <RestrictedRoute redirectTo="/" component={<UserRegistrationPage/>}/>
+                <RestrictedRoute redirectTo={RouterEndpoints.index} component={<UserRegistrationPage/>}/>
               }
             />
             <Route
-              path="login"
+              path={RouterEndpoints.login}
               element={
-                <RestrictedRoute redirectTo="/" component={<UserAuthorizationPage/>}/>
+                <RestrictedRoute redirectTo={RouterEndpoints.index} component={<UserAuthorizationPage/>}/>
               }
             />
             <Route
-              path="users"
-              element={<PrivateRoute redirectTo="/login" component={<ListOfUsersPage/>}/>}
+              path={RouterEndpoints.users}
+              element={<PrivateRoute redirectTo={RouterEndpoints.login} component={<ListOfUsersPage/>}/>}
             />
             <Route
-              path="user/:id"
-              element={<PrivateRoute redirectTo="/login" component={<UserProfilePage/>}/>}
+              path={`${RouterEndpoints.users}/${RouterEndpoints.id}`}
+              element={<PrivateRoute redirectTo={RouterEndpoints.login} component={<UserProfilePage/>}/>}
             />
             <Route
-              path="companies"
-              element={<PrivateRoute redirectTo="/login" component={<ListOfCompaniesPage/>}/>}
+              path={RouterEndpoints.companies}
+              element={<PrivateRoute redirectTo={RouterEndpoints.login} component={<ListOfCompaniesPage/>}/>}
             />
             <Route
-              path="companies/:id"
-              element={<PrivateRoute redirectTo="/login" component={<CompanyProfilePage/>}/>}
+              path={`${RouterEndpoints.companies}/${RouterEndpoints.id}`}
+              element={<PrivateRoute redirectTo={RouterEndpoints.login} component={<CompanyProfilePage/>}/>}
             />
-            <Route path="terms" element={<TermsPage/>}/>
-            <Route path="*" element={<NotFoundPage/>}/>
+            <Route
+              path={`${RouterEndpoints.actions}/${RouterEndpoints.company}/${RouterEndpoints.id}/${RouterEndpoints.members}`}
+              element={<PrivateRoute redirectTo={RouterEndpoints.login} component={<CompanyMembersPage/>}/>}
+            />
+            <Route
+              path={`${RouterEndpoints.actions}/${RouterEndpoints.my}/${RouterEndpoints.invites}`}
+              element={<PrivateRoute redirectTo={RouterEndpoints.login} component={<MyInvitesPage/>}/>}
+            />
+            <Route
+              path={`${RouterEndpoints.actions}/${RouterEndpoints.my}/${RouterEndpoints.requests}`}
+              element={<PrivateRoute redirectTo={RouterEndpoints.login} component={<MyRequestsPage/>}/>}
+            />
+            <Route
+              path={`${RouterEndpoints.actions}/${RouterEndpoints.company}/${RouterEndpoints.id}/${RouterEndpoints.invites}`}
+              element={<PrivateRoute redirectTo={RouterEndpoints.login} component={<CompanyInvitesPage/>}/>}
+            />
+            <Route
+              path={`${RouterEndpoints.actions}/${RouterEndpoints.company}/${RouterEndpoints.id}/${RouterEndpoints.requests}`}
+              element={<PrivateRoute redirectTo={RouterEndpoints.login} component={<CompanyRequestsPage/>}/>}
+            />
+            <Route path={RouterEndpoints.terms} element={<TermsPage/>}/>
+            <Route path={RouterEndpoints.notFound} element={<NotFoundPage/>}/>
           </Routes>
         </Layout>)
   )

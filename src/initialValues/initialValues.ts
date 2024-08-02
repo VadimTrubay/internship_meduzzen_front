@@ -1,5 +1,5 @@
 import {CompanyAddType, CompanyUpdateType} from "../types/companiesTypes";
-import {PasswordUpdateType, UserAuthorizationType, UserRegistrationType} from "../types/authTypes";
+import {PasswordUpdateType, UserAuthorizationType, UsernameUpdateType, UserRegistrationType} from "../types/authTypes";
 
 export const initialValues: CompanyAddType = {
   name: "",
@@ -8,16 +8,19 @@ export const initialValues: CompanyAddType = {
 };
 
 export const initialValueUpdateCompany: CompanyUpdateType = {
+  id: "",
   name: "",
   description: "",
   visible: true,
 };
 
-export const initialValueUpdateUsername: { username: string } = {
+export const initialValueUpdateUsername: UsernameUpdateType = {
+  id: "",
   username: "",
 };
 
 export const initialValueUpdatePassword: PasswordUpdateType = {
+  id: "",
   password: "",
   new_password: "",
   confirmPassword: "",

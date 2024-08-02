@@ -7,14 +7,14 @@ import {
   addCompany
 } from "./operations";
 import { initialCompaniesType, CompanyUpdateType, CompanyType } from "../../types/companiesTypes";
-import toast from "react-hot-toast";
+
 
 const initialCompanies: initialCompaniesType = {
   items: [],
   companyById: null,
-  totalCount: null,
+  totalCount: 0,
   loading: false,
-  error: "",
+  error: null,
 };
 
 const handlePending = (state: initialCompaniesType) => {
@@ -27,15 +27,14 @@ const handleRejected = (
 ) => {
   state.loading = false;
   state.error = action.payload;
-  toast.error(`Error operation`);
 };
 
 const handleFetchCompaniesFulfilled = (
   state: initialCompaniesType,
-  action: PayloadAction<{ items: CompanyType[], total_count: number }>
+  action: PayloadAction<any>
 ) => {
   state.loading = false;
-  state.error = "";
+  state.error = null;
   state.items = action.payload;
   state.totalCount = action.payload.total_count;
 };
@@ -45,17 +44,16 @@ const handleAddCompanyFulfilled = (
   action: PayloadAction<CompanyType>
 ) => {
   state.loading = false;
-  state.error = "";
+  state.error = null;
   state.items.companies.push(action.payload);
-  toast.success(`Company added successfully`);
 };
 
 const handleGetCompanyByIdFulfilled = (
   state: initialCompaniesType,
-  action: PayloadAction<CompanyType>
+  action: PayloadAction<null>
 ) => {
   state.loading = false;
-  state.error = "";
+  state.error = null;
   state.companyById = action.payload;
 };
 
@@ -64,22 +62,20 @@ const handleUpdateCompanyFulfilled = (
   action: PayloadAction<CompanyUpdateType>
 ) => {
   state.loading = false;
-  state.error = "";
-  const index = state.items.findIndex(company => company.id === action.payload.id);
+  state.error = null;
+  const index = state.items.companies.findIndex(company => company.id === action.payload.id);
   if (index !== -1) {
     state.items[index] = { ...state.items[index], ...action.payload };
   }
-  toast.success(`Company updated successfully`);
 };
 
 const handleDeleteCompanyByIdFulfilled = (
   state: initialCompaniesType,
-  action: PayloadAction<string>
+  action: PayloadAction<CompanyType>
 ) => {
   state.loading = false;
-  state.error = "";
-  state.items = state.items.filter(company => company.id !== action.payload);
-  toast.success(`Company deleted successfully`);
+  state.error = null;
+  state.items = state.items.companies.filter(company => company.id !== action.payload.id);
 };
 
 const companiesSlice = createSlice({

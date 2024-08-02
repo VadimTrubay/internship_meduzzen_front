@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import Button from "@mui/material/Button";
 import {Box, Grid, Modal, TextField, Typography, FormControlLabel, Checkbox} from "@mui/material";
 import {AppDispatch} from "../../redux/store";
@@ -8,31 +8,46 @@ import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import DoneIcon from "@mui/icons-material/Done";
 import {useFormik} from "formik";
 import {validationSchemaAddCompany} from "../../validate/validationSchemaAddCompany";
-import {Toaster} from "react-hot-toast";
-import {style, StyledBox, Text} from "./ListOfCompaniesPage.styled";
+import toast from "react-hot-toast";
+import {style, StyledBox, Text} from "../../utils/BaseModal.styled";
 import {addCompany} from "../../redux/companies/operations";
 import {initialValues} from "../../initialValues/initialValues";
 import styles from "./ListOfCompaniesPage.module.css";
+import {selectError, selectUser} from "../../redux/auth/selectors";
+import {selectCompanies} from "../../redux/companies/selectors";
+import {CompaniesListProps} from "../../types/companiesTypes";
+import {UserType} from "../../types/usersTypes";
 
 const ListOfCompaniesPage: React.FC = () => {
-  const [openAddCompanyModal, setOpenAddCompanyModal] = useState<boolean>(false);
   const dispatch = useDispatch<AppDispatch>();
+  const [openAddCompanyModal, setOpenAddCompanyModal] = useState<boolean>(false);
+  const user = useSelector(selectUser) as UserType;
+  const {companies} = useSelector(selectCompanies) as CompaniesListProps[];
+  const error = useSelector<string>(selectError);
+  const [showOption, setShowOption] = useState<number>(1);
+
 
   const handleOpenAddCompanyModal = () => {
     setOpenAddCompanyModal(true);
     formikAddCompany.resetForm();
-  }
+  };
+
   const handleCloseAddCompanyModal = () => {
     setOpenAddCompanyModal(false);
     formikAddCompany.resetForm();
-  }
+  };
 
   const formikAddCompany = useFormik({
     initialValues: initialValues,
     validationSchema: validationSchemaAddCompany,
     onSubmit: (values) => {
       if (formikAddCompany.isValid) {
-        dispatch(addCompany(values))
+        dispatch(addCompany(values));
+        if (error) {
+          toast.error(`Error adding`);
+        } else {
+          toast.success(`Company added successfully`);
+        }
       }
       handleCloseAddCompanyModal();
     },
@@ -43,24 +58,68 @@ const ListOfCompaniesPage: React.FC = () => {
     formikAddCompany.resetForm();
   };
 
+  const handleCheckboxChange = (option: number) => {
+    setShowOption(option);
+  };
+
+  const filteredCompanies = (() => {
+    switch (showOption) {
+      case 0:
+        return companies;
+      case 1:
+        return companies?.filter(company => company.owner_id === user.id);
+      case 2:
+        return companies?.filter(company => company.owner_id !== user.id);
+      default:
+        return companies;
+    }
+  })();
+
   return (
     <>
       <Grid container direction="column" alignItems="center">
         <Grid item xs={12}>
-          <Typography variant="h4" gutterBottom>
+          <Typography variant="h5" gutterBottom>
             Companies
           </Typography>
         </Grid>
       </Grid>
       <Box className={styles.addCompanyButton}>
-        <Button
-          variant="contained"
-          onClick={handleOpenAddCompanyModal}
-        >
+        <Button variant="contained" onClick={handleOpenAddCompanyModal}>
           + Add Company
         </Button>
       </Box>
-      <CompaniesList/>
+      <Box className={styles.filterCompanies}>
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={showOption === 0}
+              onChange={() => handleCheckboxChange(0)}
+            />
+          }
+          label="All"
+        />
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={showOption === 1}
+              onChange={() => handleCheckboxChange(1)}
+            />
+          }
+          label="Me"
+        />
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={showOption === 2}
+              onChange={() => handleCheckboxChange(2)}
+            />
+          }
+          label="Others"
+        />
+      </Box>
+      <CompaniesList companies={filteredCompanies}/>
+
       {/* Add company modal */}
       <Modal
         open={openAddCompanyModal}
@@ -125,8 +184,6 @@ const ListOfCompaniesPage: React.FC = () => {
           </StyledBox>
         </Box>
       </Modal>
-
-      <Toaster position="top-center"/>
     </>
   );
 };

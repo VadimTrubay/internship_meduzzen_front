@@ -16,12 +16,13 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import {validationSchemaRegistration} from "../../validate/validationSchemaRegistration.js";
 import {LoginButtonAuth0} from "../../components/LoginButtonAuth0/LoginButtonAuth0";
 import {signUp} from "../../redux/auth/operations";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch} from "../../redux/store";
 import styles from "../UserRegistrationPage/UserRegistrationPage.module.css";
 import {initialValueUserRegistration} from "../../initialValues/initialValues";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
+
 
 const defaultTheme = createTheme();
 
@@ -30,6 +31,7 @@ const RegistrationForm = () => {
   const [terms, setTerms] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false);
+
 
   const handleClickShowPassword = () => setShowPassword(!showPassword);
   const handleClickShowConfirmPassword = () => setShowConfirmPassword(!showConfirmPassword);

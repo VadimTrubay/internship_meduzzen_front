@@ -1,0 +1,46 @@
+export const auth = "/auth";
+export const users = "/users";
+export const companies = "/companies";
+export const actions = "/actions";
+
+
+export const mainUrls = {
+  index: "/",
+  id: ":id",
+  about: "about",
+  terms: "terms",
+  notFound: "*",
+  healthcheck: "/healthcheck",
+  auth: {
+    signup: `${auth}/signup`,
+    login: `${auth}/login`,
+    me: `${auth}/me`
+  },
+  users: {
+    submit: users,
+    all: (skip: number, limit: number) => `${users}?skip=${skip}&limit=${limit}`,
+    byId: (id: string) => `${users}/${id}`,
+  },
+  companies: {
+    submit: companies,
+    all: (skip: number, limit: number) => `${companies}?skip=${skip}&limit=${limit}`,
+    byId: (id: string) => `${companies}/${id}`,
+  },
+  actions: {
+    myInvites: `${actions}/my/invites`,
+    myRequests: `${actions}/my/requests`,
+    sendInvite: (companyId: string, userId: string) => `${actions}/company/${companyId}/invite/user/${userId}`,
+    deleteInvite: (actionId: string) => `${actions}/${actionId}/invite`,
+    acceptInvite: (actionId: string) => `${actions}/${actionId}/invite/accept`,
+    declineInvite: (actionId: string) => `${actions}/${actionId}/invite/decline`,
+    sendRequest: (companyId: string, userId: string) => `${actions}/company/${companyId}/request/user/${userId}`,
+    deleteRequest: (actionId: string) => `${actions}/${actionId}/request`,
+    acceptRequest: (actionId: string) => `${actions}/${actionId}/request/accept`,
+    declineRequest: (actionId: string) => `${actions}/${actionId}/request/decline`,
+    leave: (actionId: string) => `${actions}/${actionId}/leave/`,
+    kick: (actionId: string) => `${actions}/${actionId}/kick`,
+    companyInvites: (companyId: string) => `${actions}/company/${companyId}/invites`,
+    companyRequests: (companyId: string) => `${actions}/company/${companyId}/requests`,
+    membersCompany: (companyId: string) => `${actions}/company/${companyId}/members`,
+  }
+}

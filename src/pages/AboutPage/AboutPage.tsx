@@ -1,10 +1,15 @@
 import React from "react";
 import styles from "./AboutPage.module.css";
+import {Grid, Typography} from "@mui/material";
 
 const AboutPage: React.FC = () => {
   return (
     <div className={styles.title}>
-      <h2>About</h2>
+        <Grid item xs={12}>
+          <Typography variant="h5" gutterBottom>
+            About
+          </Typography>
+        </Grid>
       <p>Meduzzen
         Outstaff and outsourcing agency, IT recruiting. Python (Django, FastAPI, Flask),</p>
       <p>

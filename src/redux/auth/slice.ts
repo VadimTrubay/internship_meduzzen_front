@@ -2,7 +2,6 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {signUp, signIn, logOut, getMe} from "./operations";
 import {authType, initialAuthType, PasswordUpdateType, UsernameUpdateType} from "../../types/authTypes";
 import {updatePassword, updateUsername} from "../users/operations";
-import toast from "react-hot-toast";
 
 const initialAuth: initialAuthType = {
   user: {
@@ -16,7 +15,7 @@ const initialAuth: initialAuthType = {
   access_token: "",
   isLoggedIn: false,
   loading: false,
-  error: "",
+  error: null,
 };
 
 const handlePending = (state: initialAuthType) => {
@@ -26,26 +25,25 @@ const handlePending = (state: initialAuthType) => {
 const handleRejected = (state: initialAuthType, action: PayloadAction<any>) => {
   state.loading = false;
   state.error = action.payload;
-  toast.error(`Error operation`);
 };
 
-const handleSignUpFulfilled = (state: initialAuthType, action: PayloadAction<authType>) => {
+const handleSignUpFulfilled = (state: initialAuthType, action: PayloadAction<initialAuthType>) => {
   state.loading = false;
-  state.error = "";
+  state.error = null;
   state.access_token = action.payload.access_token;
   state.isLoggedIn = true;
 };
 
-const handleSignInFulfilled = (state: initialAuthType, action: PayloadAction<authType>) => {
+const handleSignInFulfilled = (state: initialAuthType, action: PayloadAction<initialAuthType>) => {
   state.loading = false;
-  state.error = "";
+  state.error = null;
   state.access_token = action.payload.access_token;
   state.isLoggedIn = true;
 };
 
 const handleGetMeFulfilled = (state: initialAuthType, action: PayloadAction<authType>) => {
   state.loading = false;
-  state.error = "";
+  state.error = null;
   state.isLoggedIn = true;
   state.user.id = action.payload.id;
   state.user.username = action.payload.username;
@@ -55,22 +53,22 @@ const handleGetMeFulfilled = (state: initialAuthType, action: PayloadAction<auth
 
 const handleUpdateUsernameFulfilled = (state: initialAuthType, action: PayloadAction<UsernameUpdateType>) => {
   state.loading = false;
-  state.error = "";
+  state.error = null;
   state.user.id = action.payload.id;
   state.user.username = action.payload.username;
-  toast.success(`Username updated successfully`);
 };
 
 const handleUpdatePasswordFulfilled = (state: initialAuthType, action: PayloadAction<PasswordUpdateType>) => {
   state.loading = false;
-  state.error = "";
+  state.error = null;
   state.user.id = action.payload.id;
   state.user.password = "";
   state.user.new_password = "";
-  toast.success(`Password updated successfully`);
 };
 
 const handleLogOutFulfilled = (state: initialAuthType) => {
+  state.loading = false;
+  state.error = null;
   state.user = {
     id: "", username: "",
     email: "", password: "",
@@ -85,8 +83,8 @@ const authSlice = createSlice({
   name: "auth",
   initialState: initialAuth,
   reducers: {
-    loginAuth0(state: initialAuthType, action: PayloadAction<boolean>) {
-      state.isLoggedIn = action.payload;
+    setAccessToken(state: initialAuthType, action: PayloadAction<string>) {
+      state.access_token = action.payload;
     }
   },
   extraReducers: (builder) => {
@@ -112,5 +110,5 @@ const authSlice = createSlice({
   }
 });
 
-export const {loginAuth0} = authSlice.actions;
+export const {setAccessToken} = authSlice.actions;
 export const authReducer = authSlice.reducer;

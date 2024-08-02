@@ -1,9 +1,9 @@
 export interface initialCompaniesType {
-  items: Array<CompanyType>;
-  companyById: CompanyType | null;
-  totalCount: number | null;
+  items: CompanyType[];
+  companyById: null;
+  totalCount: number;
   loading: boolean;
-  error: string;
+  error: null;
 }
 
 export interface CompanyType {
@@ -19,10 +19,6 @@ export interface FetchCompaniesParams {
   limit: number;
 }
 
-export interface CompanyProps {
-  company: CompanyType;
-}
-
 export interface CompanyUpdateType {
   id: string;
   name?: string;
@@ -34,4 +30,8 @@ export interface CompanyAddType {
   name: string,
   description: string,
   visible: boolean,
+}
+
+export interface CompaniesListProps {
+  companies: CompanyType[];
 }

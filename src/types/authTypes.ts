@@ -1,16 +1,9 @@
 export interface initialAuthType {
-  user: {
-    id: string;
-    username: string;
-    email: string;
-    password: string;
-    new_password: string;
-    is_admin: boolean;
-  },
+  user: authType,
   access_token: string;
   isLoggedIn: boolean;
   loading: boolean;
-  error: string;
+  error: null;
 }
 
 export interface authType {
@@ -20,7 +13,14 @@ export interface authType {
   password: string;
   new_password: string;
   is_admin: boolean;
-  access_token: string;
+}
+
+export interface authUserType {
+  id: string;
+  username: string;
+  email: string;
+  password: string;
+  is_admin: boolean;
 }
 
 export interface UsernameUpdateType {
@@ -29,6 +29,7 @@ export interface UsernameUpdateType {
 }
 
 export interface PasswordUpdateType {
+  id: string;
   password: string;
   new_password: string;
   confirmPassword: string;

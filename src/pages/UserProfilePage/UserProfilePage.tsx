@@ -2,57 +2,68 @@ import React, {useState, useEffect} from "react";
 import styles from "./UserProfilePage.module.css";
 import {useDispatch, useSelector} from "react-redux";
 import {useFormik} from "formik";
-import {useAuth0} from "@auth0/auth0-react";
 import Avatar from "@mui/material/Avatar";
 import {Grid, Typography, Button, Box, Modal, TextField} from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DoneIcon from "@mui/icons-material/Done";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
-import {Toaster} from "react-hot-toast";
 import {AppDispatch} from "../../redux/store";
 import {deleteUser, updatePassword, updateUsername} from "../../redux/users/operations";
 import {getMe, logOut} from "../../redux/auth/operations";
 import {validationSchemaUpdateUsername} from "../../validate/validationSchemaUpdateUsername.js";
 import {validationSchemaUpdatePassword} from "../../validate/validationSchemaUpdatePassword";
 import {initialValueUpdatePassword, initialValueUpdateUsername} from "../../initialValues/initialValues";
-import {style, StyledBox, Text} from "./UserProfilePage.styled";
+import {style, StyledBox, Text} from "../../utils/BaseModal.styled";
 import {selectUserById} from "../../redux/users/selectors";
-import {selectUser} from "../../redux/auth/selectors";
+import {selectError, selectUser} from "../../redux/auth/selectors";
+import {useNavigate} from "react-router-dom";
+import {mainUrls} from "../../config/urls";
+import toast from "react-hot-toast";
+import {RouterEndpoints} from "../../config/routes";
+import {UserType} from "../../types/usersTypes";
+import {getUserById} from "../../api/api_users";
+import BaseModalWindow from "../../components/BaseModalWindow/BaseModalWindow";
 
-const UserProfilePage = () => {
+
+const UserProfilePage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const currentUser = useSelector(selectUser);
-  const user = useSelector(selectUserById);
-  const userAuth0 = useAuth0();
+  const navigate = useNavigate();
   const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
   const [openEditUsernameModal, setOpenEditUsernameModal] = useState<boolean>(false);
   const [openEditPasswordModal, setOpenEditPasswordModal] = useState<boolean>(false);
+  const currentUser = useSelector(selectUser) as UserType;
+  const userById = useSelector(selectUserById) as UserType;
+  const error = useSelector<string>(selectError);
 
 
   const handleOpenEditUsernameModal = () => setOpenEditUsernameModal(true);
   const handleCloseEditUsernameModal = () => setOpenEditUsernameModal(false);
   const handleOpenEditPasswordModal = () => setOpenEditPasswordModal(true);
+  const handleOpenDeleteModal = () => setOpenDeleteModal(true);
   const handleCloseEditPasswordModal = () => {
     formikEditPassword.resetForm();
     setOpenEditPasswordModal(false);
   };
-  const handleOpenDeleteModal = () => setOpenDeleteModal(true);
-  const handleCloseDeleteModal = () => setOpenDeleteModal(false);
 
   useEffect(() => {
-    if (user) {
-      formikEditUsername.setValues(user);
+    if (currentUser) {
+      formikEditUsername.setValues(currentUser);
     }
-  }, [user])
+  }, [currentUser])
+
 
   const formikEditUsername = useFormik({
     initialValues: initialValueUpdateUsername,
     validationSchema: validationSchemaUpdateUsername,
     onSubmit: (values) => {
       if (formikEditUsername.isValid) {
-        dispatch(updateUsername(values))
-        dispatch(getMe())
+        dispatch(updateUsername({id: values.id, username: values.username}));
+        if (error) {
+          toast.error(`Error editing`);
+        } else {
+          toast.success(`User edited successfully`);
+        }
       }
       handleCloseEditUsernameModal();
     },
@@ -63,17 +74,29 @@ const UserProfilePage = () => {
     validationSchema: validationSchemaUpdatePassword,
     onSubmit: (values) => {
       if (formikEditPassword.isValid) {
-        dispatch(updatePassword({id: user.id, password: values.password, new_password: values.new_password}))
-        dispatch(getMe())
+        dispatch(updatePassword({id: values.id, password: values.password, new_password: values.new_password}));
+        if (error) {
+          toast.error(`Error editing`);
+        } else {
+          toast.success(`User edited successfully`);
+        }
       }
       handleCloseEditPasswordModal();
     },
   });
 
-  const handleDeleteContact = () => {
-    dispatch(deleteUser(user.id));
-    dispatch(logOut());
-    handleCloseDeleteModal();
+  const handleDeleteUser = () => {
+    if (currentUser.id) {
+      dispatch(deleteUser(currentUser.id));
+      dispatch(logOut());
+      navigate(RouterEndpoints.login);
+      if (error) {
+        toast.error(`Error deleting`);
+      } else {
+        toast.success(`User deleted successfully`);
+      }
+    }
+    closeModal();
   };
 
   const closeModal = () => {
@@ -86,19 +109,46 @@ const UserProfilePage = () => {
     <>
       <Grid container direction="column" alignItems="center">
         <Grid item xs={12}>
-          <Typography variant="h4" gutterBottom>
-            USER PROFILE PAGE
+          <Typography variant="h5" gutterBottom>
+            User Profile
           </Typography>
         </Grid>
+        {userById?.id === currentUser?.id &&
+          <Box marginRight={2}>
+            {/*MY INVITES*/}
+            <Button
+              onClick={() => {
+                navigate(mainUrls.actions.myInvites)
+              }}
+              variant="outlined"
+              color="success"
+              sx={{margin: 1}}
+            >
+              My Invites
+            </Button>
+
+            {/*MY REQUESTS*/}
+            <Button
+              onClick={() => {
+                navigate(mainUrls.actions.myRequests)
+              }}
+              variant="outlined"
+              color="success"
+              sx={{margin: 1}}
+            >
+              My Requests
+            </Button>
+          </Box>
+        }
         <Grid item xs={12}>
-          <Avatar src={userAuth0?.user?.picture}/>
+          <Avatar/>
         </Grid>
         <Grid item xs={12}>
           <Typography variant="h6" fontWeight="bold">
             Username:
           </Typography>
           <Typography color="textSecondary">
-            {userAuth0?.user?.name || user?.username}
+            {userById?.username}
           </Typography>
         </Grid>
         <Grid item xs={12}>
@@ -106,18 +156,12 @@ const UserProfilePage = () => {
             Email:
           </Typography>
           <Typography color="textSecondary">
-            {userAuth0?.user?.email || user?.email}
+            {userById?.email}
           </Typography>
         </Grid>
         <Grid item xs={12}>
-          <Typography variant="h6" fontWeight="bold">
-            Role:
-          </Typography>
-          <Typography color="textSecondary">
-            {user?.is_admin ? "admin" : "user"}
-          </Typography>
         </Grid>
-        {user?.id === currentUser?.id &&
+        {userById?.id === currentUser?.id &&
           <Box marginRight={2}>
             <Button
               onClick={handleOpenEditUsernameModal}
@@ -247,30 +291,17 @@ const UserProfilePage = () => {
       </Modal>
 
       {/*Delete modal*/}
-      <Modal
-        open={openDeleteModal}
-        onClose={handleCloseDeleteModal}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-          <div className={styles.close}>
-            <HighlightOffIcon onClick={closeModal} color={"error"}/>
-          </div>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            <Text className={styles.title_delete}>Delete profile</Text>
-            <Text>Are you sure you want to delete this profile?</Text>
-            <Text>&apos;{user?.username}&apos;</Text>
-          </Typography>
-          <StyledBox component="form" onSubmit={handleDeleteContact}>
-            <Button type="submit">
-              <DoneIcon sx={{fontSize: 40, color: "red"}}/>
-            </Button>
-          </StyledBox>
-        </Box>
-      </Modal>
-
-      <Toaster position="top-center"/>
+      <BaseModalWindow
+        openModal={openDeleteModal}
+        closeModal={closeModal}
+        style_close={styles.close}
+        color_off={"error"}
+        style_title={styles.title_delete}
+        title={"Delete profile"}
+        text={"Are you sure you want to delete this profile?"}
+        onSubmit={handleDeleteUser}
+        style_done={styles.done_leave}
+      />
     </>
   );
 };
