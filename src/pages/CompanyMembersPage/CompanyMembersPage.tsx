@@ -22,7 +22,6 @@ import {UserType} from "../../types/usersTypes";
 import {CompanyType} from "../../types/companiesTypes";
 import {fetchUsers} from "../../redux/users/operations";
 import {selectUser} from "../../redux/auth/selectors";
-import {selectError} from "../../redux/actions/selectors";
 import {useNavigate, useParams} from "react-router-dom";
 import {mainUrls} from "../../config/urls";
 import BaseModalWindow from "../../components/BaseModalWindow/BaseModalWindow";
@@ -53,6 +52,7 @@ const CompanyMembersPage: React.FC = () => {
   const limit = 100;
 
 
+  console.log(members)
   useEffect(() => {
     if (id) {
       dispatch(fetchMembers(id));
@@ -188,15 +188,15 @@ const CompanyMembersPage: React.FC = () => {
                   <TableCell align="center">{member?.user_username}</TableCell>
                   <TableCell align="center">{member?.role}</TableCell>
                   <TableCell align="center">
-                    {currentUser?.id === company?.owner_id &&
-                      <Button
+                    {currentUser?.id !== member?.user_id && currentUser?.id === company?.owner_id ?
+                      (<Button
                         onClick={() => handleOpenChangeRoleModal(member)}
                         variant="outlined"
                         color="primary"
                         sx={{marginRight: 1}}
                       >
                         Change Role
-                      </Button>
+                      </Button>) : null
                     }
                   </TableCell>
                   <TableCell sx={{padding: "3px"}} align="center">
@@ -209,7 +209,7 @@ const CompanyMembersPage: React.FC = () => {
                       >
                         Delete member
                       </Button>
-                    ) : currentUser?.id === member?.user_id ? (
+                    ) : currentUser?.id === member?.user_id && currentUser?.id !== company?.owner_id ? (
                       <Button
                         onClick={() => handleOpenLeaveModal(member)}
                         variant="outlined"
