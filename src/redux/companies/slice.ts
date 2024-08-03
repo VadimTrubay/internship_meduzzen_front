@@ -6,7 +6,7 @@ import {
   updateCompany,
   addCompany
 } from "./operations";
-import { initialCompaniesType, CompanyUpdateType, CompanyType } from "../../types/companiesTypes";
+import { initialCompaniesType, CompanyType } from "../../types/companiesTypes";
 import toast from "react-hot-toast";
 
 
@@ -43,7 +43,7 @@ const handleFetchCompaniesFulfilled = (
 
 const handleAddCompanyFulfilled = (
   state: initialCompaniesType,
-  action: PayloadAction<CompanyType>
+  action: PayloadAction<any>
 ) => {
   state.loading = false;
   state.error = null;
@@ -62,7 +62,7 @@ const handleGetCompanyByIdFulfilled = (
 
 const handleUpdateCompanyFulfilled = (
   state: initialCompaniesType,
-  action: PayloadAction<CompanyUpdateType>
+  action: PayloadAction<any>
 ) => {
   state.loading = false;
   state.error = null;
@@ -80,6 +80,7 @@ const handleDeleteCompanyByIdFulfilled = (
   state.loading = false;
   state.error = null;
   state.items = state.items.companies.filter(company => company.id !== action.payload.id);
+  state.companyById = null;
   toast.success(`Company deleted successfully`);
 };
 

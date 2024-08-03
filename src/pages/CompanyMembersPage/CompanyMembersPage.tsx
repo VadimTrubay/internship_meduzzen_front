@@ -25,6 +25,7 @@ import {selectUser} from "../../redux/auth/selectors";
 import {useNavigate, useParams} from "react-router-dom";
 import {mainUrls} from "../../config/urls";
 import BaseModalWindow from "../../components/BaseModalWindow/BaseModalWindow";
+import {fetchCompanies} from "../../redux/companies/operations";
 
 const columns = [
   {id: "avatar", label: "Avatar", minWidth: 50},
@@ -50,6 +51,11 @@ const CompanyMembersPage: React.FC = () => {
   const navigate = useNavigate();
   const skip = 1;
   const limit = 100;
+
+
+  useEffect(() => {
+    dispatch(fetchMembers(id));
+  }, []);
 
 
   useEffect(() => {
@@ -141,6 +147,7 @@ const CompanyMembersPage: React.FC = () => {
           <Typography variant="h5" gutterBottom>
             Company Members
           </Typography>
+          <Typography variant="h6">Company: "{company?.name}"</Typography>
         </Grid>
         {currentUser?.id === company?.owner_id && (
           <Box className={styles.inviteMemberButton}>
