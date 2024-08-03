@@ -12,8 +12,9 @@ export interface initialActionsType {
 export interface memberType {
   id: string;
   user_id: string;
-  user_username: string;
   company_id: string;
+  action_id: string;
+  user_username: string;
   company_name: string;
   role: string;
 }

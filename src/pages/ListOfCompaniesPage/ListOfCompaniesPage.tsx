@@ -12,7 +12,7 @@ import {style, StyledBox, Text} from "../../utils/BaseModal.styled";
 import {addCompany} from "../../redux/companies/operations";
 import {initialValues} from "../../initialValues/initialValues";
 import styles from "./ListOfCompaniesPage.module.css";
-import {selectError, selectUser} from "../../redux/auth/selectors";
+import {selectUser} from "../../redux/auth/selectors";
 import {selectCompanies} from "../../redux/companies/selectors";
 import {CompaniesListProps} from "../../types/companiesTypes";
 import {UserType} from "../../types/usersTypes";
@@ -22,7 +22,6 @@ const ListOfCompaniesPage: React.FC = () => {
   const [openAddCompanyModal, setOpenAddCompanyModal] = useState<boolean>(false);
   const user = useSelector(selectUser) as UserType;
   const {companies} = useSelector(selectCompanies) as CompaniesListProps;
-  const error = useSelector<string>(selectError);
   const [showOption, setShowOption] = useState<number>(0);
 
 

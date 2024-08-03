@@ -52,7 +52,6 @@ const CompanyMembersPage: React.FC = () => {
   const limit = 100;
 
 
-  console.log(members)
   useEffect(() => {
     if (id) {
       dispatch(fetchMembers(id));
@@ -74,7 +73,7 @@ const CompanyMembersPage: React.FC = () => {
 
   const handleDeleteMember = () => {
     if (currentMember) {
-      dispatch(deleteMember(currentMember?.id));
+      dispatch(deleteMember(currentMember?.action_id));
     }
     closeModal();
   };
@@ -86,7 +85,7 @@ const CompanyMembersPage: React.FC = () => {
 
   const handleLeave = () => {
     if (currentMember) {
-      dispatch(leaveFromCompany(currentMember?.id));
+      dispatch(leaveFromCompany(currentMember?.action_id));
     }
     closeModal();
   };

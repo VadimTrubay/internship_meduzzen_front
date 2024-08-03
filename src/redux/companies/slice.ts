@@ -47,7 +47,7 @@ const handleAddCompanyFulfilled = (
 ) => {
   state.loading = false;
   state.error = null;
-  state.items.push(action.payload);
+  state.items.companies.push(action.payload);
   toast.success(`Company added successfully`);
 };
 
@@ -66,7 +66,7 @@ const handleUpdateCompanyFulfilled = (
 ) => {
   state.loading = false;
   state.error = null;
-  const index = state.items.findIndex(company => company.id === action.payload.id);
+  const index = state.items.companies.findIndex(company => company.id === action.payload.id);
   if (index !== -1) {
     state.items[index] = { ...state.items[index], ...action.payload };
   }
@@ -79,7 +79,7 @@ const handleDeleteCompanyByIdFulfilled = (
 ) => {
   state.loading = false;
   state.error = null;
-  state.items = state.items.filter(company => company.id !== action.payload.id);
+  state.items = state.items.companies.filter(company => company.id !== action.payload.id);
   toast.success(`Company deleted successfully`);
 };
 
