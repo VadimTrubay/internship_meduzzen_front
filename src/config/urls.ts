@@ -2,6 +2,7 @@ export const auth = "/auth";
 export const users = "/users";
 export const companies = "/companies";
 export const actions = "/actions";
+export const quizzes = "/quizzes";
 
 
 export const mainUrls = {
@@ -45,5 +46,8 @@ export const mainUrls = {
     adminsCompany: (companyId: string) => `${actions}/company/${companyId}/admins`,
     addAdminRole: (companyId: string, userId: string) => `${actions}/company/${companyId}/add/admin/user/${userId}`,
     removeAdminRole: (companyId: string, userId: string) => `${actions}/company/${companyId}/remove/admin/user/${userId}`,
-  }
+  },
+  quizzes: {
+    companyQuizzes: (companyId: string) => `${quizzes}/company/${companyId}`,
+  },
 }

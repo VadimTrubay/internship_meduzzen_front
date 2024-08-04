@@ -22,7 +22,8 @@ import MyInvitesPage from "../pages/MyInvitesPage/MyInvitesPage";
 import MyRequestsPage from "../pages/MyRequestsPage/MyRequestsPage";
 import CompanyInvitesPage from "../pages/CompanyInvitesPage/CompanyInvitesPage";
 import CompanyRequestsPage from "../pages/CompanyRequestsPage/CompanyRequestsPage";
-import CompanyGetAdminsPage from "../pages/CompanyGetAdminsPage/CompanyGetAdminsPage";
+import CompanyAdminsPage from "../pages/CompanyAdminsPage/CompanyAdminsPage";
+import CompanyQuizzesPage from "../pages/CompanyQuizzesPage/CompanyQuizzesPage";
 
 const HomePage = lazy(() => import("../pages/HomePage/HomePage"));
 const AboutPage = lazy(() => import("../pages/AboutPage/AboutPage"));
@@ -101,7 +102,11 @@ const App = () => {
         />
         <Route
           path={`${RouterEndpoints.actions}/${RouterEndpoints.company}/${RouterEndpoints.id}/${RouterEndpoints.admins}`}
-          element={!isLoggedIn ? <Navigate to={RouterEndpoints.login}/> : <CompanyGetAdminsPage/>}
+          element={!isLoggedIn ? <Navigate to={RouterEndpoints.login}/> : <CompanyAdminsPage/>}
+        />
+        <Route
+          path={`${RouterEndpoints.quizzes}/${RouterEndpoints.company}/${RouterEndpoints.id}`}
+          element={!isLoggedIn ? <Navigate to={RouterEndpoints.login}/> : <CompanyQuizzesPage/>}
         />
         <Route path={RouterEndpoints.notFound} element={<NotFoundPage/>}/>
         <Route path={RouterEndpoints.terms} element={<TermsPage/>}/>

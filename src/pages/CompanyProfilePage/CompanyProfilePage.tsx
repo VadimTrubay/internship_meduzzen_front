@@ -17,9 +17,10 @@ import {selectUser} from "../../redux/auth/selectors";
 import {companies, mainUrls} from "../../config/urls";
 import {fetchCompanyInvites, fetchCompanyRequests, fetchMembers} from "../../redux/actions/operations";
 import {UserType} from "../../types/usersTypes";
-import {CompanyType, CompanyUpdateType} from "../../types/companiesTypes";
+import {CompanyType} from "../../types/companiesTypes";
 import BaseModalWindow from "../../components/BaseModalWindow/BaseModalWindow";
 import EditCompanyModal from "../../components/EditCompanyModal/EditCompanyModal";
+import {fetchCompanyQuizzes} from "../../redux/quizzes/operations";
 
 
 const CompanyProfilePage: React.FC = () => {
@@ -29,7 +30,7 @@ const CompanyProfilePage: React.FC = () => {
   const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
   const [openEditCompanyModal, setOpenEditCompanyModal] = useState<boolean>(false);
   const currentUser = useSelector(selectUser) as UserType;
-  const companyById = useSelector(selectCompanyById) as CompanyUpdateType | CompanyType;
+  const companyById = useSelector(selectCompanyById) as CompanyType;
   const loading = useSelector<boolean>(selectLoading);
 
   const handleOpenEditCompanyModal = () => setOpenEditCompanyModal(true);
@@ -84,6 +85,10 @@ const CompanyProfilePage: React.FC = () => {
     navigate(mainUrls.actions.companyInvites(companyById?.id));
   };
 
+  const handleOpenCompanyQuizzes = () => {
+    dispatch(fetchCompanyQuizzes(companyById?.id))
+    navigate(mainUrls.quizzes.companyQuizzes(companyById?.id));
+  };
   const handleOpenCompanyRequests = () => {
     dispatch(fetchCompanyRequests(companyById?.id))
     navigate(mainUrls.actions.companyRequests(companyById?.id));
@@ -133,6 +138,14 @@ const CompanyProfilePage: React.FC = () => {
                   onClick={() => handleOpenCompanyRequests()}
                 >
                   Company Requests
+                </Button>
+                <Button
+                  variant="outlined"
+                  color="success"
+                  sx={{margin: 1}}
+                  onClick={() => handleOpenCompanyQuizzes()}
+                >
+                  Company Quizzes
                 </Button>
               </Box>
             }

@@ -1,9 +1,9 @@
 import React from "react";
 import {
   Avatar,
-  Box, Button,
+  Box,
   Grid,
-  LinearProgress, Menu, MenuItem,
+  LinearProgress,
   Table, TableBody,
   TableCell,
   TableContainer,
@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import {useSelector} from "react-redux";
 import Paper from "@mui/material/Paper";
-import styles from "./CompanyGetAdminsPage.module.css";
+import styles from "./CompanyAdminsPage.module.css";
 import {memberType} from "../../types/actionsTypes";
 import {selectAdmins, selectLoading} from "../../redux/actions/selectors";
 import {selectCompanyById} from "../../redux/companies/selectors";
@@ -27,7 +27,7 @@ const columns = [
 ];
 
 
-const CompanyGetAdminsPage: React.FC = () => {
+const CompanyAdminsPage: React.FC = () => {
   const admins = useSelector(selectAdmins) as memberType[];
   const company = useSelector(selectCompanyById) as CompanyType;
   const loading = useSelector<boolean>(selectLoading);
@@ -83,4 +83,4 @@ const CompanyGetAdminsPage: React.FC = () => {
   );
 };
 
-export default CompanyGetAdminsPage;
+export default CompanyAdminsPage;
