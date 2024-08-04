@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { baseURL } from './process_base_url';
-import {store} from "../redux/store.js";
+import {store} from "../redux/store";
 
 
 const axiosInstance = axios.create({
