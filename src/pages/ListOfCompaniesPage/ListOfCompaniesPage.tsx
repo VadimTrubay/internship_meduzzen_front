@@ -14,15 +14,16 @@ import {initialValues} from "../../initialValues/initialValues";
 import styles from "./ListOfCompaniesPage.module.css";
 import {selectUser} from "../../redux/auth/selectors";
 import {selectCompanies, selectTotalCount} from "../../redux/companies/selectors";
-import {CompaniesListProps} from "../../types/companiesTypes";
+import {CompanyType} from "../../types/companiesTypes";
 import {UserType} from "../../types/usersTypes";
+
 
 const ListOfCompaniesPage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const user = useSelector(selectUser) as UserType;
   const totalCount: number = useSelector(selectTotalCount);
   const [openAddCompanyModal, setOpenAddCompanyModal] = useState<boolean>(false);
-  const {companies} = useSelector(selectCompanies) as CompaniesListProps;
+  const companies = useSelector(selectCompanies) as CompanyType[];
   const [showOption, setShowOption] = useState<number>(1);
   const [skip, setSkip] = useState<number>(1);
   const limit = 10;
@@ -127,6 +128,7 @@ const ListOfCompaniesPage: React.FC = () => {
         />
       </Box>
       <CompaniesList companies={filteredCompanies}/>
+
       <Box sx={{display: "flex", justifyContent: "center", marginTop: 4}}>
         <Pagination
           count={countPage}

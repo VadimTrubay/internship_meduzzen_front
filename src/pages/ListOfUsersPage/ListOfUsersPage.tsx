@@ -7,6 +7,7 @@ import {selectUsers} from "../../redux/users/selectors";
 import {UserType} from "../../types/usersTypes";
 import {selectUser} from "../../redux/auth/selectors";
 
+
 const ListOfUsersPage: React.FC = () => {
   const currentUser = useSelector(selectUser) as UserType;
   const users = useSelector(selectUsers) as UserType[];

@@ -1,25 +1,20 @@
-import axios from "axios";
-import {baseURL} from "./process_base_url";
+import axios from 'axios';
+import {baseURL} from './process_base_url';
+import {store} from "../redux/store";
 
-const URL = axios.defaults.baseURL = baseURL;
+const axiosInstance = axios.create({
+  baseURL,
+});
 
-
-export const getAccessTokenFromState = (thunkAPI) => {
-  const state = thunkAPI.getState();
-  const access_token = state.auth.access_token;
-  if (access_token === null) {
-    return thunkAPI.rejectWithValue("Unable to fetch user");
+axiosInstance.interceptors.request.use((config) => {
+  const state = store.getState();
+  const accessToken = state.auth.access_token;
+  if (accessToken) {
+    config.headers.Authorization = `Bearer ${accessToken}`;
   }
-  return access_token;
-}
+  return config;
+}, (error) => {
+  return Promise.reject(error);
+});
 
-export const createAxiosInstance = (thunkAPI) => {
-  const accessToken = getAccessTokenFromState(thunkAPI);
-
-  return axios.create({
-    baseURL: URL,
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
-};
+export default axiosInstance;

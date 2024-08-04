@@ -1,8 +1,7 @@
-import {createAsyncThunk} from "@reduxjs/toolkit";
-import {PasswordUpdateBackType, UsernameUpdateType} from "../../types/authTypes";
-import {FetchUsersParams} from "../../types/usersTypes";
-import {editUserPassword, editUserUsername, getUserById, getUsers, removeUser} from "../../api/api_users";
-
+import {createAsyncThunk} from '@reduxjs/toolkit';
+import {PasswordUpdateBackType, UsernameUpdateType} from '../../types/authTypes';
+import {FetchUsersParams} from '../../types/usersTypes';
+import {editUserPassword, editUserUsername, getUserById, getUsers, removeUser} from '../../api/api_users';
 
 export const fetchUsers = createAsyncThunk(
   "users/fetchUsers",
@@ -26,13 +25,13 @@ export const fetchUserById = createAsyncThunk(
       return thunkAPI.rejectWithValue(error.response.data.detail);
     }
   }
-)
+);
 
 export const updateUsername = createAsyncThunk(
   "users/updateUsername",
   async (userData: UsernameUpdateType, thunkAPI) => {
     try {
-      const res = await editUserUsername(userData, thunkAPI);
+      const res = await editUserUsername(userData);
       return res.data;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.response.data.detail);
@@ -44,7 +43,7 @@ export const updatePassword = createAsyncThunk(
   "users/updatePassword",
   async (userData: PasswordUpdateBackType, thunkAPI) => {
     try {
-      const res = await editUserPassword(userData, thunkAPI);
+      const res = await editUserPassword(userData);
       return res.data;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.response.data.detail);
@@ -56,7 +55,7 @@ export const deleteUser = createAsyncThunk(
   "users/deleteUser",
   async (id: string, thunkAPI) => {
     try {
-      const res = await removeUser(id, thunkAPI);
+      const res = await removeUser(id);
       return res.data;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.response.data.detail);

@@ -1,9 +1,11 @@
 import {authUserType} from "./authTypes";
 
 export interface initialUsersType {
-  items: UserType[];
-  userById: null;
-  totalCount: null;
+  items: {
+    users: UserType[];
+    total_count: number;
+  };
+  userById: UserType | null;
   loading: boolean;
   error: null;
 }
@@ -13,7 +15,7 @@ export interface UserType {
   username: string;
   email: string;
   password: string;
-  is_admin: boolean,
+  is_admin: boolean;
 }
 
 export interface FetchUsersParams {
