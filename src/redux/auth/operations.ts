@@ -1,9 +1,7 @@
-import {createAsyncThunk} from "@reduxjs/toolkit";
-import {RegisterType, UserAuthorizationType} from "../../types/authTypes";
-import {clearAuthHeader, setAuthHeader} from "../../utils/auth_utils";
-import {login, me, register} from "../../api/api_auth";
-
-
+import {createAsyncThunk} from '@reduxjs/toolkit';
+import {RegisterType, UserAuthorizationType} from '../../types/authTypes';
+import {clearAuthHeader, setAuthHeader} from '../../utils/auth_utils';
+import {login, me, register} from '../../api/api_auth';
 
 export const signUp = createAsyncThunk(
   "auth/signUp",
@@ -13,7 +11,7 @@ export const signUp = createAsyncThunk(
       setAuthHeader(response.data.access_token);
       return response.data;
     } catch (error: any) {
-      return thunkAPI.rejectWithValue(error.message);
+      return thunkAPI.rejectWithValue(error.response.data.detail);
     }
   }
 );
@@ -26,20 +24,19 @@ export const signIn = createAsyncThunk(
       setAuthHeader(response.data.access_token);
       return response.data;
     } catch (error: any) {
-      return thunkAPI.rejectWithValue(error.message);
+      return thunkAPI.rejectWithValue(error.response.data.detail);
     }
   }
 );
-
 
 export const getMe = createAsyncThunk(
   'auth/getMe',
   async (_, thunkAPI) => {
     try {
-      const response = await me(thunkAPI);
+      const response = await me();
       return response.data;
     } catch (error: any) {
-      return thunkAPI.rejectWithValue(error.message);
+      return thunkAPI.rejectWithValue(error.response.data.detail);
     }
   }
 );
@@ -50,7 +47,7 @@ export const logOut = createAsyncThunk(
     try {
       clearAuthHeader();
     } catch (error: any) {
-      return thunkAPI.rejectWithValue(error.message);
+      return thunkAPI.rejectWithValue(error.response.data.detail);
     }
   }
 );
