@@ -3,6 +3,7 @@ import {CompanyAddType, CompanyUpdateType} from '../types/companiesTypes';
 import {mainUrls} from '../config/urls';
 import axiosInstance from "../utils/createAxiosInstance";
 
+
 export const submitCompany = async (companyData: CompanyAddType): Promise<AxiosResponse> => {
   return await axiosInstance.post(mainUrls.companies.submit, companyData);
 };
@@ -20,6 +21,7 @@ export const editCompany = async (companyData: CompanyUpdateType): Promise<Axios
   return await axiosInstance.patch(mainUrls.companies.byId(id), companyData);
 };
 
+  
 export const removeCompany = async (id: string): Promise<AxiosResponse> => {
   return await axiosInstance.delete(mainUrls.companies.byId(id));
 };
