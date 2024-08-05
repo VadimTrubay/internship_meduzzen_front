@@ -23,8 +23,8 @@ export interface FetchCompaniesParams {
 
 export interface CompanyUpdateType {
   id: string;
-  name?: string;
-  description?: string;
+  name: string;
+  description: string;
   visible: boolean;
 }
 

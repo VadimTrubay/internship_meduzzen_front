@@ -9,26 +9,26 @@ import {Button, Checkbox, FormControlLabel, TextField} from "@mui/material";
 import DoneIcon from "@mui/icons-material/Done";
 
 
-export interface EditCompanyModalType {
+export interface AddQuizModalType {
   openModal: boolean;
   closeModal: () => void;
   style_close: string;
   color_off: "inherit" | "disabled" | "action" | "primary" | "secondary" | "error" | "info" | "success" | "warning";
   style_title: string;
   title: string;
-  formikEditCompany: any;
+  formikAddQuiz: any;
   name: string;
   description: string;
   visible: string;
   style_done: string;
 }
 
-const EditCompanyModal: React.FC<EditCompanyModalType> = ({
+const AddQuizModal: React.FC<AddQuizModalType> = ({
                                                            openModal,
                                                            closeModal,
                                                            style_close, color_off,
                                                            style_title, title,
-                                                           formikEditCompany,
+                                                           formikAddQuiz,
                                                            name, description,
                                                            visible, style_done
                                                          }) => {
@@ -47,7 +47,7 @@ const EditCompanyModal: React.FC<EditCompanyModalType> = ({
           <Typography id="modal-modal-title" variant="h6" component="h2">
             <Text className={style_title}>{title}</Text>
           </Typography>
-          <StyledBox component="form" onSubmit={formikEditCompany.handleSubmit}>
+          <StyledBox component="form" onSubmit={formikAddQuiz.handleSubmit}>
             <Typography variant="h6">
               <Text>{name}</Text>
             </Typography>
@@ -56,11 +56,11 @@ const EditCompanyModal: React.FC<EditCompanyModalType> = ({
               name="name"
               variant="standard"
               color="primary"
-              value={formikEditCompany.values.name}
-              onChange={formikEditCompany.handleChange}
-              onBlur={formikEditCompany.handleBlur}
-              error={formikEditCompany.touched.name && Boolean(formikEditCompany.errors.name)}
-              helperText={formikEditCompany.touched.name && formikEditCompany.errors.name}
+              value={formikAddQuiz.values.name}
+              onChange={formikAddQuiz.handleChange}
+              onBlur={formikAddQuiz.handleBlur}
+              error={formikAddQuiz.touched.name && Boolean(formikAddQuiz.errors.name)}
+              helperText={formikAddQuiz.touched.name && formikAddQuiz.errors.name}
             />
             <Typography variant="h6">
               <Text>{description}</Text>
@@ -70,11 +70,11 @@ const EditCompanyModal: React.FC<EditCompanyModalType> = ({
               name="description"
               variant="standard"
               color="primary"
-              value={formikEditCompany.values.description}
-              onChange={formikEditCompany.handleChange}
-              onBlur={formikEditCompany.handleBlur}
-              error={formikEditCompany.touched.description && Boolean(formikEditCompany.errors.description)}
-              helperText={formikEditCompany.touched.description && formikEditCompany.errors.description}
+              value={formikAddQuiz.values.description}
+              onChange={formikAddQuiz.handleChange}
+              onBlur={formikAddQuiz.handleBlur}
+              error={formikAddQuiz.touched.description && Boolean(formikAddQuiz.errors.description)}
+              helperText={formikAddQuiz.touched.description && formikAddQuiz.errors.description}
             />
             <Typography variant="h6">
               <Text>{visible}</Text>
@@ -85,8 +85,8 @@ const EditCompanyModal: React.FC<EditCompanyModalType> = ({
                   id="visible"
                   name="visible"
                   color="primary"
-                  checked={formikEditCompany.values.visible}
-                  onChange={formikEditCompany.handleChange}
+                  checked={formikAddQuiz.values.visible}
+                  onChange={formikAddQuiz.handleChange}
                 />
               }
               label="Visible"
@@ -101,4 +101,4 @@ const EditCompanyModal: React.FC<EditCompanyModalType> = ({
   );
 };
 
-export default EditCompanyModal;
+export default AddQuizModal;

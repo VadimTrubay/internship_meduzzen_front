@@ -20,7 +20,7 @@ import {UserType} from "../../types/usersTypes";
 import {CompanyType} from "../../types/companiesTypes";
 import BaseModalWindow from "../../components/BaseModalWindow/BaseModalWindow";
 import EditCompanyModal from "../../components/EditCompanyModal/EditCompanyModal";
-import {fetchCompanyQuizzes} from "../../redux/quizzes/operations";
+import {fetchQuizzes} from "../../redux/quizzes/operations";
 
 
 const CompanyProfilePage: React.FC = () => {
@@ -56,6 +56,7 @@ const CompanyProfilePage: React.FC = () => {
     initialValues: initialValueUpdateCompany,
     validationSchema: validationSchemaUpdateCompany,
     onSubmit: (values) => {
+      console.log(values);
       if (formikEditCompany.isValid) {
         dispatch(updateCompany(values));
         dispatch(fetchCompanyById(companyById?.id));
@@ -86,7 +87,7 @@ const CompanyProfilePage: React.FC = () => {
   };
 
   const handleOpenCompanyQuizzes = () => {
-    dispatch(fetchCompanyQuizzes(companyById?.id))
+    dispatch(fetchQuizzes(companyById?.id))
     navigate(mainUrls.quizzes.companyQuizzes(companyById?.id));
   };
   const handleOpenCompanyRequests = () => {

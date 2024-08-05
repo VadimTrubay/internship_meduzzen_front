@@ -1,7 +1,8 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {fetchCompanyQuizzes} from "./operations";
+import {deleteQuiz, fetchQuizzes, addQuiz} from "./operations";
 import {initialQuizzesType} from "../../types/quizzesTypes";
 import toast from "react-hot-toast";
+
 
 const initialQuizzes: initialQuizzesType = {
   items: {
@@ -23,18 +24,18 @@ const handleRejected = (state: initialQuizzesType, action: PayloadAction<any>) =
   toast.error(action.payload);
 };
 
-const handleFetchCompanyQuizzesFulfilled = (state: initialQuizzesType, action: PayloadAction<any>) => {
+const handleFetchQuizzesFulfilled = (state: initialQuizzesType, action: PayloadAction<any>) => {
   state.loading = false;
   state.error = null;
   state.items = action.payload;
 };
 
-// const handleAddCompanyFulfilled = (state: initialCompaniesType, action: PayloadAction<any>) => {
-//   state.loading = false;
-//   state.error = null;
-//   state.items.companies.push(action.payload);
-//   toast.success(`Company added successfully`);
-// };
+const handleAddQuizFulfilled = (state: initialQuizzesType, action: PayloadAction<any>) => {
+  state.loading = false;
+  state.error = null;
+  state.items.quizzes.push(action.payload);
+  toast.success(`Quiz added successfully`);
+};
 //
 // const handleGetCompanyByIdFulfilled = (state: initialCompaniesType, action: PayloadAction<any>) => {
 //   state.loading = false;
@@ -51,14 +52,14 @@ const handleFetchCompanyQuizzesFulfilled = (state: initialQuizzesType, action: P
 //   }
 //   toast.success(`Company updated successfully`);
 // };
-//
-// const handleDeleteCompanyByIdFulfilled = (state: initialCompaniesType, action: PayloadAction<any>) => {
-//   state.loading = false;
-//   state.error = null;
-//   state.items.companies = state.items.companies.filter((company) => company.id !== action.payload.id);
-//   state.companyById = null;
-//   toast.success(`Company deleted successfully`);
-// };
+
+const handleDeleteQuizFulfilled = (state: initialQuizzesType, action: PayloadAction<any>) => {
+  state.loading = false;
+  state.error = null;
+  state.items.quizzes = state.items.quizzes.filter((quiz) => quiz.id !== action.payload.id);
+  state.quizById = null;
+  toast.success(`Quiz deleted successfully`);
+};
 
 const quizzesSlice = createSlice({
   name: "quizzes",
@@ -66,21 +67,21 @@ const quizzesSlice = createSlice({
   reducers: {},
   extraReducers: (builder) =>
     builder
-      .addCase(fetchCompanyQuizzes.pending, handlePending)
-      .addCase(fetchCompanyQuizzes.fulfilled, handleFetchCompanyQuizzesFulfilled)
-      .addCase(fetchCompanyQuizzes.rejected, handleRejected)
-  // .addCase(fetchCompanyById.pending, handlePending)
-  // .addCase(fetchCompanyById.fulfilled, handleGetCompanyByIdFulfilled)
-  // .addCase(fetchCompanyById.rejected, handleRejected)
-  // .addCase(addCompany.pending, handlePending)
-  // .addCase(addCompany.fulfilled, handleAddCompanyFulfilled)
-  // .addCase(addCompany.rejected, handleRejected)
-  // .addCase(updateCompany.pending, handlePending)
-  // .addCase(updateCompany.fulfilled, handleUpdateCompanyFulfilled)
-  // .addCase(updateCompany.rejected, handleRejected)
-  // .addCase(deleteCompanyById.pending, handlePending)
-  // .addCase(deleteCompanyById.fulfilled, handleDeleteCompanyByIdFulfilled)
-  // .addCase(deleteCompanyById.rejected, handleRejected),
+      .addCase(fetchQuizzes.pending, handlePending)
+      .addCase(fetchQuizzes.fulfilled, handleFetchQuizzesFulfilled)
+      .addCase(fetchQuizzes.rejected, handleRejected)
+      // .addCase(fetchCompanyById.pending, handlePending)
+      // .addCase(fetchCompanyById.fulfilled, handleGetCompanyByIdFulfilled)
+      // .addCase(fetchCompanyById.rejected, handleRejected)
+      .addCase(addQuiz.pending, handlePending)
+      .addCase(addQuiz.fulfilled, handleAddQuizFulfilled)
+      .addCase(addQuiz.rejected, handleRejected)
+      // .addCase(updateCompany.pending, handlePending)
+      // .addCase(updateCompany.fulfilled, handleUpdateCompanyFulfilled)
+      // .addCase(updateCompany.rejected, handleRejected)
+      .addCase(deleteQuiz.pending, handlePending)
+      .addCase(deleteQuiz.fulfilled, handleDeleteQuizFulfilled)
+      .addCase(deleteQuiz.rejected, handleRejected),
 });
 
 export const quizzesReducer = quizzesSlice.reducer;

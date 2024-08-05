@@ -16,7 +16,7 @@ import {validationSchemaUpdatePassword} from "../../validate/validationSchemaUpd
 import {initialValueUpdatePassword, initialValueUpdateUsername} from "../../initialValues/initialValues";
 import {style, StyledBox, Text} from "../../utils/BaseModal.styled";
 import {selectUserById} from "../../redux/users/selectors";
-import {selectError, selectLoading, selectUser} from "../../redux/auth/selectors";
+import {selectLoading, selectUser} from "../../redux/auth/selectors";
 import {useNavigate, useParams} from "react-router-dom";
 import {mainUrls} from "../../config/urls";
 import {RouterEndpoints} from "../../config/routes";
@@ -34,7 +34,6 @@ const UserProfilePage: React.FC = () => {
   const currentUser = useSelector(selectUser) as UserType;
   const userById = useSelector(selectUserById) as UserType;
   const loading = useSelector<boolean>(selectLoading);
-  const error = useSelector<string>(selectError);
 
 
   const handleOpenEditUsernameModal = () => setOpenEditUsernameModal(true);
@@ -64,7 +63,7 @@ const UserProfilePage: React.FC = () => {
     validationSchema: validationSchemaUpdateUsername,
     onSubmit: (values) => {
       if (formikEditUsername.isValid) {
-        dispatch(updateUsername({id: values.id, username: values.username}));
+        dispatch(updateUsername(values));
       }
       handleCloseEditUsernameModal();
     },
@@ -75,7 +74,7 @@ const UserProfilePage: React.FC = () => {
     validationSchema: validationSchemaUpdatePassword,
     onSubmit: (values) => {
       if (formikEditPassword.isValid) {
-        dispatch(updatePassword({id: values.id, password: values.password, new_password: values.new_password}));
+        dispatch(updatePassword(values));
       }
       handleCloseEditPasswordModal();
     },
@@ -209,7 +208,7 @@ const UserProfilePage: React.FC = () => {
                   id="username"
                   name="username"
                   variant="standard"
-                  color="success"
+                  color="primary"
                   value={formikEditUsername.values.username}
                   onChange={formikEditUsername.handleChange}
                   onBlur={formikEditUsername.handleBlur}
@@ -245,7 +244,7 @@ const UserProfilePage: React.FC = () => {
                   id="password"
                   name="password"
                   variant="standard"
-                  color="success"
+                  color="primary"
                   value={formikEditPassword.values.password}
                   onChange={formikEditPassword.handleChange}
                   onBlur={formikEditPassword.handleBlur}
@@ -259,7 +258,7 @@ const UserProfilePage: React.FC = () => {
                   id="new_password"
                   name="new_password"
                   variant="standard"
-                  color="success"
+                  color="primary"
                   value={formikEditPassword.values.new_password}
                   onChange={formikEditPassword.handleChange}
                   onBlur={formikEditPassword.handleBlur}
@@ -273,7 +272,7 @@ const UserProfilePage: React.FC = () => {
                   id="confirmPassword"
                   name="confirmPassword"
                   variant="standard"
-                  color="success"
+                  color="primary"
                   value={formikEditPassword.values.confirmPassword}
                   onChange={formikEditPassword.handleChange}
                   onBlur={formikEditPassword.handleBlur}

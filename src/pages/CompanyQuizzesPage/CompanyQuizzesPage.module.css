@@ -1,4 +1,4 @@
-.addQuizzButton {
+.addQuizButton {
   display: flex;
   justify-content: center;
   margin-bottom: 10px;
@@ -45,8 +45,8 @@
   cursor: pointer;
 }
 
-.title_accept {
-  background-color: #4a853d;
+.title_add {
+  background-color: var(--brand-color-contactbook);
   color: #ffffff;
   border-radius: 3px;
   margin-top: 10px;
@@ -59,6 +59,11 @@
   border-radius: 3px;
   margin-top: 10px;
   margin-bottom: 10px;
+}
+
+.add {
+  color: blue;
+  font-size: 40px;
 }
 
 .close {

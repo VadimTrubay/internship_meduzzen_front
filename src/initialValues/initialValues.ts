@@ -8,19 +8,16 @@ export const initialValues: CompanyAddType = {
 };
 
 export const initialValueUpdateCompany: CompanyUpdateType = {
-  id: "",
   name: "",
   description: "",
   visible: true,
 };
 
 export const initialValueUpdateUsername: UsernameUpdateType = {
-  id: "",
   username: "",
 };
 
 export const initialValueUpdatePassword: PasswordUpdateType = {
-  id: "",
   password: "",
   new_password: "",
   confirmPassword: "",

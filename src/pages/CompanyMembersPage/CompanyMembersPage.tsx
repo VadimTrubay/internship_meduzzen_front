@@ -25,7 +25,6 @@ import {selectUser} from "../../redux/auth/selectors";
 import {useNavigate, useParams} from "react-router-dom";
 import {mainUrls} from "../../config/urls";
 import BaseModalWindow from "../../components/BaseModalWindow/BaseModalWindow";
-import {fetchCompanies} from "../../redux/companies/operations";
 
 const columns = [
   {id: "avatar", label: "Avatar", minWidth: 50},
@@ -54,7 +53,9 @@ const CompanyMembersPage: React.FC = () => {
 
 
   useEffect(() => {
-    dispatch(fetchMembers(id));
+    if (id != null) {
+      dispatch(fetchMembers(id));
+    }
   }, []);
 
 
@@ -78,8 +79,9 @@ const CompanyMembersPage: React.FC = () => {
   };
 
   const handleDeleteMember = () => {
-    if (currentMember) {
+    if (currentMember && id) {
       dispatch(deleteMember(currentMember?.action_id));
+      dispatch(fetchMembers(id));
     }
     closeModal();
   };
@@ -90,8 +92,9 @@ const CompanyMembersPage: React.FC = () => {
   };
 
   const handleLeave = () => {
-    if (currentMember) {
+    if (currentMember && id) {
       dispatch(leaveFromCompany(currentMember?.action_id));
+      dispatch(fetchMembers(id));
     }
     closeModal();
   };

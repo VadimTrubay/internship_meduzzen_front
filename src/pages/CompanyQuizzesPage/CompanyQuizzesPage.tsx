@@ -11,20 +11,21 @@ import {
   Typography
 } from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
-import {selectCompanyInvites, selectError} from "../../redux/actions/selectors";
 import Paper from "@mui/material/Paper";
 import styles from "./CompanyQuizzesPage.module.css";
 import {AppDispatch} from "../../redux/store";
-import {memberType} from "../../types/actionsTypes";
 import {selectLoading} from "../../redux/actions/selectors";
 import {selectCompanyById} from "../../redux/companies/selectors";
 import {CompanyType} from "../../types/companiesTypes";
-import {deleteInvite, fetchCompanyInvites} from "../../redux/actions/operations";
 import BaseModalWindow from "../../components/BaseModalWindow/BaseModalWindow";
 import {useParams} from "react-router-dom";
 import {selectQuizzes} from "../../redux/quizzes/selectors";
 import {QuizType} from "../../types/quizzesTypes";
-import {fetchCompanyQuizzes} from "../../redux/quizzes/operations";
+import {deleteQuiz, fetchQuizzes} from "../../redux/quizzes/operations";
+import AddQuizModal from "../../components/AddQuizModal/AddQuizModal";
+import {useFormik} from "formik";
+import {initialValueUpdateCompany} from "../../initialValues/initialValues";
+import {validationSchemaUpdateCompany} from "../../validate/validationSchemaUpdateCompany";
 
 
 const columns = [
@@ -41,35 +42,57 @@ const CompanyQuizzesPage: React.FC = () => {
   const {id} = useParams<{ id: string }>();
   const quizzes = useSelector(selectQuizzes) as QuizType[];
   const company = useSelector(selectCompanyById) as CompanyType;
-  // const [openDeleteInviteModal, setOpenDeleteInviteModal] = useState<boolean>(false);
-  // const [selectedActionId, setSelectedActionId] = useState<string | null>(null);
+  const [openAddQuizModal, setOpenAddQuizModal] = useState<boolean>(false);
+  const [openDeleteQuizModal, setOpenDeleteQuizModal] = useState<boolean>(false);
+  const [selectedQuizId, setSelectedQuizId] = useState<string | null>(null);
   const loading = useSelector<boolean>(selectLoading);
-  //
-  //
+
+  const handleOpenAddQuizModal = () => setOpenAddQuizModal(true);
+  const handleCloseAddQuizModal = () => {
+    formikAddQuiz.resetForm();
+    setOpenAddQuizModal(false);
+  };
+
   useEffect(() => {
     if (id) {
-      dispatch(fetchCompanyQuizzes(id));
+      dispatch(fetchQuizzes(id));
     }
   }, [id, dispatch])
-  //
-  // const handleOpenDeleteInviteModal = (inviteId: string) => {
-  //   setSelectedActionId(inviteId);
-  //   setOpenDeleteInviteModal(true);
-  // };
-  //
-  // const closeModal = () => {
-  //   setOpenDeleteInviteModal(false);
-  //   setSelectedActionId(null);
-  // };
-  //
-  //
-  // const handleDeleteInvite = () => {
-  //   if (id && selectedActionId !== null) {
-  //     dispatch(deleteInvite(selectedActionId));
-  //     dispatch(fetchCompanyInvites(id));
-  //   }
-  //   closeModal();
-  // };
+
+
+  // TODO
+  const formikAddQuiz = useFormik({
+    // initialValues: initialValueUpdateCompany,
+    // validationSchema: validationSchemaUpdateCompany,
+    onSubmit: (values) => {
+      if (formikAddQuiz.isValid) {
+        // dispatch(updateCompany(values));
+        // dispatch(fetchCompanyById(companyById?.id));
+        // navigate(mainUrls.companies.byId(companyById?.id));
+      }
+      handleCloseAddQuizModal();
+    },
+  });
+
+  const handleOpenDeleteQuizModal = (quizId: string) => {
+    setSelectedQuizId(quizId);
+    setOpenDeleteQuizModal(true);
+  };
+
+  const closeModal = () => {
+    setOpenAddQuizModal(false);
+    setOpenDeleteQuizModal(false);
+    setSelectedQuizId(null);
+  };
+
+
+  const handleDeleteQuiz = () => {
+    if (id && selectedQuizId !== null) {
+      dispatch(deleteQuiz(selectedQuizId));
+      dispatch(fetchQuizzes(id));
+    }
+    closeModal();
+  };
 
   return (
     loading ? (
@@ -86,9 +109,9 @@ const CompanyQuizzesPage: React.FC = () => {
             <Typography variant="h6">
               Quizzes: "{company?.name}"
             </Typography>
-            <Box className={styles.addQuizzButton}>
+            <Box className={styles.addQuizButton}>
               <Button variant="contained"
-                      // onClick={handleOpenAddQuizzModal}
+                      onClick={handleOpenAddQuizModal}
               >
                 + Add Quizz
               </Button>
@@ -135,7 +158,7 @@ const CompanyQuizzesPage: React.FC = () => {
                     </TableCell>
                     <TableCell sx={{padding: "3px"}} align="center">
                       <Button
-                        // onClick={() => handleOpenDeleteInviteModal(invite.id)}
+                        onClick={() => handleOpenDeleteQuizModal(quiz.id)}
                         variant="outlined"
                         color="error"
                         sx={{marginRight: 1}}
@@ -150,18 +173,33 @@ const CompanyQuizzesPage: React.FC = () => {
           </TableContainer>
         </Paper>
 
-        {/*/!* Delete Invite Modal *!/*/}
-        {/*<BaseModalWindow*/}
-        {/*  openModal={openDeleteInviteModal}*/}
+        {/* Add Quiz Modal */}
+        {/*<AddQuizModal*/}
+        {/*  openModal={openAddQuizModal}*/}
         {/*  closeModal={closeModal}*/}
         {/*  style_close={styles.close}*/}
-        {/*  color_off={"error"}*/}
-        {/*  style_title={styles.title_delete}*/}
-        {/*  title={"Delete Invite"}*/}
-        {/*  text={"Are you sure you want to delete this invite?"}*/}
-        {/*  onSubmit={handleDeleteInvite}*/}
-        {/*  style_done={styles.done_leave}*/}
+        {/*  color_off={"primary"}*/}
+        {/*  style_title={styles.title_add}*/}
+        {/*  title={"Add Quiz"}*/}
+        {/*  formikAddQuiz={formikAddQuiz}*/}
+        {/*  name={"Name:"}*/}
+        {/*  description={"Description:"}*/}
+        {/*  visible={"Visible:"}*/}
+        {/*  style_done={styles.add}*/}
         {/*/>*/}
+
+        {/* Delete Quiz Modal */}
+        <BaseModalWindow
+          openModal={openDeleteQuizModal}
+          closeModal={closeModal}
+          style_close={styles.close}
+          color_off={"error"}
+          style_title={styles.title_delete}
+          title={"Delete Quiz"}
+          text={"Are you sure you want to delete this quiz?"}
+          onSubmit={handleDeleteQuiz}
+          style_done={styles.done_leave}
+        />
       </>
     )
   );

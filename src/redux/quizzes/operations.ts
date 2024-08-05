@@ -1,23 +1,37 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
-import {getCompanyQuizzes} from "../../api/api_quizzes";
+import {getCompanyQuizzes, deleteQuizApi, submitQuiz} from "../../api/api_quizzes";
+import {QuizRequestType} from "../../types/quizzesTypes";
 
-// export const addCompany = createAsyncThunk(
-//   "companies/addCompany",
-//   async (companyData: CompanyAddType, thunkAPI) => {
-//     try {
-//       const response = await submitCompany(companyData);
-//       return response.data;
-//     } catch (error: any) {
-//       return thunkAPI.rejectWithValue(error.response.data.detail);
-//     }
-//   }
-// );
 
-export const fetchCompanyQuizzes = createAsyncThunk(
-  "quizzes/fetchCompanyQuizzes",
+export const addQuiz = createAsyncThunk(
+  "quizzes/addQuiz",
+  async (quizData: QuizRequestType, thunkAPI) => {
+    try {
+      const response = await submitQuiz(quizData);
+      return response.data;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error.response.data.detail);
+    }
+  }
+);
+
+export const fetchQuizzes = createAsyncThunk(
+  "quizzes/fetchQuizzes",
   async (id: string, thunkAPI) => {
     try {
       const response = await getCompanyQuizzes(id);
+      return response.data;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error.response.data.detail);
+    }
+  }
+);
+
+export const deleteQuiz = createAsyncThunk(
+  "quizzes/deleteCompanyQuiz",
+  async (id: string, thunkAPI) => {
+    try {
+      const response = await deleteQuizApi(id);
       return response.data;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.response.data.detail);
@@ -48,15 +62,4 @@ export const fetchCompanyQuizzes = createAsyncThunk(
 //     }
 //   }
 // );
-//
-// export const deleteCompanyById = createAsyncThunk(
-//   "companies/deleteCompany",
-//   async (id: string, thunkAPI) => {
-//     try {
-//       const response = await removeCompany(id);
-//       return response.data;
-//     } catch (error: any) {
-//       return thunkAPI.rejectWithValue(error.response.data.detail);
-//     }
-//   }
-// );
+

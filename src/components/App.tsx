@@ -63,7 +63,7 @@ const App = () => {
           path={RouterEndpoints.login}
           element={isLoggedIn ? <Navigate to={RouterEndpoints.index}/> : <UserAuthorizationPage/>}
         />
-        isLoggedIn &&
+        {/*{isLoggedIn && ( <>*/}
         <Route
           path={RouterEndpoints.users}
           element={!isLoggedIn ? <Navigate to={RouterEndpoints.login}/> : <ListOfUsersPage/>}
@@ -108,6 +108,7 @@ const App = () => {
           path={`${RouterEndpoints.quizzes}/${RouterEndpoints.company}/${RouterEndpoints.id}`}
           element={!isLoggedIn ? <Navigate to={RouterEndpoints.login}/> : <CompanyQuizzesPage/>}
         />
+{/*</>)}*/}
         <Route path={RouterEndpoints.notFound} element={<NotFoundPage/>}/>
         <Route path={RouterEndpoints.terms} element={<TermsPage/>}/>
         <Route path={RouterEndpoints.notFound} element={<NotFoundPage/>}/>
