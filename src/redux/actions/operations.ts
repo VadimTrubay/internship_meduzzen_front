@@ -2,8 +2,8 @@ import {createAsyncThunk} from '@reduxjs/toolkit';
 import {
   getMembers, removeMember, sendInvite, getMyInvites, getMyRequests,
   acceptInviteApi, declineInviteApi, getCompanyInvites, getCompanyRequests,
-  deleteInviteApi, sendRequest, deleteRequestApi, leaveFromCompanyApi,
-  acceptRequestApi, declineRequestApi, addAdminRoleApi, removeAdminRole, getAdmins
+  deleteInviteApi, deleteRequestApi, leaveFromCompanyApi,
+  acceptRequestApi, declineRequestApi, addAdminRoleApi, removeAdminRole, getAdmins, sendRequestApi
 } from '../../api/api_actions';
 import {changeRoleType, sendInviteType, sendRequestType} from '../../types/actionsTypes';
 
@@ -131,7 +131,7 @@ export const createRequest = createAsyncThunk(
   'actions/createRequest',
   async (sendRequestData: sendRequestType, thunkAPI) => {
     try {
-      const response = await sendRequest(sendRequestData);
+      const response = await sendRequestApi(sendRequestData);
       return response.data;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.response.data.detail);

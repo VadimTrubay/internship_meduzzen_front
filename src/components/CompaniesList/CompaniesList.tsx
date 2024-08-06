@@ -138,7 +138,7 @@ const CompaniesList: React.FC<CompaniesListProps> = ({companies}) => {
             </Typography>
             <StyledBox>
               <Button onClick={handleCreateMyRequest} type="button">
-                <DoneIcon sx={{fontSize: 40, color: "green"}}/>
+                <DoneIcon sx={{fontSize: 50, color: "green"}}/>
               </Button>
             </StyledBox>
           </Box>

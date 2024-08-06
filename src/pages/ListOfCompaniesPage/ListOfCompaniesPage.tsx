@@ -196,7 +196,7 @@ const ListOfCompaniesPage: React.FC = () => {
               label="Visible"
             />
             <Button type="submit">
-              <DoneIcon sx={{fontSize: 40, color: "inherit"}}/>
+              <DoneIcon sx={{fontSize: 50, color: "inherit"}}/>
             </Button>
           </StyledBox>
         </Box>

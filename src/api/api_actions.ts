@@ -44,7 +44,7 @@ export const declineInviteApi = async (actionId: string): Promise<AxiosResponse>
   return await axiosInstance.post(mainUrls.actions.declineInvite(actionId));
 };
 
-export const sendRequest = async (sendRequestData: sendRequestType): Promise<AxiosResponse> => {
+export const sendRequestApi = async (sendRequestData: sendRequestType): Promise<AxiosResponse> => {
   const {companyId, userId} = sendRequestData;
   return await axiosInstance.post(mainUrls.actions.sendRequest(companyId, userId));
 };

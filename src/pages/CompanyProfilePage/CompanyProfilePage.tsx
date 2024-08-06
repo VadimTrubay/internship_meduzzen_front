@@ -56,7 +56,6 @@ const CompanyProfilePage: React.FC = () => {
     initialValues: initialValueUpdateCompany,
     validationSchema: validationSchemaUpdateCompany,
     onSubmit: (values) => {
-      console.log(values);
       if (formikEditCompany.isValid) {
         dispatch(updateCompany(values));
         dispatch(fetchCompanyById(companyById?.id));

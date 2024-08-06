@@ -134,7 +134,7 @@ const MyRequestsPage: React.FC = () => {
             </Typography>
             <StyledBox>
               <Button onClick={handleDeleteRequest} type="button">
-                <DoneIcon sx={{fontSize: 40, color: "red"}}/>
+                <DoneIcon sx={{fontSize: 50, color: "red"}}/>
               </Button>
             </StyledBox>
           </Box>

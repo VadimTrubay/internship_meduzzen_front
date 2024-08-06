@@ -24,42 +24,31 @@ export interface QuizCompanyRequestType {
   questions: QuestionRequestType[];
 }
 
-
-export interface QuizRequestType {
-  id: string;
+export interface IQuizRequestType {
   name: string;
   description: string;
   frequency_days: number;
   questions: QuestionRequestType[];
 }
 
-
 export interface QuestionRequestType {
-  id: string;
   question_text: string;
-  correct_answer: QuestionAnswerResponseType[];
-  options: QuestionOptionsResponseType[];
+  correct_answer: string[];
+  answer_options: string[];
 }
 
-
-// export interface QuestionAnswerRequeste {
-//     id: string
-//     answer_text: string
-//     is_correct: boolean
-//     question_id: number
-// }
-
-
-// export interface CompanyUpdateType {
-//   id: string;
-//   name?: string;
-//   description?: string;
-//   visible: boolean;
-// }
-//
-
-
-//
-// export interface CompaniesListProps {
-//   companies: CompanyType[];
-// }
+export interface AddQuizModalType {
+  openModal: boolean;
+  closeModal: () => void;
+  style_close: string;
+  color_off: "inherit" | "disabled" | "action" | "primary" | "secondary" | "error" | "info" | "success" | "warning";
+  style_title: string;
+  title: string;
+  formikAddQuiz: any;
+  name: string;
+  description: string;
+  frequency_days: string;
+  questions: string;
+  answer_options: string;
+  correct_answer: string;
+}

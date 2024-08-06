@@ -216,7 +216,7 @@ const UserProfilePage: React.FC = () => {
                   helperText={formikEditUsername.touched.username && formikEditUsername.errors.username}
                 />
                 <Button type="submit">
-                  <DoneIcon sx={{fontSize: 40, color: "inherit"}}/>
+                  <DoneIcon sx={{fontSize: 50, color: "inherit"}}/>
                 </Button>
               </StyledBox>
             </Box>
@@ -280,7 +280,7 @@ const UserProfilePage: React.FC = () => {
                   helperText={formikEditPassword.touched.confirmPassword && formikEditPassword.errors.confirmPassword}
                 />
                 <Button type="submit">
-                  <DoneIcon sx={{fontSize: 40, color: "inherit"}}/>
+                  <DoneIcon sx={{fontSize: 50, color: "inherit"}}/>
                 </Button>
               </StyledBox>
             </Box>

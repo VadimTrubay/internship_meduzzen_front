@@ -167,7 +167,7 @@ const CompanyRequestsPage: React.FC = () => {
             </Typography>
             <StyledBox>
               <Button onClick={handleAcceptRequest} type="button">
-                <DoneIcon sx={{fontSize: 40, color: "green"}}/>
+                <DoneIcon sx={{fontSize: 50, color: "green"}}/>
               </Button>
             </StyledBox>
           </Box>
@@ -190,7 +190,7 @@ const CompanyRequestsPage: React.FC = () => {
             </Typography>
             <StyledBox>
               <Button onClick={handleDeclineRequest} type="button">
-                <DoneIcon sx={{fontSize: 40, color: "red"}}/>
+                <DoneIcon sx={{fontSize: 50, color: "red"}}/>
               </Button>
             </StyledBox>
           </Box>

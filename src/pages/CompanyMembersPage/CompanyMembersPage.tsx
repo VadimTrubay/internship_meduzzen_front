@@ -53,7 +53,7 @@ const CompanyMembersPage: React.FC = () => {
 
 
   useEffect(() => {
-    if (id != null) {
+    if (id) {
       dispatch(fetchMembers(id));
     }
   }, []);

@@ -58,3 +58,13 @@ export interface RegisterType {
   email: string;
   password: string;
 }
+
+export interface IUsernameUpdateType {
+  username: string;
+}
+
+export interface IPasswordUpdateType {
+  password: string;
+  new_password: string;
+  confirmPassword: string;
+}

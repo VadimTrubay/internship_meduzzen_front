@@ -165,7 +165,7 @@ const MyInvitesPage: React.FC = () => {
             </Typography>
             <StyledBox>
               <Button onClick={handleAcceptInvite} type="button">
-                <DoneIcon sx={{fontSize: 40, color: "green"}}/>
+                <DoneIcon sx={{fontSize: 50, color: "green"}}/>
               </Button>
             </StyledBox>
           </Box>
@@ -188,7 +188,7 @@ const MyInvitesPage: React.FC = () => {
             </Typography>
             <StyledBox>
               <Button onClick={handleDeclineInvite} type="button">
-                <DoneIcon sx={{fontSize: 40, color: "red"}}/>
+                <DoneIcon sx={{fontSize: 50, color: "red"}}/>
               </Button>
             </StyledBox>
           </Box>

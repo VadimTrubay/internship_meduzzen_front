@@ -20,13 +20,12 @@ import {CompanyType} from "../../types/companiesTypes";
 import BaseModalWindow from "../../components/BaseModalWindow/BaseModalWindow";
 import {useParams} from "react-router-dom";
 import {selectQuizzes} from "../../redux/quizzes/selectors";
-import {QuizType} from "../../types/quizzesTypes";
-import {deleteQuiz, fetchQuizzes} from "../../redux/quizzes/operations";
+import {addQuiz, deleteQuiz, fetchQuizzes} from "../../redux/quizzes/operations";
 import AddQuizModal from "../../components/AddQuizModal/AddQuizModal";
 import {useFormik} from "formik";
-import {initialValueUpdateCompany} from "../../initialValues/initialValues";
-import {validationSchemaUpdateCompany} from "../../validate/validationSchemaUpdateCompany";
-
+import {initialValueAddQuiz} from "../../initialValues/initialValues";
+import {validationSchemaAddQuiz} from "../../validate/validationSchemaAddQuiz";
+import {QuizResponseType} from "../../types/quizzesTypes";
 
 const columns = [
   {id: "name", label: "Name", minWidth: 100},
@@ -36,11 +35,10 @@ const columns = [
   {id: "delete", label: "Delete", minWidth: 80},
 ];
 
-
 const CompanyQuizzesPage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const {id} = useParams<{ id: string }>();
-  const quizzes = useSelector(selectQuizzes) as QuizType[];
+  const quizzes = useSelector(selectQuizzes) as QuizResponseType[];
   const company = useSelector(selectCompanyById) as CompanyType;
   const [openAddQuizModal, setOpenAddQuizModal] = useState<boolean>(false);
   const [openDeleteQuizModal, setOpenDeleteQuizModal] = useState<boolean>(false);
@@ -54,24 +52,21 @@ const CompanyQuizzesPage: React.FC = () => {
   };
 
   useEffect(() => {
-    if (id) {
+    // if (id) {
       dispatch(fetchQuizzes(id));
-    }
-  }, [id, dispatch])
+    // }
+  },[])
 
-
-  // TODO
   const formikAddQuiz = useFormik({
-    // initialValues: initialValueUpdateCompany,
-    // validationSchema: validationSchemaUpdateCompany,
+    initialValues: initialValueAddQuiz,
+    validationSchema: validationSchemaAddQuiz,
     onSubmit: (values) => {
       if (formikAddQuiz.isValid) {
-        // dispatch(updateCompany(values));
-        // dispatch(fetchCompanyById(companyById?.id));
-        // navigate(mainUrls.companies.byId(companyById?.id));
+        console.log(company.id, values);
+        // dispatch(addQuiz(company?.id, values));
       }
       handleCloseAddQuizModal();
-    },
+    }
   });
 
   const handleOpenDeleteQuizModal = (quizId: string) => {
@@ -84,7 +79,6 @@ const CompanyQuizzesPage: React.FC = () => {
     setOpenDeleteQuizModal(false);
     setSelectedQuizId(null);
   };
-
 
   const handleDeleteQuiz = () => {
     if (id && selectedQuizId !== null) {
@@ -113,7 +107,7 @@ const CompanyQuizzesPage: React.FC = () => {
               <Button variant="contained"
                       onClick={handleOpenAddQuizModal}
               >
-                + Add Quizz
+                + Add Quiz
               </Button>
             </Box>
           </Grid>
@@ -135,7 +129,7 @@ const CompanyQuizzesPage: React.FC = () => {
                 </TableRow>
               </TableHead>
               <TableBody className={styles.tableHead}>
-                {quizzes.map((quiz: QuizType) => (
+                {quizzes.map((quiz: QuizResponseType) => (
                   <TableRow key={quiz.id} className={styles.tableRow}>
                     <TableCell sx={{padding: "3px"}} align="center">
                       {quiz.name}
@@ -173,20 +167,22 @@ const CompanyQuizzesPage: React.FC = () => {
           </TableContainer>
         </Paper>
 
-        {/* Add Quiz Modal */}
-        {/*<AddQuizModal*/}
-        {/*  openModal={openAddQuizModal}*/}
-        {/*  closeModal={closeModal}*/}
-        {/*  style_close={styles.close}*/}
-        {/*  color_off={"primary"}*/}
-        {/*  style_title={styles.title_add}*/}
-        {/*  title={"Add Quiz"}*/}
-        {/*  formikAddQuiz={formikAddQuiz}*/}
-        {/*  name={"Name:"}*/}
-        {/*  description={"Description:"}*/}
-        {/*  visible={"Visible:"}*/}
-        {/*  style_done={styles.add}*/}
-        {/*/>*/}
+        {/*Add Quiz Modal*/}
+        <AddQuizModal
+          openModal={openAddQuizModal}
+          closeModal={handleCloseAddQuizModal}
+          style_close={styles.close}
+          color_off={"primary"}
+          style_title={styles.title_add}
+          title={"Add Quiz"}
+          formikAddQuiz={formikAddQuiz}
+          name={"Name:"}
+          description={"Description:"}
+          questions={"Questions:"}
+          answer_options={"Answer options:"}
+          correct_answer={"Correct answer:"}
+          frequency_days={"Frequency days:"}
+        />
 
         {/* Delete Quiz Modal */}
         <BaseModalWindow

@@ -1,11 +1,11 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import {getCompanyQuizzes, deleteQuizApi, submitQuiz} from "../../api/api_quizzes";
-import {QuizRequestType} from "../../types/quizzesTypes";
+import {QuizCompanyRequestType} from "../../types/quizzesTypes";
 
 
 export const addQuiz = createAsyncThunk(
   "quizzes/addQuiz",
-  async (quizData: QuizRequestType, thunkAPI) => {
+  async (quizData: QuizCompanyRequestType, thunkAPI) => {
     try {
       const response = await submitQuiz(quizData);
       return response.data;
