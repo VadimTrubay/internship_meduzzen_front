@@ -24,6 +24,7 @@ import MyInvitesPage from "../pages/MyInvitesPage/MyInvitesPage";
 import MyRequestsPage from "../pages/MyRequestsPage/MyRequestsPage";
 import CompanyInvitesPage from "../pages/CompanyInvitesPage/CompanyInvitesPage";
 import CompanyRequestsPage from "../pages/CompanyRequestsPage/CompanyRequestsPage";
+import CompanyGetAdminsPage from "../pages/CompanyGetAdminsPage/CompanyGetAdminsPage";
 
 
 const HomePage = lazy(() => import("../pages/HomePage/HomePage"));
@@ -101,6 +102,10 @@ const App: React.FC = () => {
             <Route
               path={`${RouterEndpoints.actions}/${RouterEndpoints.company}/${RouterEndpoints.id}/${RouterEndpoints.requests}`}
               element={<PrivateRoute redirectTo={RouterEndpoints.login} component={<CompanyRequestsPage/>}/>}
+            />
+            <Route
+              path={`${RouterEndpoints.actions}/${RouterEndpoints.company}/${RouterEndpoints.id}/${RouterEndpoints.admins}`}
+              element={<PrivateRoute redirectTo={RouterEndpoints.login} component={<CompanyGetAdminsPage/>}/>}
             />
             <Route path={RouterEndpoints.terms} element={<TermsPage/>}/>
             <Route path={RouterEndpoints.notFound} element={<NotFoundPage/>}/>
