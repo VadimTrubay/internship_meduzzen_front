@@ -121,6 +121,14 @@ const CompanyProfilePage: React.FC = () => {
             >
               Company Members
             </Button>
+            <Button
+              variant="outlined"
+              color="success"
+              sx={{margin: 1}}
+              onClick={() => handleOpenCompanyQuizzes()}
+            >
+              Company Quizzes
+            </Button>
             {currentUser?.id === companyById?.owner_id &&
               <Box>
                 <Button
@@ -138,14 +146,6 @@ const CompanyProfilePage: React.FC = () => {
                   onClick={() => handleOpenCompanyRequests()}
                 >
                   Company Requests
-                </Button>
-                <Button
-                  variant="outlined"
-                  color="success"
-                  sx={{margin: 1}}
-                  onClick={() => handleOpenCompanyQuizzes()}
-                >
-                  Company Quizzes
                 </Button>
               </Box>
             }
@@ -210,7 +210,7 @@ const CompanyProfilePage: React.FC = () => {
             name={"Name:"}
             description={"Description:"}
             visible={"Visible:"}
-            style_done={styles.edit}
+            style_done={{color: "primary", fontSize: 50}}
           />
 
           {/*Delete modal*/}
@@ -223,7 +223,7 @@ const CompanyProfilePage: React.FC = () => {
             title={"Delete company"}
             text={"Are you sure you want to delete this company?"}
             onSubmit={handleDeleteCompany}
-            style_done={styles.done_leave}
+            style_done={{color: "red", fontSize: 50}}
           />
         </>
       )

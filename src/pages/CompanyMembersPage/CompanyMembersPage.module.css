@@ -62,16 +62,6 @@
   cursor: pointer;
 }
 
-.done_change_role {
-  color: var(--brand-color-contactbook);
-  font-size: 50px;
-}
-
-.done_leave {
-  color: red;
-  font-size: 50px;
-}
-
 .inviteMemberButton {
   display: flex;
   justify-content: center;

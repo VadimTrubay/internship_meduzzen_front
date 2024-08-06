@@ -18,7 +18,7 @@ export interface BaseModalWindowType {
   title: string;
   text: string;
   onSubmit: (event: React.FormEvent<HTMLFormElement> | any) => void;
-  style_done: string;
+  style_done: any;
 }
 
 const BaseModalWindow: React.FC<BaseModalWindowType> = ({
@@ -48,7 +48,7 @@ const BaseModalWindow: React.FC<BaseModalWindowType> = ({
             onSubmit={onSubmit}
           >
             <Button type="submit">
-              <DoneIcon className={style_done}/>
+              <DoneIcon sx={style_done}/>
             </Button>
           </StyledBox>
         </Box>

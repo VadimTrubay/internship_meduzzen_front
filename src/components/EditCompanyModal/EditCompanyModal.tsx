@@ -20,7 +20,7 @@ export interface EditCompanyModalType {
   name: string;
   description: string;
   visible: string;
-  style_done: string;
+  style_done: any;
 }
 
 const EditCompanyModal: React.FC<EditCompanyModalType> = ({
@@ -92,7 +92,7 @@ const EditCompanyModal: React.FC<EditCompanyModalType> = ({
               label="Visible"
             />
             <Button type="submit">
-              <DoneIcon className={style_done}/>
+              <DoneIcon sx={style_done}/>
             </Button>
           </StyledBox>
         </Box>

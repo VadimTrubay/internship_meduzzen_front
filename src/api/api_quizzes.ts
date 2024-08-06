@@ -1,12 +1,11 @@
 import {AxiosResponse} from 'axios';
 import {mainUrls} from '../config/urls';
 import axiosInstance from "../utils/createAxiosInstance";
-import {QuizCompanyRequestType} from "../types/quizzesTypes";
+import {QuizCompanyIdRequestType} from "../types/quizzesTypes";
 
 
-export const submitQuiz = async (quizData: QuizCompanyRequestType): Promise<AxiosResponse> => {
-  const {companyId, ...data} = quizData;
-  return await axiosInstance.post(mainUrls.quizzes.submit(companyId), data);
+export const submitQuiz = async (quizData: QuizCompanyIdRequestType): Promise<AxiosResponse> => {
+  return await axiosInstance.post(mainUrls.quizzes.submit(quizData.companyId), quizData.quizData);
 };
 
 export const getCompanyQuizzes = async (companyId: string): Promise<AxiosResponse> => {

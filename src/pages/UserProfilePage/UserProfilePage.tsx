@@ -296,7 +296,7 @@ const UserProfilePage: React.FC = () => {
             title={"Delete profile"}
             text={"Are you sure you want to delete this profile?"}
             onSubmit={handleDeleteUser}
-            style_done={styles.done_leave}
+            style_done={{color: "red", fontSize: 50}}
           />
         </>
       )

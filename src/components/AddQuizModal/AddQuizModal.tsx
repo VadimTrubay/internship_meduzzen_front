@@ -23,18 +23,18 @@ const AddQuizModal: React.FC<AddQuizModalType> = ({
                                                     style_close,
                                                     color_off,
                                                     style_title,
-                                                    title,
                                                     formikAddQuiz,
-                                                    name,
-                                                    description,
-                                                    frequency_days,
-                                                    questions,
-                                                    answer_options,
+                                                    title,
+                                                    title_name,
+                                                    title_description,
+                                                    title_frequency_days,
+                                                    title_questions,
+                                                    title_answer_options,
                                                   }) => {
   const pushQuestion = () => {
     formikAddQuiz.setFieldValue("questions", [
       ...formikAddQuiz.values.questions,
-      {question_text: "", correct_answer: [], answer_options: ["", ""]}
+      {question_text: "", correct_answer: [""], answer_options: ["", ""]}
     ]);
   };
 
@@ -55,26 +55,25 @@ const AddQuizModal: React.FC<AddQuizModalType> = ({
   const removeOption = (questionIndex: number, optionIndex: number) => {
     if (formikAddQuiz.values.questions[questionIndex].answer_options.length > 2) {
       const questions = [...formikAddQuiz.values.questions];
+      const optionValue = questions[questionIndex].answer_options[optionIndex];
       questions[questionIndex].answer_options.splice(optionIndex, 1);
-      const correctAnswerIndex = questions[questionIndex].correct_answer.indexOf(optionIndex);
+      const correctAnswerIndex = questions[questionIndex].correct_answer.indexOf(optionValue);
       if (correctAnswerIndex > -1) {
         questions[questionIndex].correct_answer.splice(correctAnswerIndex, 1);
       }
-      questions[questionIndex].correct_answer = questions[questionIndex].correct_answer.map((answerIndex) =>
-        answerIndex > optionIndex ? answerIndex - 1 : answerIndex
-      );
       formikAddQuiz.setFieldValue("questions", questions);
     }
   };
 
   const handleCorrectAnswerChange = (questionIndex: number, optionIndex: number) => {
     const questions = [...formikAddQuiz.values.questions];
-    const correctAnswerIndex = questions[questionIndex].correct_answer.indexOf(optionIndex);
+    const optionValue = questions[questionIndex].answer_options[optionIndex];
+    const correctAnswerIndex = questions[questionIndex].correct_answer.indexOf(optionValue);
 
     if (correctAnswerIndex > -1) {
       questions[questionIndex].correct_answer.splice(correctAnswerIndex, 1);
     } else {
-      questions[questionIndex].correct_answer.push(optionIndex);
+      questions[questionIndex].correct_answer.push(optionValue);
     }
 
     formikAddQuiz.setFieldValue("questions", questions);
@@ -96,7 +95,7 @@ const AddQuizModal: React.FC<AddQuizModalType> = ({
         </Typography>
         <MuiBox component="form" onSubmit={formikAddQuiz.handleSubmit} sx={{width: "100%"}}>
           <Typography variant="h5" sx={{display: "flex", justifyContent: "left", marginTop: 2}}>
-            {name}
+            {title_name}
           </Typography>
           <TextField
             id="name"
@@ -108,10 +107,10 @@ const AddQuizModal: React.FC<AddQuizModalType> = ({
             onChange={formikAddQuiz.handleChange}
             onBlur={formikAddQuiz.handleBlur}
             error={formikAddQuiz.touched.name && Boolean(formikAddQuiz.errors.name)}
-            helperText={formikAddQuiz.touched.name && formikAddQuiz.errors.name}
+            helperText={formikAddQuiz.touched.name && typeof formikAddQuiz.errors.name === 'string' ? formikAddQuiz.errors.name : ""}
           />
           <Typography variant="h5" sx={{display: "flex", justifyContent: "left", marginTop: 2}}>
-            {description}
+            {title_description}
           </Typography>
           <TextField
             id="description"
@@ -123,10 +122,10 @@ const AddQuizModal: React.FC<AddQuizModalType> = ({
             onChange={formikAddQuiz.handleChange}
             onBlur={formikAddQuiz.handleBlur}
             error={formikAddQuiz.touched.description && Boolean(formikAddQuiz.errors.description)}
-            helperText={formikAddQuiz.touched.description && formikAddQuiz.errors.description}
+            helperText={formikAddQuiz.touched.description && typeof formikAddQuiz.errors.description === 'string' ? formikAddQuiz.errors.description : ""}
           />
           <Typography variant="h5" sx={{display: "flex", justifyContent: "left", marginTop: 2}}>
-            {frequency_days}
+            {title_frequency_days}
           </Typography>
           <TextField
             id="frequency_days"
@@ -138,15 +137,15 @@ const AddQuizModal: React.FC<AddQuizModalType> = ({
             onChange={formikAddQuiz.handleChange}
             onBlur={formikAddQuiz.handleBlur}
             error={formikAddQuiz.touched.frequency_days && Boolean(formikAddQuiz.errors.frequency_days)}
-            helperText={formikAddQuiz.touched.frequency_days && formikAddQuiz.errors.frequency_days}
+            helperText={formikAddQuiz.touched.frequency_days && typeof formikAddQuiz.errors.frequency_days === 'string' ? formikAddQuiz.errors.frequency_days : ""}
           />
           <Typography variant="h5" sx={{display: "flex", justifyContent: "center", marginTop: 2}}>
-            {questions}
+            {title_questions}
           </Typography>
 
           {formikAddQuiz.values.questions.map((question, questionIndex) => (
             <MuiBox key={questionIndex} mb={2}>
-              <Paper elevation={22} style={{padding: "16px", }}>
+              <Paper elevation={22} style={{padding: "16px"}}>
                 <MuiBox display="flex" alignItems="center">
                   <TextField
                     id={`questions[${questionIndex}].question_text`}
@@ -159,7 +158,7 @@ const AddQuizModal: React.FC<AddQuizModalType> = ({
                     onChange={formikAddQuiz.handleChange}
                     onBlur={formikAddQuiz.handleBlur}
                     error={formikAddQuiz.touched.questions?.[questionIndex]?.question_text && Boolean(formikAddQuiz.errors.questions?.[questionIndex]?.question_text)}
-                    helperText={formikAddQuiz.touched.questions?.[questionIndex]?.question_text && formikAddQuiz.errors.questions?.[questionIndex]?.question_text}
+                    helperText={formikAddQuiz.touched.questions?.[questionIndex]?.question_text && typeof formikAddQuiz.errors.questions?.[questionIndex]?.question_text === 'string' ? formikAddQuiz.errors.questions?.[questionIndex]?.question_text : ""}
                   />
                   {questionIndex >= 2 && (
                     <IconButton onClick={() => removeQuestion(questionIndex)} color="primary">
@@ -171,7 +170,7 @@ const AddQuizModal: React.FC<AddQuizModalType> = ({
                   <AddCircleOutlineIcon/>
                 </IconButton>
                 <Typography variant="h5">
-                  <div>{answer_options}</div>
+                  <div>{title_answer_options}</div>
                 </Typography>
                 {question.answer_options.map((option, optionIndex) => (
                   <MuiBox key={optionIndex} display="flex" alignItems="center">
@@ -187,12 +186,12 @@ const AddQuizModal: React.FC<AddQuizModalType> = ({
                       onChange={formikAddQuiz.handleChange}
                       onBlur={formikAddQuiz.handleBlur}
                       error={formikAddQuiz.touched.questions?.[questionIndex]?.answer_options?.[optionIndex] && Boolean(formikAddQuiz.errors.questions?.[questionIndex]?.answer_options?.[optionIndex])}
-                      helperText={formikAddQuiz.touched.questions?.[questionIndex]?.answer_options?.[optionIndex] && formikAddQuiz.errors.questions?.[questionIndex]?.answer_options?.[optionIndex]}
+                      helperText={formikAddQuiz.touched.questions?.[questionIndex]?.answer_options?.[optionIndex] && typeof formikAddQuiz.errors.questions?.[questionIndex]?.answer_options?.[optionIndex] === 'string' ? formikAddQuiz.errors.questions?.[questionIndex]?.answer_options?.[optionIndex] : ""}
                     />
                     <FormControlLabel
                       control={
                         <Checkbox
-                          checked={formikAddQuiz.values.questions[questionIndex].correct_answer.includes(optionIndex)}
+                          checked={formikAddQuiz.values.questions[questionIndex].correct_answer.includes(option)}
                           onChange={() => handleCorrectAnswerChange(questionIndex, optionIndex)}
                           color="primary"
                           sx={{marginLeft: 1}}

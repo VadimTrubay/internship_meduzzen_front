@@ -11,7 +11,6 @@ const initialAuth: initialAuthType = {
     email: "",
     password: "",
     new_password: "",
-    is_admin: false
   },
   access_token: "",
   isLoggedIn: false,
@@ -50,7 +49,6 @@ const handleGetMeFulfilled = (state: initialAuthType, action: PayloadAction<auth
   state.user.id = action.payload.id;
   state.user.username = action.payload.username;
   state.user.email = action.payload.email;
-  state.user.is_admin = action.payload.is_admin;
 };
 
 const handleUpdateUsernameFulfilled = (state: initialAuthType, action: PayloadAction<UsernameUpdateType>) => {
@@ -77,7 +75,6 @@ const handleLogOutFulfilled = (state: initialAuthType) => {
     id: "", username: "",
     email: "", password: "",
     new_password: "",
-    is_admin: false
   };
   state.access_token = "";
   state.isLoggedIn = false;

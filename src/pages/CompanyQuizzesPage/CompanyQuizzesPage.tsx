@@ -14,7 +14,7 @@ import {useDispatch, useSelector} from "react-redux";
 import Paper from "@mui/material/Paper";
 import styles from "./CompanyQuizzesPage.module.css";
 import {AppDispatch} from "../../redux/store";
-import {selectLoading} from "../../redux/actions/selectors";
+import {selectAdmins, selectLoading} from "../../redux/actions/selectors";
 import {selectCompanyById} from "../../redux/companies/selectors";
 import {CompanyType} from "../../types/companiesTypes";
 import BaseModalWindow from "../../components/BaseModalWindow/BaseModalWindow";
@@ -26,6 +26,10 @@ import {useFormik} from "formik";
 import {initialValueAddQuiz} from "../../initialValues/initialValues";
 import {validationSchemaAddQuiz} from "../../validate/validationSchemaAddQuiz";
 import {QuizResponseType} from "../../types/quizzesTypes";
+import {selectUser} from "../../redux/auth/selectors";
+import {UserType} from "../../types/usersTypes";
+import {fetchAdmins} from "../../redux/actions/operations";
+import {memberType} from "../../types/actionsTypes";
 
 const columns = [
   {id: "name", label: "Name", minWidth: 100},
@@ -40,10 +44,16 @@ const CompanyQuizzesPage: React.FC = () => {
   const {id} = useParams<{ id: string }>();
   const quizzes = useSelector(selectQuizzes) as QuizResponseType[];
   const company = useSelector(selectCompanyById) as CompanyType;
+  const currentUser = useSelector(selectUser) as UserType;
+  const companyById = useSelector(selectCompanyById) as CompanyType;
+  const admins = useSelector(selectAdmins) as memberType[];
   const [openAddQuizModal, setOpenAddQuizModal] = useState<boolean>(false);
   const [openDeleteQuizModal, setOpenDeleteQuizModal] = useState<boolean>(false);
   const [selectedQuizId, setSelectedQuizId] = useState<string | null>(null);
   const loading = useSelector<boolean>(selectLoading);
+
+
+  const adminsListId = admins.map(admin => admin.user_id);
 
   const handleOpenAddQuizModal = () => setOpenAddQuizModal(true);
   const handleCloseAddQuizModal = () => {
@@ -52,21 +62,22 @@ const CompanyQuizzesPage: React.FC = () => {
   };
 
   useEffect(() => {
-    // if (id) {
+    if (id) {
       dispatch(fetchQuizzes(id));
-    // }
-  },[])
+      dispatch(fetchAdmins(id));
+    }
+  }, []);
+
 
   const formikAddQuiz = useFormik({
     initialValues: initialValueAddQuiz,
     validationSchema: validationSchemaAddQuiz,
     onSubmit: (values) => {
       if (formikAddQuiz.isValid) {
-        console.log(company.id, values);
-        // dispatch(addQuiz(company?.id, values));
+        dispatch(addQuiz({companyId: company.id, quizData: values}));
       }
       handleCloseAddQuizModal();
-    }
+    },
   });
 
   const handleOpenDeleteQuizModal = (quizId: string) => {
@@ -104,11 +115,11 @@ const CompanyQuizzesPage: React.FC = () => {
               Quizzes: "{company?.name}"
             </Typography>
             <Box className={styles.addQuizButton}>
-              <Button variant="contained"
-                      onClick={handleOpenAddQuizModal}
-              >
-                + Add Quiz
-              </Button>
+              {(currentUser?.id === companyById?.owner_id || adminsListId.includes(currentUser?.id)) && (
+                <Button variant="contained" onClick={handleOpenAddQuizModal}>
+                  + Add Quiz
+                </Button>
+              )}
             </Box>
           </Grid>
         </Grid>
@@ -118,10 +129,11 @@ const CompanyQuizzesPage: React.FC = () => {
               <TableHead>
                 <TableRow>
                   {columns.map((column) => (
-                    <TableCell sx={{backgroundColor: "#a4a4a4"}}
-                               key={column.id}
-                               align={"center"}
-                               style={{minWidth: column.minWidth}}
+                    <TableCell
+                      sx={{backgroundColor: "#a4a4a4"}}
+                      key={column.id}
+                      align={"center"}
+                      style={{minWidth: column.minWidth}}
                     >
                       {column.label}
                     </TableCell>
@@ -141,24 +153,27 @@ const CompanyQuizzesPage: React.FC = () => {
                       {quiz.frequency_days}
                     </TableCell>
                     <TableCell sx={{padding: "3px"}} align="center">
-                      <Button
-                        // onClick={() => handleOpenDeleteInviteModal(invite.id)}
-                        variant="outlined"
-                        color="primary"
-                        sx={{marginRight: 1}}
-                      >
-                        Edit
-                      </Button>
+                      {(currentUser?.id === companyById?.owner_id || adminsListId.includes(currentUser?.id)) && (
+                        <Button
+                          variant="outlined"
+                          color="primary"
+                          sx={{marginRight: 1}}
+                        >
+                          Edit
+                        </Button>
+                      )}
                     </TableCell>
                     <TableCell sx={{padding: "3px"}} align="center">
-                      <Button
-                        onClick={() => handleOpenDeleteQuizModal(quiz.id)}
-                        variant="outlined"
-                        color="error"
-                        sx={{marginRight: 1}}
-                      >
-                        Delete
-                      </Button>
+                      {(currentUser?.id === companyById?.owner_id || adminsListId.includes(currentUser?.id)) && (
+                        <Button
+                          onClick={() => handleOpenDeleteQuizModal(quiz.id)}
+                          variant="outlined"
+                          color="error"
+                          sx={{marginRight: 1}}
+                        >
+                          Delete
+                        </Button>
+                      )}
                     </TableCell>
                   </TableRow>
                 ))}
@@ -167,24 +182,25 @@ const CompanyQuizzesPage: React.FC = () => {
           </TableContainer>
         </Paper>
 
-        {/*Add Quiz Modal*/}
+        {/* Add Quiz Modal */
+        }
         <AddQuizModal
           openModal={openAddQuizModal}
           closeModal={handleCloseAddQuizModal}
           style_close={styles.close}
           color_off={"primary"}
           style_title={styles.title_add}
-          title={"Add Quiz"}
           formikAddQuiz={formikAddQuiz}
-          name={"Name:"}
-          description={"Description:"}
-          questions={"Questions:"}
-          answer_options={"Answer options:"}
-          correct_answer={"Correct answer:"}
-          frequency_days={"Frequency days:"}
+          title={"Add Quiz"}
+          title_name={"Name:"}
+          title_description={"Description:"}
+          title_frequency_days={"Frequency days:"}
+          title_questions={"Questions:"}
+          title_answer_options={"Answer options:"}
         />
 
-        {/* Delete Quiz Modal */}
+        {/* Delete Quiz Modal */
+        }
         <BaseModalWindow
           openModal={openDeleteQuizModal}
           closeModal={closeModal}
@@ -194,11 +210,12 @@ const CompanyQuizzesPage: React.FC = () => {
           title={"Delete Quiz"}
           text={"Are you sure you want to delete this quiz?"}
           onSubmit={handleDeleteQuiz}
-          style_done={styles.done_leave}
+          style_done={{color: "red", fontSize: 50}}
         />
       </>
     )
-  );
+  )
+    ;
 };
 
 export default CompanyQuizzesPage;

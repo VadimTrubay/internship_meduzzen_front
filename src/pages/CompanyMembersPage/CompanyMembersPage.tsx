@@ -249,7 +249,7 @@ const CompanyMembersPage: React.FC = () => {
           e.preventDefault();
           handleDeleteMember();
         }}
-        style_done={styles.done_leave}
+        style_done={{color: "red", fontSize: 50}}
       />
 
       {/* Leave modal */}
@@ -265,7 +265,7 @@ const CompanyMembersPage: React.FC = () => {
           e.preventDefault();
           handleLeave();
         }}
-        style_done={styles.done_leave}
+        style_done={{color: "red", fontSize: 50}}
       />
 
       {/* Change role modal */}
@@ -281,7 +281,7 @@ const CompanyMembersPage: React.FC = () => {
           e.preventDefault();
           handleChangeRole();
         }}
-        style_done={styles.done_change_role}
+        style_done={{color: "primary", fontSize: 50}}
       />
     </>
   );

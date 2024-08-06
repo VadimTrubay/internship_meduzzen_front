@@ -77,13 +77,3 @@
   justify-content: center;
   margin-bottom: 10px;
 }
-
-.done {
-  color: #006fff;
-  font-size: 50px;
-}
-
-.done_leave {
-  color: red;
-  font-size: 50px;
-}

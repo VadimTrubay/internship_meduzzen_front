@@ -131,7 +131,6 @@ const CompanyInvitesPage: React.FC = () => {
           title={"Delete Invite"}
           text={"Are you sure you want to delete this invite?"}
           onSubmit={handleDeleteInvite}
-          style_done={styles.done_leave}
         />
       </>
     )

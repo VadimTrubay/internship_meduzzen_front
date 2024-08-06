@@ -15,9 +15,12 @@ export interface QuizResponseType {
   frequency_days: number;
 }
 
-export interface QuizCompanyRequestType {
+export interface QuizCompanyIdRequestType {
   companyId: string;
-  id: string;
+  quizData: QuizCompanyRequestType
+}
+
+export interface QuizCompanyRequestType {
   name: string;
   description: string;
   frequency_days: number;
@@ -43,12 +46,11 @@ export interface AddQuizModalType {
   style_close: string;
   color_off: "inherit" | "disabled" | "action" | "primary" | "secondary" | "error" | "info" | "success" | "warning";
   style_title: string;
-  title: string;
   formikAddQuiz: any;
-  name: string;
-  description: string;
-  frequency_days: string;
-  questions: string;
-  answer_options: string;
-  correct_answer: string;
+  title: string;
+  title_name: string;
+  title_description: string;
+  title_frequency_days: string;
+  title_questions: string;
+  title_answer_options: string;
 }
