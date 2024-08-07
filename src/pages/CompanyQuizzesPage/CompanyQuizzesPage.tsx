@@ -18,18 +18,21 @@ import {selectAdmins, selectLoading} from "../../redux/actions/selectors";
 import {selectCompanyById} from "../../redux/companies/selectors";
 import {CompanyType} from "../../types/companiesTypes";
 import BaseModalWindow from "../../components/BaseModalWindow/BaseModalWindow";
-import {useParams} from "react-router-dom";
-import {selectQuizzes} from "../../redux/quizzes/selectors";
-import {addQuiz, deleteQuiz, fetchQuizById, fetchQuizzes} from "../../redux/quizzes/operations";
+import {NavLink, useParams} from "react-router-dom";
+import {selectQuizById, selectQuizzes} from "../../redux/quizzes/selectors";
+import {addQuiz, deleteQuiz, fetchQuizById, fetchQuizzes, updateQuiz} from "../../redux/quizzes/operations";
 import AddQuizModal from "../../components/AddQuizModal/AddQuizModal";
 import {useFormik} from "formik";
-import {initialValueAddQuiz} from "../../initialValues/initialValues";
-import {validationSchemaAddQuiz} from "../../validate/validationSchemaAddQuiz";
-import {QuizResponseType} from "../../types/quizzesTypes";
+import {initialValueAddQuiz, initialValueEditQuiz} from "../../initialValues/initialValues";
+import {validationSchemaQuiz} from "../../validate/validationSchemaQuiz";
+import {QuizByIdResponseType, QuizResponseType} from "../../types/quizzesTypes";
 import {selectUser} from "../../redux/auth/selectors";
 import {UserType} from "../../types/usersTypes";
 import {fetchAdmins} from "../../redux/actions/operations";
 import {memberType} from "../../types/actionsTypes";
+import EditQuizModal from "../../components/EditQuizModal/EditQuizModal";
+import {mainUrls} from "../../config/urls";
+
 
 const columns = [
   {id: "name", label: "Name", minWidth: 100},
@@ -46,6 +49,7 @@ const CompanyQuizzesPage: React.FC = () => {
   const company = useSelector(selectCompanyById) as CompanyType;
   const currentUser = useSelector(selectUser) as UserType;
   const companyById = useSelector(selectCompanyById) as CompanyType;
+  const quizById = useSelector(selectQuizById) as QuizByIdResponseType;
   const admins = useSelector(selectAdmins) as memberType[];
   const [openAddQuizModal, setOpenAddQuizModal] = useState<boolean>(false);
   const [openEditQuizModal, setOpenEditQuizModal] = useState<boolean>(false);
@@ -62,13 +66,12 @@ const CompanyQuizzesPage: React.FC = () => {
     setOpenAddQuizModal(false);
   };
 
-  const handleOpenEditQuizModal = (id) => {
-    console.log(id)
+  const handleOpenEditQuizModal = (id: string) => {
     dispatch(fetchQuizById(id));
     setOpenEditQuizModal(true);
   }
   const handleCloseEditQuizModal = () => {
-    // formikEditQuiz.resetForm();
+    formikEditQuiz.resetForm();
     setOpenEditQuizModal(false);
   };
 
@@ -79,16 +82,38 @@ const CompanyQuizzesPage: React.FC = () => {
     }
   }, []);
 
+  useEffect(() => {
+    if (quizById) {
+      formikEditQuiz.setValues(quizById);
+    }
+  }, [quizById])
 
   const formikAddQuiz = useFormik({
     initialValues: initialValueAddQuiz,
-    validationSchema: validationSchemaAddQuiz,
+    validationSchema: validationSchemaQuiz,
     onSubmit: (values) => {
-      console.log(values)
       if (formikAddQuiz.isValid) {
         dispatch(addQuiz({companyId: company.id, quizData: values}));
+        if (id != null) {
+          dispatch(fetchQuizzes(id));
+        }
       }
       handleCloseAddQuizModal();
+    },
+  });
+
+
+  const formikEditQuiz = useFormik({
+    initialValues: initialValueEditQuiz,
+    validationSchema: validationSchemaQuiz,
+    onSubmit: (values) => {
+      if (formikEditQuiz.isValid) {
+        dispatch(updateQuiz(values));
+        if (id != null) {
+          dispatch(fetchQuizzes(id));
+        }
+      }
+      handleCloseEditQuizModal();
     },
   });
 
@@ -100,13 +125,16 @@ const CompanyQuizzesPage: React.FC = () => {
   const closeModal = () => {
     setOpenAddQuizModal(false);
     setOpenDeleteQuizModal(false);
+    setOpenEditQuizModal(false);
     setSelectedQuizId(null);
   };
 
   const handleDeleteQuiz = () => {
-    if (id && selectedQuizId !== null) {
-      dispatch(deleteQuiz(selectedQuizId));
+    if (id != null) {
       dispatch(fetchQuizzes(id));
+    }
+    if (selectedQuizId != null) {
+      dispatch(deleteQuiz(selectedQuizId));
     }
     closeModal();
   };
@@ -156,7 +184,9 @@ const CompanyQuizzesPage: React.FC = () => {
                 {quizzes.map((quiz: QuizResponseType) => (
                   <TableRow key={quiz.id} className={styles.tableRow}>
                     <TableCell sx={{padding: "3px"}} align="center">
-                      {quiz.name}
+                      <NavLink className={styles.link} to={mainUrls.quizzes.viewQuiz(quiz.id)}>
+                        {quiz.name}
+                      </NavLink>
                     </TableCell>
                     <TableCell sx={{padding: "3px"}} align="center">
                       {quiz.description}
@@ -195,8 +225,7 @@ const CompanyQuizzesPage: React.FC = () => {
           </TableContainer>
         </Paper>
 
-        {/* Add Quiz Modal */
-        }
+        {/* Add Quiz Modal */}
         <AddQuizModal
           openModal={openAddQuizModal}
           closeModal={handleCloseAddQuizModal}
@@ -212,8 +241,23 @@ const CompanyQuizzesPage: React.FC = () => {
           title_answer_options={"Answer options:"}
         />
 
-        {/* Delete Quiz Modal */
-        }
+        {/* Edit Quiz Modal */}
+        <EditQuizModal
+          openModal={openEditQuizModal}
+          closeModal={handleCloseEditQuizModal}
+          style_close={styles.close}
+          color_off={"primary"}
+          style_title={styles.title_add}
+          formikEditQuiz={formikEditQuiz}
+          title={"Edit Quiz"}
+          title_name={"Name:"}
+          title_description={"Description:"}
+          title_frequency_days={"Frequency days:"}
+          title_questions={"Questions:"}
+          title_answer_options={"Answer options:"}
+        />
+
+        {/* Delete Quiz Modal */}
         <BaseModalWindow
           openModal={openDeleteQuizModal}
           closeModal={closeModal}
@@ -227,8 +271,7 @@ const CompanyQuizzesPage: React.FC = () => {
         />
       </>
     )
-  )
-    ;
+  );
 };
 
 export default CompanyQuizzesPage;

@@ -1,5 +1,5 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {deleteQuiz, fetchQuizzes, addQuiz, fetchQuizById} from "./operations";
+import {deleteQuiz, fetchQuizzes, addQuiz, fetchQuizById, updateQuiz} from "./operations";
 import {initialQuizzesType} from "../../types/quizzesTypes";
 import toast from "react-hot-toast";
 
@@ -42,22 +42,16 @@ const handleAddQuizFulfilled = (state: initialQuizzesType, action: PayloadAction
   state.items.quizzes.push(action.payload);
   toast.success(`Quiz added successfully`);
 };
-//
-// const handleGetCompanyByIdFulfilled = (state: initialCompaniesType, action: PayloadAction<any>) => {
-//   state.loading = false;
-//   state.error = null;
-//   state.companyById = action.payload;
-// };
-//
-// const handleUpdateCompanyFulfilled = (state: initialCompaniesType, action: PayloadAction<any>) => {
-//   state.loading = false;
-//   state.error = null;
-//   const index = state.items.companies.findIndex((company) => company.id === action.payload.id);
-//   if (index !== -1) {
-//     state.items.companies[index] = {...state.items.companies[index], ...action.payload};
-//   }
-//   toast.success(`Company updated successfully`);
-// };
+
+const handleUpdateQuizFulfilled = (state: initialQuizzesType, action: PayloadAction<any>) => {
+  state.loading = false;
+  state.error = null;
+  const index = state.items.quizzes.findIndex((quiz) => quiz.id === action.payload.id);
+  if (index !== -1) {
+    state.items.quizzes[index] = {...state.items.quizzes[index], ...action.payload};
+  }
+  toast.success(`Quiz updated successfully`);
+};
 
 const handleDeleteQuizFulfilled = (state: initialQuizzesType, action: PayloadAction<any>) => {
   state.loading = false;
@@ -82,9 +76,9 @@ const quizzesSlice = createSlice({
       .addCase(addQuiz.pending, handlePending)
       .addCase(addQuiz.fulfilled, handleAddQuizFulfilled)
       .addCase(addQuiz.rejected, handleRejected)
-      // .addCase(updateCompany.pending, handlePending)
-      // .addCase(updateCompany.fulfilled, handleUpdateCompanyFulfilled)
-      // .addCase(updateCompany.rejected, handleRejected)
+      .addCase(updateQuiz.pending, handlePending)
+      .addCase(updateQuiz.fulfilled, handleUpdateQuizFulfilled)
+      .addCase(updateQuiz.rejected, handleRejected)
       .addCase(deleteQuiz.pending, handlePending)
       .addCase(deleteQuiz.fulfilled, handleDeleteQuizFulfilled)
       .addCase(deleteQuiz.rejected, handleRejected),

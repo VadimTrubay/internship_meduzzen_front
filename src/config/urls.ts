@@ -48,6 +48,7 @@ export const mainUrls = {
     removeAdminRole: (companyId: string, userId: string) => `${actions}/company/${companyId}/remove/admin/user/${userId}`,
   },
   quizzes: {
+    viewQuiz:  (quizId: string) => `${quizzes}/quiz/view/${quizId}`,
     byId: (quizId: string) => `${quizzes}/quiz/${quizId}`,
     submit: (companyId: string) => `${quizzes}/company/${companyId}`,
     companyQuizzes: (companyId: string) => `${quizzes}/company/${companyId}`,

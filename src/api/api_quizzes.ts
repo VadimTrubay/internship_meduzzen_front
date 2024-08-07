@@ -1,7 +1,7 @@
 import {AxiosResponse} from 'axios';
 import {mainUrls} from '../config/urls';
 import axiosInstance from "../utils/createAxiosInstance";
-import {QuizCompanyIdRequestType} from "../types/quizzesTypes";
+import {QuizCompanyIdRequestType, QuizByIdResponseType} from "../types/quizzesTypes";
 
 
 export const submitQuiz = async (quizData: QuizCompanyIdRequestType): Promise<AxiosResponse> => {
@@ -14,6 +14,11 @@ export const getCompanyQuizzes = async (companyId: string): Promise<AxiosRespons
 
 export const getQuizById = async (id: string): Promise<AxiosResponse> => {
   return await axiosInstance.get(mainUrls.quizzes.byId(id));
+};
+
+export const editQuiz = async (quizData: QuizByIdResponseType): Promise<AxiosResponse> => {
+  const {id} = quizData;
+  return await axiosInstance.patch(mainUrls.quizzes.byId(id), quizData);
 };
 
 export const deleteQuizApi = async (quizId: string): Promise<AxiosResponse> => {

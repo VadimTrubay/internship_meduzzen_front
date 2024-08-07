@@ -5,7 +5,7 @@ import {
   IUsernameUpdateType,
   UserRegistrationType
 } from "../types/authTypes";
-import {IQuizRequestType} from "../types/quizzesTypes";
+import {IQuizRequestType, QuizByIdResponseType} from "../types/quizzesTypes";
 
 
 export const initialValues: CompanyAddType = {
@@ -43,20 +43,40 @@ export const initialValueUserRegistration: UserRegistrationType = {
 }
 
 export const initialValueAddQuiz: IQuizRequestType = {
-  name: '',
-  description: '',
+  name: "",
+  description: "",
   frequency_days: 0,
   questions: [
     {
-      question_text: '',
+      question_text: "",
       correct_answer: [],
-      answer_options: ['', ''],
+      answer_options: ["", ""],
     }
     ,
     {
-      question_text: '',
+      question_text: "",
       correct_answer: [],
-      answer_options: ['', ''],
+      answer_options: ["", ""],
+    }
+  ]
+};
+
+export const initialValueEditQuiz: QuizByIdResponseType = {
+  id: "",
+  name: "",
+  description: "",
+  frequency_days: 0,
+  questions: [
+    {
+      question_text: "",
+      correct_answer: [],
+      answer_options: ["", ""],
+    }
+    ,
+    {
+      question_text: "",
+      correct_answer: [],
+      answer_options: ["", ""],
     }
   ]
 };

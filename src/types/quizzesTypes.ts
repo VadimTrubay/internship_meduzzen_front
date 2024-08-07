@@ -33,7 +33,6 @@ export interface QuizByIdResponseType {
   description: string;
   frequency_days: number;
   questions: QuestionRequestType[];
-  company_id: string;
 }
 
 export interface IQuizRequestType {
@@ -49,17 +48,24 @@ export interface QuestionRequestType {
   answer_options: string[];
 }
 
-export interface AddQuizModalType {
+export interface QuizModalType {
   openModal: boolean;
   closeModal: () => void;
   style_close: string;
   color_off: "inherit" | "disabled" | "action" | "primary" | "secondary" | "error" | "info" | "success" | "warning";
   style_title: string;
-  formikAddQuiz: any;
   title: string;
   title_name: string;
   title_description: string;
   title_frequency_days: string;
   title_questions: string;
   title_answer_options: string;
+}
+
+export interface AddQuizModalType extends QuizModalType {
+  formikAddQuiz: any;
+}
+
+export interface EditQuizModalType extends QuizModalType {
+  formikEditQuiz: any;
 }
