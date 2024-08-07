@@ -58,14 +58,13 @@ const CompanyQuizzesPage: React.FC = () => {
   const loading = useSelector<boolean>(selectLoading);
 
   const adminsListId = admins.map(admin => admin.user_id);
-
-
+// console.log(quizzes)
   useEffect(() => {
     if (id) {
       dispatch(fetchQuizzes(id));
       dispatch(fetchAdmins(id));
     }
-  }, [id, dispatch]);
+  }, []);
 
   useEffect(() => {
     if (quizById) {
@@ -182,8 +181,8 @@ const CompanyQuizzesPage: React.FC = () => {
                 </TableRow>
               </TableHead>
               <TableBody className={styles.tableHead}>
-                {quizzes.map((quiz: QuizResponseType) => (
-                  <TableRow key={quiz?.id} className={styles.tableRow}>
+                {quizzes?.map((quiz: QuizResponseType, index: number) => (
+                  <TableRow key={index} className={styles.tableRow}>
                     <TableCell sx={{padding: "3px"}} align="center">
                       <NavLink className={styles.link} to={mainUrls.quizzes.viewQuiz(quiz.id)}>
                         {quiz.name}
