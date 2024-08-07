@@ -12,6 +12,10 @@ export const getCompanyQuizzes = async (companyId: string): Promise<AxiosRespons
   return await axiosInstance.get(mainUrls.quizzes.companyQuizzes(companyId));
 };
 
+export const getQuizById = async (id: string): Promise<AxiosResponse> => {
+  return await axiosInstance.get(mainUrls.quizzes.byId(id));
+};
+
 export const deleteQuizApi = async (quizId: string): Promise<AxiosResponse> => {
   return await axiosInstance.delete(mainUrls.quizzes.deleteQuiz(quizId));
 };

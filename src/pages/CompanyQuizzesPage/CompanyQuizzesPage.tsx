@@ -20,7 +20,7 @@ import {CompanyType} from "../../types/companiesTypes";
 import BaseModalWindow from "../../components/BaseModalWindow/BaseModalWindow";
 import {useParams} from "react-router-dom";
 import {selectQuizzes} from "../../redux/quizzes/selectors";
-import {addQuiz, deleteQuiz, fetchQuizzes} from "../../redux/quizzes/operations";
+import {addQuiz, deleteQuiz, fetchQuizById, fetchQuizzes} from "../../redux/quizzes/operations";
 import AddQuizModal from "../../components/AddQuizModal/AddQuizModal";
 import {useFormik} from "formik";
 import {initialValueAddQuiz} from "../../initialValues/initialValues";
@@ -48,6 +48,7 @@ const CompanyQuizzesPage: React.FC = () => {
   const companyById = useSelector(selectCompanyById) as CompanyType;
   const admins = useSelector(selectAdmins) as memberType[];
   const [openAddQuizModal, setOpenAddQuizModal] = useState<boolean>(false);
+  const [openEditQuizModal, setOpenEditQuizModal] = useState<boolean>(false);
   const [openDeleteQuizModal, setOpenDeleteQuizModal] = useState<boolean>(false);
   const [selectedQuizId, setSelectedQuizId] = useState<string | null>(null);
   const loading = useSelector<boolean>(selectLoading);
@@ -59,6 +60,16 @@ const CompanyQuizzesPage: React.FC = () => {
   const handleCloseAddQuizModal = () => {
     formikAddQuiz.resetForm();
     setOpenAddQuizModal(false);
+  };
+
+  const handleOpenEditQuizModal = (id) => {
+    console.log(id)
+    dispatch(fetchQuizById(id));
+    setOpenEditQuizModal(true);
+  }
+  const handleCloseEditQuizModal = () => {
+    // formikEditQuiz.resetForm();
+    setOpenEditQuizModal(false);
   };
 
   useEffect(() => {
@@ -73,6 +84,7 @@ const CompanyQuizzesPage: React.FC = () => {
     initialValues: initialValueAddQuiz,
     validationSchema: validationSchemaAddQuiz,
     onSubmit: (values) => {
+      console.log(values)
       if (formikAddQuiz.isValid) {
         dispatch(addQuiz({companyId: company.id, quizData: values}));
       }
@@ -155,6 +167,7 @@ const CompanyQuizzesPage: React.FC = () => {
                     <TableCell sx={{padding: "3px"}} align="center">
                       {(currentUser?.id === companyById?.owner_id || adminsListId.includes(currentUser?.id)) && (
                         <Button
+                          onClick={() => handleOpenEditQuizModal(quiz.id)}
                           variant="outlined"
                           color="primary"
                           sx={{marginRight: 1}}

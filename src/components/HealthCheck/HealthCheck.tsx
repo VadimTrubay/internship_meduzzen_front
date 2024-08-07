@@ -18,7 +18,7 @@ const HealthCheck: React.FC = () => {
     };
 
     fetchHealthCheck();
-  });
+  }, []);
 
   return (
     <div>

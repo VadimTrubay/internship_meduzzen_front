@@ -1,5 +1,5 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
-import {getCompanyQuizzes, deleteQuizApi, submitQuiz} from "../../api/api_quizzes";
+import {getCompanyQuizzes, deleteQuizApi, submitQuiz, getQuizById} from "../../api/api_quizzes";
 import {QuizCompanyIdRequestType} from "../../types/quizzesTypes";
 
 
@@ -27,6 +27,18 @@ export const fetchQuizzes = createAsyncThunk(
   }
 );
 
+export const fetchQuizById = createAsyncThunk(
+  "quizzes/getQuizById",
+  async (id: string, thunkAPI) => {
+    try {
+      const response = await getQuizById(id);
+      return response.data;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error.response.data.detail);
+    }
+  }
+);
+
 export const deleteQuiz = createAsyncThunk(
   "quizzes/deleteCompanyQuiz",
   async (id: string, thunkAPI) => {
@@ -39,18 +51,6 @@ export const deleteQuiz = createAsyncThunk(
   }
 );
 
-// export const fetchCompanyById = createAsyncThunk(
-//   "companies/getCompanyById",
-//   async (id: string, thunkAPI) => {
-//     try {
-//       const response = await getCompanyById(id);
-//       return response.data;
-//     } catch (error: any) {
-//       return thunkAPI.rejectWithValue(error.response.data.detail);
-//     }
-//   }
-// );
-//
 // export const updateCompany = createAsyncThunk(
 //   "companies/updateCompany",
 //   async (companyData: CompanyUpdateType, thunkAPI) => {

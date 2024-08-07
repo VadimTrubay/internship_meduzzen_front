@@ -1,5 +1,5 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {deleteQuiz, fetchQuizzes, addQuiz} from "./operations";
+import {deleteQuiz, fetchQuizzes, addQuiz, fetchQuizById} from "./operations";
 import {initialQuizzesType} from "../../types/quizzesTypes";
 import toast from "react-hot-toast";
 
@@ -28,6 +28,12 @@ const handleFetchQuizzesFulfilled = (state: initialQuizzesType, action: PayloadA
   state.loading = false;
   state.error = null;
   state.items = action.payload;
+};
+
+const handleGetQuizByIdFulfilled = (state: initialQuizzesType, action: PayloadAction<any>) => {
+  state.loading = false;
+  state.error = null;
+  state.quizById = action.payload;
 };
 
 const handleAddQuizFulfilled = (state: initialQuizzesType, action: PayloadAction<any>) => {
@@ -70,9 +76,9 @@ const quizzesSlice = createSlice({
       .addCase(fetchQuizzes.pending, handlePending)
       .addCase(fetchQuizzes.fulfilled, handleFetchQuizzesFulfilled)
       .addCase(fetchQuizzes.rejected, handleRejected)
-      // .addCase(fetchCompanyById.pending, handlePending)
-      // .addCase(fetchCompanyById.fulfilled, handleGetCompanyByIdFulfilled)
-      // .addCase(fetchCompanyById.rejected, handleRejected)
+      .addCase(fetchQuizById.pending, handlePending)
+      .addCase(fetchQuizById.fulfilled, handleGetQuizByIdFulfilled)
+      .addCase(fetchQuizById.rejected, handleRejected)
       .addCase(addQuiz.pending, handlePending)
       .addCase(addQuiz.fulfilled, handleAddQuizFulfilled)
       .addCase(addQuiz.rejected, handleRejected)

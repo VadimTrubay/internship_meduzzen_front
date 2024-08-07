@@ -3,7 +3,7 @@ export interface initialQuizzesType {
     quizzes: QuizResponseType[];
     total_count: number;
   };
-  quizById: QuizResponseType | null;
+  quizById: QuizByIdResponseType | null;
   loading: boolean;
   error: null;
 }
@@ -25,6 +25,15 @@ export interface QuizCompanyRequestType {
   description: string;
   frequency_days: number;
   questions: QuestionRequestType[];
+}
+
+export interface QuizByIdResponseType {
+  id: string;
+  name: string;
+  description: string;
+  frequency_days: number;
+  questions: QuestionRequestType[];
+  company_id: string;
 }
 
 export interface IQuizRequestType {
