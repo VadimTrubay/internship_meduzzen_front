@@ -57,8 +57,21 @@ const CompanyQuizzesPage: React.FC = () => {
   const [selectedQuizId, setSelectedQuizId] = useState<string | null>(null);
   const loading = useSelector<boolean>(selectLoading);
 
-
   const adminsListId = admins.map(admin => admin.user_id);
+
+
+  useEffect(() => {
+    if (id) {
+      dispatch(fetchQuizzes(id));
+      dispatch(fetchAdmins(id));
+    }
+  }, [id, dispatch]);
+
+  useEffect(() => {
+    if (quizById) {
+      formikEditQuiz.setValues(quizById);
+    }
+  }, [quizById])
 
   const handleOpenAddQuizModal = () => setOpenAddQuizModal(true);
   const handleCloseAddQuizModal = () => {
@@ -70,23 +83,25 @@ const CompanyQuizzesPage: React.FC = () => {
     dispatch(fetchQuizById(id));
     setOpenEditQuizModal(true);
   }
+
+  const handleOpenDeleteQuizModal = (quizId: string) => {
+    dispatch(fetchQuizById(quizId));
+    setOpenDeleteQuizModal(true);
+    setSelectedQuizId(quizId);
+  };
+
   const handleCloseEditQuizModal = () => {
     formikEditQuiz.resetForm();
     setOpenEditQuizModal(false);
   };
 
-  useEffect(() => {
-    if (id) {
+  const handleDeleteQuiz = () => {
+    if (id && selectedQuizId != null) {
+      dispatch(deleteQuiz(selectedQuizId));
       dispatch(fetchQuizzes(id));
-      dispatch(fetchAdmins(id));
     }
-  }, []);
-
-  useEffect(() => {
-    if (quizById) {
-      formikEditQuiz.setValues(quizById);
-    }
-  }, [quizById])
+    closeModal();
+  };
 
   const formikAddQuiz = useFormik({
     initialValues: initialValueAddQuiz,
@@ -94,7 +109,7 @@ const CompanyQuizzesPage: React.FC = () => {
     onSubmit: (values) => {
       if (formikAddQuiz.isValid) {
         dispatch(addQuiz({companyId: company.id, quizData: values}));
-        if (id != null) {
+        if (id != null && quizzes) {
           dispatch(fetchQuizzes(id));
         }
       }
@@ -117,26 +132,12 @@ const CompanyQuizzesPage: React.FC = () => {
     },
   });
 
-  const handleOpenDeleteQuizModal = (quizId: string) => {
-    setSelectedQuizId(quizId);
-    setOpenDeleteQuizModal(true);
-  };
 
   const closeModal = () => {
     setOpenAddQuizModal(false);
     setOpenDeleteQuizModal(false);
     setOpenEditQuizModal(false);
-    setSelectedQuizId(null);
-  };
-
-  const handleDeleteQuiz = () => {
-    if (id != null) {
-      dispatch(fetchQuizzes(id));
-    }
-    if (selectedQuizId != null) {
-      dispatch(deleteQuiz(selectedQuizId));
-    }
-    closeModal();
+    // setSelectedQuizId(null);
   };
 
   return (
@@ -182,7 +183,7 @@ const CompanyQuizzesPage: React.FC = () => {
               </TableHead>
               <TableBody className={styles.tableHead}>
                 {quizzes.map((quiz: QuizResponseType) => (
-                  <TableRow key={quiz.id} className={styles.tableRow}>
+                  <TableRow key={quiz?.id} className={styles.tableRow}>
                     <TableCell sx={{padding: "3px"}} align="center">
                       <NavLink className={styles.link} to={mainUrls.quizzes.viewQuiz(quiz.id)}>
                         {quiz.name}
