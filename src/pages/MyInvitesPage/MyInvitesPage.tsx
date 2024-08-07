@@ -39,12 +39,11 @@ const MyInvitesPage: React.FC = () => {
   const [openDeclineInviteModal, setOpenDeclineInviteModal] = useState<boolean>(false);
   const [selectedActionId, setSelectedActionId] = useState<string | null>(null);
   const loading = useSelector<boolean>(selectLoading);
-  const error = useSelector<string>(selectError);
 
 
   useEffect(() => {
     dispatch(fetchMyInvites());
-  }, [dispatch, error]);
+  }, [dispatch]);
 
   const handleOpenAcceptInviteModal = (inviteId: string) => {
     setSelectedActionId(inviteId);

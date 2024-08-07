@@ -58,13 +58,6 @@ const CompanyQuizzesPage: React.FC = () => {
   const loading = useSelector<boolean>(selectLoading);
 
   const adminsListId = admins.map(admin => admin.user_id);
-// console.log(quizzes)
-  useEffect(() => {
-    if (id) {
-      dispatch(fetchQuizzes(id));
-      dispatch(fetchAdmins(id));
-    }
-  }, []);
 
   useEffect(() => {
     if (quizById) {

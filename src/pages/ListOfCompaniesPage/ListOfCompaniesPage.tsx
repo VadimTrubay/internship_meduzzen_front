@@ -35,10 +35,6 @@ const ListOfCompaniesPage: React.FC = () => {
 
   useEffect(() => {
     dispatch(fetchCompanies({skip, limit}));
-  }, []);
-
-  useEffect(() => {
-    dispatch(fetchCompanies({skip, limit}));
   }, [dispatch, skip]);
 
   const handleOpenAddCompanyModal = () => {

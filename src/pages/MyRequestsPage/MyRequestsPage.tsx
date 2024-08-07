@@ -37,11 +37,11 @@ const MyRequestsPage: React.FC = () => {
   const [openDeleteRequestModal, setOpenDeleteRequestModal] = useState<boolean>(false);
   const [selectedActionId, setSelectedActionId] = useState<string | null>(null);
   const loading = useSelector<boolean>(selectLoading);
-  const error = useSelector<string>(selectError);
+
 
   useEffect(() => {
     dispatch(fetchMyRequests());
-  }, [dispatch, error]);
+  }, [dispatch]);
 
   const handleOpenDeleteRequestModal = (requestId: string) => {
     setSelectedActionId(requestId);
