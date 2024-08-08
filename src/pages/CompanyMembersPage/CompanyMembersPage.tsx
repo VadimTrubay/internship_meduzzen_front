@@ -108,6 +108,7 @@ const CompanyMembersPage: React.FC = () => {
         dispatch(deleteAdminRole({companyId: currentMember?.company_id, userId: currentMember?.user_id}));
       }
     }
+    dispatch(fetchAdmins(company.id));
     closeModal();
   };
 

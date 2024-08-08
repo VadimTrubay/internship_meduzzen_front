@@ -25,7 +25,6 @@ const handlePending = (state: initialAuthType) => {
 const handleRejected = (state: initialAuthType, action: PayloadAction<any>) => {
   state.loading = false;
   state.error = action.payload;
-  // toast.error(action.payload);
 };
 
 const handleSignUpFulfilled = (state: initialAuthType, action: PayloadAction<initialAuthType>) => {

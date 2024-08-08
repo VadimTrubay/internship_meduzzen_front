@@ -100,7 +100,7 @@ const CompanyQuizzesPage: React.FC = () => {
     validationSchema: validationSchemaQuiz,
     onSubmit: (values) => {
       if (formikAddQuiz.isValid) {
-        dispatch(addQuiz({companyId: company.id, quizData: values}));
+        dispatch(addQuiz({companyId: company?.id, quizData: values}));
         if (id != null && quizzes) {
           dispatch(fetchQuizzes(id));
         }
@@ -129,7 +129,6 @@ const CompanyQuizzesPage: React.FC = () => {
     setOpenAddQuizModal(false);
     setOpenDeleteQuizModal(false);
     setOpenEditQuizModal(false);
-    // setSelectedQuizId(null);
   };
 
   return (
