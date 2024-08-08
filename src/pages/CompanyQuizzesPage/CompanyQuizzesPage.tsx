@@ -72,14 +72,15 @@ const CompanyQuizzesPage: React.FC = () => {
   };
 
   const handleOpenEditQuizModal = (id: string) => {
+    setSelectedQuizId(id);
     dispatch(fetchQuizById(id));
     setOpenEditQuizModal(true);
   }
 
-  const handleOpenDeleteQuizModal = (quizId: string) => {
-    dispatch(fetchQuizById(quizId));
+  const handleOpenDeleteQuizModal = (id: string) => {
+    setSelectedQuizId(id);
+    dispatch(fetchQuizById(id));
     setOpenDeleteQuizModal(true);
-    setSelectedQuizId(quizId);
   };
 
   const handleCloseEditQuizModal = () => {
@@ -101,7 +102,7 @@ const CompanyQuizzesPage: React.FC = () => {
     onSubmit: (values) => {
       if (formikAddQuiz.isValid) {
         dispatch(addQuiz({companyId: company?.id, quizData: values}));
-        if (id != null && quizzes) {
+        if (id != null) {
           dispatch(fetchQuizzes(id));
         }
       }
@@ -116,9 +117,6 @@ const CompanyQuizzesPage: React.FC = () => {
     onSubmit: (values) => {
       if (formikEditQuiz.isValid) {
         dispatch(updateQuiz(values));
-        if (id != null) {
-          dispatch(fetchQuizzes(id));
-        }
       }
       handleCloseEditQuizModal();
     },
@@ -173,8 +171,8 @@ const CompanyQuizzesPage: React.FC = () => {
                 </TableRow>
               </TableHead>
               <TableBody className={styles.tableHead}>
-                {quizzes?.map((quiz: QuizResponseType, index: number) => (
-                  <TableRow key={index} className={styles.tableRow}>
+                {quizzes?.map((quiz: QuizResponseType) => (
+                  <TableRow key={quiz.id} className={styles.tableRow}>
                     <TableCell sx={{padding: "3px"}} align="center">
                       <NavLink className={styles.link} to={mainUrls.quizzes.viewQuiz(quiz.id)}>
                         {quiz.name}
