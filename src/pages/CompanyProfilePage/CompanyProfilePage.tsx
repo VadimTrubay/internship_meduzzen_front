@@ -15,7 +15,7 @@ import {useNavigate, useParams} from "react-router-dom";
 import {initialValueUpdateCompany} from "../../initialValues/initialValues";
 import {selectUser} from "../../redux/auth/selectors";
 import {companies, mainUrls} from "../../config/urls";
-import {fetchCompanyInvites, fetchCompanyRequests, fetchMembers} from "../../redux/actions/operations";
+import {fetchAdmins, fetchCompanyInvites, fetchCompanyRequests, fetchMembers} from "../../redux/actions/operations";
 import {UserType} from "../../types/usersTypes";
 import {CompanyType} from "../../types/companiesTypes";
 import BaseModalWindow from "../../components/BaseModalWindow/BaseModalWindow";
@@ -43,6 +43,8 @@ const CompanyProfilePage: React.FC = () => {
   useEffect(() => {
     if (id) {
       dispatch(fetchCompanyById(id));
+      dispatch(fetchMembers(id));
+      dispatch(fetchAdmins(id));
     }
   }, [id, dispatch])
 
