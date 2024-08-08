@@ -37,6 +37,7 @@ const CompanyProfilePage: React.FC = () => {
   const handleCloseEditCompanyModal = () => {
     formikEditCompany.resetForm();
     setOpenEditCompanyModal(false);
+
   };
   const handleOpenDeleteModal = () => setOpenDeleteModal(true);
 

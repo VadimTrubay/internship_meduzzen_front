@@ -61,7 +61,6 @@ const CompanyQuizzesPage: React.FC = () => {
   const adminsListId = admins.map(admin => admin.user_id);
   const membersListId = members.map(member => member.user_id);
 
-  console.log(membersListId)
   useEffect(() => {
     if (quizById) {
       formikEditQuiz.setValues(quizById);
