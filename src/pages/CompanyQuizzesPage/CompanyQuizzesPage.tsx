@@ -28,7 +28,6 @@ import {validationSchemaQuiz} from "../../validate/validationSchemaQuiz";
 import {QuizByIdResponseType, QuizResponseType} from "../../types/quizzesTypes";
 import {selectUser} from "../../redux/auth/selectors";
 import {UserType} from "../../types/usersTypes";
-import {fetchAdmins} from "../../redux/actions/operations";
 import {memberType} from "../../types/actionsTypes";
 import EditQuizModal from "../../components/EditQuizModal/EditQuizModal";
 import {mainUrls} from "../../config/urls";
@@ -66,6 +65,12 @@ const CompanyQuizzesPage: React.FC = () => {
       formikEditQuiz.setValues(quizById);
     }
   }, [quizById])
+
+  useEffect(() => {
+    if (companyById) {
+      dispatch(fetchQuizzes(companyById?.id));
+    }
+  }, [])
 
   const handleOpenAddQuizModal = () => setOpenAddQuizModal(true);
   const handleCloseAddQuizModal = () => {
@@ -173,8 +178,8 @@ const CompanyQuizzesPage: React.FC = () => {
                 </TableRow>
               </TableHead>
               <TableBody className={styles.tableHead}>
-                {quizzes?.map((quiz: QuizResponseType) => (
-                  <TableRow key={quiz.id} className={styles.tableRow}>
+                {quizzes?.map((quiz: QuizResponseType, index) => (
+                  <TableRow key={index} className={styles.tableRow}>
                     <TableCell sx={{padding: "3px"}} align="center">
                       {(currentUser?.id === companyById?.owner_id || membersListId.includes(currentUser?.id)) ? (
                         <NavLink className={styles.link} to={mainUrls.quizzes.viewQuiz(quiz.id)}>

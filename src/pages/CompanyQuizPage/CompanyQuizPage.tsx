@@ -1,7 +1,21 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {
-  Button, Container, FormControl, FormControlLabel, FormLabel,
-  Grid, Checkbox, Typography, Paper, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle
+  Button,
+  Container,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  Grid,
+  Checkbox,
+  Typography,
+  Paper,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Box,
+  LinearProgress
 } from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
 import {selectQuizById} from "../../redux/quizzes/selectors";
@@ -14,6 +28,7 @@ import {selectQuizResults} from "../../redux/results/selectors";
 import {mainUrls} from "../../config/urls";
 import {selectCompanyById} from "../../redux/companies/selectors";
 import {CompanyType} from "../../types/companiesTypes";
+import {selectLoading} from "../../redux/results/selectors";
 
 const CompanyQuizPage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -25,18 +40,8 @@ const CompanyQuizPage: React.FC = () => {
   const [answers, setAnswers] = useState<sendResultsRequestType>({});
   const [submitted, setSubmitted] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
+  const loading = useSelector<boolean>(selectLoading);
 
-  useEffect(() => {
-    if (id) {
-      dispatch(fetchQuizById(id));
-    }
-  }, [id, dispatch]);
-
-  useEffect(() => {
-    if (result) {
-      setOpenDialog(true);
-    }
-  }, [result]);
 
   const handleChange = (questionId, option) => {
     setAnswers((prevAnswers) => {
@@ -60,6 +65,7 @@ const CompanyQuizPage: React.FC = () => {
     if (Object.keys(answers).length > 0 && allQuestionsAnswered) {
       dispatch(sendResults({quiz_id: id, data: {answers}}));
       setSubmitted(true);
+      setOpenDialog(true);
     }
   };
 
@@ -69,69 +75,77 @@ const CompanyQuizPage: React.FC = () => {
   };
 
   return (
-    <Container maxWidth="sm">
-      <Grid container direction="column" spacing={3}>
-        <Grid item xs={12}>
-          <Typography variant="h5" align="center" gutterBottom>
-            Company Quiz View
-          </Typography>
-          <Typography variant="h6" align="center" gutterBottom>
-            Quiz: "{quiz?.name}"
-          </Typography>
-        </Grid>
+    loading ? (
+      <Box>
+        <LinearProgress/>
+      </Box>
+    ) : (
+      <>
+        <Container maxWidth="sm">
+          <Grid container direction="column" spacing={3}>
+            <Grid item xs={12}>
+              <Typography variant="h5" align="center" gutterBottom>
+                Company Quiz View
+              </Typography>
+              <Typography variant="h6" align="center" gutterBottom>
+                Quiz: "{quiz?.name}"
+              </Typography>
+            </Grid>
 
-        {quiz?.questions?.map((question) => (
-          <Grid item xs={12} key={question.id}>
-            <Paper elevation={3} style={{padding: "16px"}}>
-              <FormControl component="fieldset" fullWidth>
-                <FormLabel component="legend" style={{marginBottom: "8px"}}>
-                  {question.question_text}
-                </FormLabel>
-                {question.answer_options.map((option, i) => (
-                  <FormControlLabel
-                    key={i}
-                    control={
-                      <Checkbox
-                        checked={
-                          answers[question.id]?.includes(option) || false
+            {quiz?.questions?.map((question) => (
+              <Grid item xs={12} key={question.id}>
+                <Paper elevation={3} style={{padding: "16px"}}>
+                  <FormControl component="fieldset" fullWidth>
+                    <FormLabel component="legend" style={{marginBottom: "8px"}}>
+                      {question.question_text}
+                    </FormLabel>
+                    {question.answer_options.map((option, i) => (
+                      <FormControlLabel
+                        key={i}
+                        control={
+                          <Checkbox
+                            checked={
+                              answers[question.id]?.includes(option) || false
+                            }
+                            onChange={() => handleChange(question.id, option)}
+                          />
                         }
-                        onChange={() => handleChange(question.id, option)}
+                        label={option}
                       />
-                    }
-                    label={option}
-                  />
-                ))}
-              </FormControl>
-            </Paper>
+                    ))}
+                  </FormControl>
+                </Paper>
+              </Grid>
+            ))}
+
+            <Grid
+              item xs={12} style={{marginTop: "16px"}} align="center">
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleSubmit}
+                disabled={!allQuestionsAnswered || submitted}
+              >
+                Submit
+              </Button>
+            </Grid>
           </Grid>
-        ))}
-
-        <Grid item xs={12} style={{marginTop: "16px"}} align="center">
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleSubmit}
-            disabled={!allQuestionsAnswered || submitted}
-          >
-            Submit
-          </Button>
-        </Grid>
-      </Grid>
-
-      <Dialog open={openDialog} onClose={handleCloseDialog}>
-        <DialogTitle>Quiz Result</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Your result was {result?.score * 100}%.
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseDialog} color="primary">
-            OK
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </Container>
+          <Dialog sx={{fontSize: "large"}} open={openDialog} onClose={handleCloseDialog}>
+            <DialogTitle>Quiz Result</DialogTitle>
+            <DialogContent>
+              <DialogContentText sx={{fontSize: "large"}}>
+                Your result was {result?.score * 100}%.
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleCloseDialog} color="primary">
+                OK
+              </Button>
+            </DialogActions>
+          </Dialog>
+        </Container>
+      </>
+    )
   );
 };
 
