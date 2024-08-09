@@ -1,29 +1,42 @@
 import React, {useEffect, useState} from "react";
 import {
-  Box, Button, Container, FormControl, FormControlLabel, FormLabel,
-  Grid, LinearProgress, Checkbox, Typography, Paper
+  Button, Container, FormControl, FormControlLabel, FormLabel,
+  Grid, Checkbox, Typography, Paper, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle
 } from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
-import {selectLoading, selectQuizById} from "../../redux/quizzes/selectors";
+import {selectQuizById} from "../../redux/quizzes/selectors";
 import {AppDispatch} from "../../redux/store";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {fetchQuizById} from "../../redux/quizzes/operations";
+import {sendResults} from "../../redux/results/operations";
+import {resultsResponseType, sendResultsRequestType} from "../../types/resultsTypes";
+import {selectQuizResults} from "../../redux/results/selectors";
+import {mainUrls} from "../../config/urls";
+import {selectCompanyById} from "../../redux/companies/selectors";
+import {CompanyType} from "../../types/companiesTypes";
 
 const CompanyQuizPage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
   const {id} = useParams<{ id: string }>();
-  const loading = useSelector(selectLoading);
   const quiz = useSelector(selectQuizById);
-  const [answers, setAnswers] = useState({});
+  const result = useSelector(selectQuizResults) as resultsResponseType;
+  const company = useSelector(selectCompanyById) as CompanyType;
+  const [answers, setAnswers] = useState<sendResultsRequestType>({});
   const [submitted, setSubmitted] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
 
-
-  console.log(quiz)
   useEffect(() => {
     if (id) {
       dispatch(fetchQuizById(id));
     }
   }, [id, dispatch]);
+
+  useEffect(() => {
+    if (result) {
+      setOpenDialog(true);
+    }
+  }, [result]);
 
   const handleChange = (questionId, option) => {
     setAnswers((prevAnswers) => {
@@ -39,26 +52,23 @@ const CompanyQuizPage: React.FC = () => {
     });
   };
 
+  const allQuestionsAnswered = quiz?.questions?.every(
+    (question) => answers[question.id]?.length > 0
+  );
+
   const handleSubmit = async () => {
-    try {
-      const quizRequest = {
-        answers,
-      };
-      alert(JSON.stringify(quizRequest, null, 2));
-      // const response = await axios.post(`/api/create/${quiz.id}`, quizRequest);
+    if (Object.keys(answers).length > 0 && allQuestionsAnswered) {
+      dispatch(sendResults({quiz_id: id, data: {answers}}));
       setSubmitted(true);
-      // alert(`Your score: ${response.data.score}`);
-    } catch (error) {
-      console.error("Error submitting quiz", error);
-      alert("Failed to submit quiz.");
     }
   };
 
-  return loading ? (
-    <Box>
-      <LinearProgress/>
-    </Box>
-  ) : (
+  const handleCloseDialog = () => {
+    navigate(mainUrls.quizzes.companyQuizzes(company.id));
+    setOpenDialog(false);
+  };
+
+  return (
     <Container maxWidth="sm">
       <Grid container direction="column" spacing={3}>
         <Grid item xs={12}>
@@ -70,8 +80,8 @@ const CompanyQuizPage: React.FC = () => {
           </Typography>
         </Grid>
 
-        {quiz?.questions?.map((question, index) => (
-          <Grid item xs={12} key={index}>
+        {quiz?.questions?.map((question) => (
+          <Grid item xs={12} key={question.id}>
             <Paper elevation={3} style={{padding: "16px"}}>
               <FormControl component="fieldset" fullWidth>
                 <FormLabel component="legend" style={{marginBottom: "8px"}}>
@@ -96,26 +106,31 @@ const CompanyQuizPage: React.FC = () => {
           </Grid>
         ))}
 
-        {!submitted && (
-          <Grid item xs={12} style={{marginTop: "16px"}} align="center">
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={handleSubmit}
-            >
-              Submit
-            </Button>
-          </Grid>
-        )}
-
-        {submitted && (
-          <Grid item xs={12} style={{marginTop: "16px"}}>
-            <Typography variant="h6" color="primary" align="center">
-              Quiz submitted successfully!
-            </Typography>
-          </Grid>
-        )}
+        <Grid item xs={12} style={{marginTop: "16px"}} align="center">
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleSubmit}
+            disabled={!allQuestionsAnswered || submitted}
+          >
+            Submit
+          </Button>
+        </Grid>
       </Grid>
+
+      <Dialog open={openDialog} onClose={handleCloseDialog}>
+        <DialogTitle>Quiz Result</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Your result was {result?.score * 100}%.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialog} color="primary">
+            OK
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Container>
   );
 };

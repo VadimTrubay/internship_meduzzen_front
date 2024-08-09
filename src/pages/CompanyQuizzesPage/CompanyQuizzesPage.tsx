@@ -103,7 +103,7 @@ const CompanyQuizzesPage: React.FC = () => {
     validationSchema: validationSchemaQuiz,
     onSubmit: (values) => {
       if (formikAddQuiz.isValid) {
-        dispatch(addQuiz({companyId: company?.id, quizData: values}));
+        dispatch(addQuiz({companyId: company?.id, data: values}));
         if (id != null) {
           dispatch(fetchQuizzes(id));
         }

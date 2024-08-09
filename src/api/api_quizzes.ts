@@ -5,7 +5,7 @@ import {QuizCompanyIdRequestType, QuizByIdResponseType} from "../types/quizzesTy
 
 
 export const submitQuiz = async (quizData: QuizCompanyIdRequestType): Promise<AxiosResponse> => {
-  return await axiosInstance.post(mainUrls.quizzes.submit(quizData.companyId), quizData.quizData);
+  return await axiosInstance.post(mainUrls.quizzes.submit(quizData.companyId), quizData.data);
 };
 
 export const getCompanyQuizzes = async (companyId: string): Promise<AxiosResponse> => {
@@ -17,8 +17,7 @@ export const getQuizById = async (id: string): Promise<AxiosResponse> => {
 };
 
 export const editQuiz = async (quizData: QuizByIdResponseType): Promise<AxiosResponse> => {
-  const {id} = quizData;
-  return await axiosInstance.patch(mainUrls.quizzes.byId(id), quizData);
+  return await axiosInstance.patch(mainUrls.quizzes.byId(quizData.id), quizData);
 };
 
 export const deleteQuizApi = async (quizId: string): Promise<AxiosResponse> => {

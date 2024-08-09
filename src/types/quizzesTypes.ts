@@ -17,7 +17,7 @@ export interface QuizResponseType {
 
 export interface QuizCompanyIdRequestType {
   companyId: string;
-  quizData: QuizCompanyRequestType
+  data: QuizCompanyRequestType
 }
 
 export interface QuizCompanyRequestType {
