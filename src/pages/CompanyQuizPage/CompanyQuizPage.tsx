@@ -124,16 +124,17 @@ const CompanyQuizPage: React.FC = () => {
               </Grid>
             ))}
 
-            <Grid
-              item xs={12} style={{marginTop: "16px"}} align="center">
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={handleSubmit}
-                disabled={!allQuestionsAnswered || submitted}
-              >
-                Submit
-              </Button>
+            <Grid item xs={6}>
+              <Box position="sticky" bottom={0} textAlign="center" py={2}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={handleSubmit}
+                  disabled={!allQuestionsAnswered || submitted}
+                >
+                  Submit
+                </Button>
+              </Box>
             </Grid>
           </Grid>
           <Dialog sx={{fontSize: "large"}} open={openDialog} onClose={handleCloseDialog}>
