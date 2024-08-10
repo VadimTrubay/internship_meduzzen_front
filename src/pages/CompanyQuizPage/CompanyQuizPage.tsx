@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {
   Button,
   Container,
@@ -41,6 +41,12 @@ const CompanyQuizPage: React.FC = () => {
   const [submitted, setSubmitted] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
   const loading = useSelector<boolean>(selectLoading);
+
+  useEffect(() => {
+    if (id) {
+      dispatch(fetchQuizById(id));
+    }
+  }, [dispatch, id]);
 
 
   const handleChange = (questionId, option) => {
