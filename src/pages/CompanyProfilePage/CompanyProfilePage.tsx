@@ -27,6 +27,7 @@ import Paper from "@mui/material/Paper";
 import {IoMdAnalytics} from "react-icons/io";
 import {selectAdmins} from "../../redux/actions/selectors";
 import {memberType} from "../../types/actionsTypes";
+import {fetchCompanyMembersResults} from "../../redux/analytics/operations";
 
 
 const CompanyProfilePage: React.FC = () => {
@@ -78,6 +79,13 @@ const CompanyProfilePage: React.FC = () => {
     },
   });
 
+  const handleCompanyMembersResults = () => {
+    if (id) {
+      dispatch(fetchCompanyMembersResults(id));
+      navigate(mainUrls.analytics.companyMembersResults(id));
+    }
+  }
+
   const handleDeleteCompany = () => {
     if (companyById) {
       dispatch(deleteCompanyById(companyById?.id));
@@ -102,6 +110,7 @@ const CompanyProfilePage: React.FC = () => {
     dispatch(fetchQuizzes(companyById?.id))
     navigate(mainUrls.quizzes.companyQuizzes(companyById?.id));
   };
+
   const handleOpenCompanyRequests = () => {
     dispatch(fetchCompanyRequests(companyById?.id))
     navigate(mainUrls.actions.companyRequests(companyById?.id));
@@ -231,7 +240,7 @@ const CompanyProfilePage: React.FC = () => {
                   variant="outlined"
                   color="primary"
                   sx={{margin: 1}}
-                  // onClick={() => handleOpenCompanyRequests()}
+                  onClick={handleCompanyMembersResults}
                 >
                   <IoMdAnalytics style={{marginRight: '5px'}} size={24}/>
                   Analytics
