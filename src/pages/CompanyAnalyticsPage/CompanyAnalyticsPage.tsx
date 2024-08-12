@@ -15,8 +15,10 @@ import {
 import 'chartjs-adapter-luxon';
 import {useSelector} from "react-redux";
 import Box from "@mui/material/Box";
-import {selectCompanyMembersResults} from "../../redux/analytics/selectors";
+import {selectCompanyMembersResults, selectError} from "../../redux/analytics/selectors";
 import {CompanyMembersResultsType} from "../../types/analyticsTypes";
+import {diffColors} from "../../utils/diffColors";
+import {selectCompanyById} from "../../redux/companies/selectors";
 
 ChartJS.register(
   LineElement,
@@ -30,21 +32,20 @@ ChartJS.register(
 );
 
 const CompanyAnalyticsPage: React.FC = () => {
-  // const dispatch = useDispatch<AppDispatch>();
   const membersResults = useSelector(selectCompanyMembersResults) as CompanyMembersResultsType;
+  const company = useSelector(selectCompanyById);
+  const error = useSelector(selectError);
 
-  console.log(membersResults)
-
-  const datasets = Object.entries(membersResults)?.map(([memberId, timestamps], index) => {
+  const datasets = Object.entries(membersResults).map(([memberId, timestamps], index) => {
     const sortedTimestamps = Object.keys(timestamps).sort();
     return {
       label: `${memberId}`,
-      data: sortedTimestamps?.map(timestamp => ({
+      data: sortedTimestamps.map(timestamp => ({
         x: timestamp,
-        y: timestamps[timestamp],
+        y: timestamps[timestamp] * 100,
       })),
       fill: false,
-      borderColor: `rgba(${75 + index * 20}, 192, 192, 1)`,
+      borderColor: diffColors[index % diffColors.length],
       tension: 0.1,
     };
   });
@@ -69,7 +70,7 @@ const CompanyAnalyticsPage: React.FC = () => {
         beginAtZero: true,
         title: {
           display: true,
-          text: 'Rating'
+          text: 'Rating, %'
         }
       }
     },
@@ -87,9 +88,12 @@ const CompanyAnalyticsPage: React.FC = () => {
         <Typography variant="h5" gutterBottom>
           Company Analytics
         </Typography>
-        <Box>
-          {membersResults && <Line data={chartData} options={options}/>}
-        </Box>
+        <Typography variant="h6">"{company?.name}"</Typography>
+        {!error &&
+          <Box>
+            {membersResults && <Line data={chartData} options={options}/>}
+          </Box>
+        }
       </Grid>
     </>
   );

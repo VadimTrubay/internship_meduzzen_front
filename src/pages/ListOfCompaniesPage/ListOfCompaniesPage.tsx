@@ -24,7 +24,7 @@ const ListOfCompaniesPage: React.FC = () => {
   const totalCount: number = useSelector(selectTotalCount);
   const [openAddCompanyModal, setOpenAddCompanyModal] = useState<boolean>(false);
   const companies = useSelector(selectCompanies) as CompanyType[];
-  const [showOption, setShowOption] = useState<number>(1);
+  const [showOption, setShowOption] = useState<number>(0);
   const [skip, setSkip] = useState<number>(1);
   const limit = 10;
 
@@ -111,7 +111,7 @@ const ListOfCompaniesPage: React.FC = () => {
               onChange={() => handleCheckboxChange(1)}
             />
           }
-          label="Me"
+          label="My"
         />
         <FormControlLabel
           control={

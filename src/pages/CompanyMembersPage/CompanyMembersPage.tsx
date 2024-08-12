@@ -142,7 +142,7 @@ const CompanyMembersPage: React.FC = () => {
           <Typography variant="h5" gutterBottom>
             Company Members
           </Typography>
-          <Typography variant="h6">Company: "{company?.name}"</Typography>
+          <Typography variant="h6">"{company?.name}"</Typography>
         </Grid>
         {currentUser?.id === company?.owner_id && (
           <Box className={styles.inviteMemberButton}>

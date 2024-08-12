@@ -77,9 +77,7 @@ const CompanyInvitesPage: React.FC = () => {
             <Typography variant="h5" gutterBottom>
               Company Invites
             </Typography>
-            <Typography variant="h6">
-              Company: "{company?.name}"
-            </Typography>
+            <Typography variant="h6">"{company?.name}"</Typography>
           </Grid>
         </Grid>
         <Paper>
