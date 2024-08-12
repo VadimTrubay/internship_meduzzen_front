@@ -58,9 +58,9 @@ export const mainUrls = {
 
   },
   results: {
+    globalRating: `${results}/global_rating`,
     sendResults: (quizId: string) => `${results}/create/${quizId}`,
     companyRating: (companyId: string) => `${results}/company/${companyId}/rating`,
-    globalRating: `${results}/global_rating`,
   },
   analytics: {
     companyMembersResults: (companyId: string) => `${analytics}/company/${companyId}/members_results`,

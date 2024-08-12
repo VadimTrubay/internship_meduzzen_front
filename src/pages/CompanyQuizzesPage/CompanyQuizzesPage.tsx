@@ -150,9 +150,7 @@ const CompanyQuizzesPage: React.FC = () => {
             <Typography variant="h5" gutterBottom>
               Company Quizzes
             </Typography>
-            <Typography variant="h6">
-              Quizzes: "{company?.name}"
-            </Typography>
+            <Typography variant="h6">"{company?.name}"</Typography>
             <Box className={styles.addQuizButton}>
               {(currentUser?.id === companyById?.owner_id || adminsListId.includes(currentUser?.id)) && (
                 <Button variant="contained" onClick={handleOpenAddQuizModal}>

@@ -3,17 +3,34 @@ import styles from "./UserProfilePage.module.css";
 import {useDispatch, useSelector} from "react-redux";
 import {useFormik} from "formik";
 import Avatar from "@mui/material/Avatar";
-import {Grid, Typography, Button, Box, Modal, TextField, LinearProgress} from "@mui/material";
+import {
+  Grid,
+  Typography,
+  Button,
+  Box,
+  Modal,
+  TextField,
+  LinearProgress,
+  Rating
+} from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DoneIcon from "@mui/icons-material/Done";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import {AppDispatch} from "../../redux/store";
-import {deleteUser, fetchUserById, updatePassword, updateUsername} from "../../redux/users/operations";
+import {
+  deleteUser,
+  fetchUserById,
+  updatePassword,
+  updateUsername
+} from "../../redux/users/operations";
 import {logOut} from "../../redux/auth/operations";
 import {validationSchemaUpdateUsername} from "../../validate/validationSchemaUpdateUsername.js";
 import {validationSchemaUpdatePassword} from "../../validate/validationSchemaUpdatePassword";
-import {initialValueUpdatePassword, initialValueUpdateUsername} from "../../initialValues/initialValues";
+import {
+  initialValueUpdatePassword,
+  initialValueUpdateUsername
+} from "../../initialValues/initialValues";
 import {style, StyledBox, Text} from "../../utils/BaseModal.styled";
 import {selectUserById} from "../../redux/users/selectors";
 import {selectLoading, selectUser} from "../../redux/auth/selectors";
@@ -22,7 +39,8 @@ import {mainUrls} from "../../config/urls";
 import {RouterEndpoints} from "../../config/routes";
 import {UserType} from "../../types/usersTypes";
 import BaseModalWindow from "../../components/BaseModalWindow/BaseModalWindow";
-
+import {selectGlobalRating} from "../../redux/results/selectors";
+import {fetchGlobalRating} from "../../redux/results/operations";
 
 const UserProfilePage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -33,8 +51,8 @@ const UserProfilePage: React.FC = () => {
   const [openEditPasswordModal, setOpenEditPasswordModal] = useState<boolean>(false);
   const currentUser = useSelector(selectUser) as UserType;
   const userById = useSelector(selectUserById) as UserType;
+  const rating: number = useSelector(selectGlobalRating);
   const loading = useSelector<boolean>(selectLoading);
-
 
   const handleOpenEditUsernameModal = () => setOpenEditUsernameModal(true);
   const handleCloseEditUsernameModal = () => setOpenEditUsernameModal(false);
@@ -48,15 +66,15 @@ const UserProfilePage: React.FC = () => {
   useEffect(() => {
     if (id) {
       dispatch(fetchUserById(id));
+      dispatch(fetchGlobalRating());
     }
-  }, [id, dispatch])
+  }, [id, dispatch]);
 
   useEffect(() => {
     if (currentUser) {
       formikEditUsername.setValues(currentUser);
     }
-  }, [currentUser])
-
+  }, [currentUser]);
 
   const formikEditUsername = useFormik({
     initialValues: initialValueUpdateUsername,
@@ -104,14 +122,27 @@ const UserProfilePage: React.FC = () => {
       ) : (
         <>
           <Grid container direction="column" alignItems="center">
+            <Typography variant="h5" gutterBottom>
+              User Profile
+            </Typography>
             <Grid item xs={12}>
-              <Typography variant="h5" gutterBottom>
-                User Profile
+              <Typography variant="h6" gutterBottom>
+                Global Rating
+              </Typography>
+              <Rating
+                name="global-rating"
+                value={rating * 10}
+                precision={0.1}
+                readOnly
+                max={10}
+              />
+              <Typography variant="body1" gutterBottom>
+                {rating} / 10
               </Typography>
             </Grid>
             {userById?.id === currentUser?.id &&
               <Box marginRight={2}>
-                {/*MY INVITES*/}
+                {/* MY INVITES */}
                 <Button
                   onClick={() => {
                     navigate(mainUrls.actions.myInvites)
@@ -123,7 +154,7 @@ const UserProfilePage: React.FC = () => {
                   My Invites
                 </Button>
 
-                {/*MY REQUESTS*/}
+                {/* MY REQUESTS */}
                 <Button
                   onClick={() => {
                     navigate(mainUrls.actions.myRequests)
@@ -189,7 +220,7 @@ const UserProfilePage: React.FC = () => {
               </Box>}
           </Grid>
 
-          {/*Edit username modal*/}
+          {/* Edit username modal */}
           <Modal
             open={openEditUsernameModal}
             onClose={handleCloseEditUsernameModal}
@@ -222,7 +253,7 @@ const UserProfilePage: React.FC = () => {
             </Box>
           </Modal>
 
-          {/*Edit password modal*/}
+          {/* Edit password modal */}
           <Modal
             open={openEditPasswordModal}
             onClose={handleCloseEditPasswordModal}
@@ -286,7 +317,7 @@ const UserProfilePage: React.FC = () => {
             </Box>
           </Modal>
 
-          {/*Delete modal*/}
+          {/* Delete modal */}
           <BaseModalWindow
             openModal={openDeleteModal}
             closeModal={closeModal}
