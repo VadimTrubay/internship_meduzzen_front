@@ -38,6 +38,6 @@ export interface changeRoleType {
 }
 
 export interface sendRequestType {
-  userId: string | null;
-  companyId: string | null;
+  userId: string;
+  companyId: string;
 }
