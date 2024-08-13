@@ -7,3 +7,6 @@ export const getCompanyMembersResults = async (companyId: string): Promise<Axios
   return await axiosInstance.get(mainUrls.analytics.companyMembersResults(companyId));
 };
 
+export const getMyQuizzesResults = async (): Promise<AxiosResponse> => {
+  return await axiosInstance.get(mainUrls.analytics.myQuizzesResults);
+};

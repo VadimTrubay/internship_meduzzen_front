@@ -1,11 +1,12 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {fetchCompanyMembersResults} from "./operations";
+import {fetchCompanyMembersResults, fetchMyQuizzesResults} from "./operations";
 import {initialAnalyticsType} from "../../types/analyticsTypes";
 import toast from "react-hot-toast";
 
 
 const initialAnalytics: initialAnalyticsType = {
   companyMembersResults: {},
+  myQuizzesResults: [],
   loading: false,
   error: null,
 };
@@ -26,6 +27,12 @@ const handleFetchCompanyMembersResults = (state: initialAnalyticsType, action: P
   state.companyMembersResults = action.payload;
 };
 
+const handleFetchMyQuizzesResults = (state: initialAnalyticsType, action: PayloadAction<any>) => {
+  state.loading = false;
+  state.error = null;
+  state.myQuizzesResults = action.payload;
+};
+
 const analyticsSlice = createSlice({
   name: "analytics",
   initialState: initialAnalytics,
@@ -35,6 +42,9 @@ const analyticsSlice = createSlice({
       .addCase(fetchCompanyMembersResults.pending, handlePending)
       .addCase(fetchCompanyMembersResults.fulfilled, handleFetchCompanyMembersResults)
       .addCase(fetchCompanyMembersResults.rejected, handleRejected)
+      .addCase(fetchMyQuizzesResults.pending, handlePending)
+      .addCase(fetchMyQuizzesResults.fulfilled, handleFetchMyQuizzesResults)
+      .addCase(fetchMyQuizzesResults.rejected, handleRejected)
 });
 
 export const analyticsReducer = analyticsSlice.reducer;

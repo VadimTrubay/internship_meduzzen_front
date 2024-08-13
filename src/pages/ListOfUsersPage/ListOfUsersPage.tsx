@@ -11,7 +11,7 @@ import {selectUser} from "../../redux/auth/selectors";
 const ListOfUsersPage: React.FC = () => {
   const currentUser = useSelector(selectUser) as UserType;
   const users = useSelector(selectUsers) as UserType[];
-  const [showOption, setShowOption] = useState<number>(1);
+  const [showOption, setShowOption] = useState<number>(0);
 
   const handleCheckboxChange = (option: number) => {
     setShowOption(option);

@@ -26,6 +26,7 @@ import CompanyAdminsPage from "../pages/CompanyAdminsPage/CompanyAdminsPage";
 import CompanyQuizzesPage from "../pages/CompanyQuizzesPage/CompanyQuizzesPage";
 import CompanyQuizPage from "../pages/CompanyQuizPage/CompanyQuizPage";
 import CompanyAnalyticsPage from "../pages/CompanyAnalyticsPage/CompanyAnalyticsPage";
+import MyQuizzesAnalyticsPage from "../pages/MyQuizzesAnalyticsPage/MyQuizzesAnalyticsPage";
 
 const HomePage = lazy(() => import("../pages/HomePage/HomePage"));
 const AboutPage = lazy(() => import("../pages/AboutPage/AboutPage"));
@@ -117,6 +118,10 @@ const App = () => {
         <Route
           path={`${RouterEndpoints.analytics}/${RouterEndpoints.company}/${RouterEndpoints.id}/${RouterEndpoints.members_results}`}
           element={!isLoggedIn ? <Navigate to={RouterEndpoints.login}/> : <CompanyAnalyticsPage/>}
+        />
+        <Route
+          path={`${RouterEndpoints.analytics}/${RouterEndpoints.my}/${RouterEndpoints.quizzes}`}
+          element={!isLoggedIn ? <Navigate to={RouterEndpoints.login}/> : <MyQuizzesAnalyticsPage/>}
         />
         {/*</>)}*/}
         <Route path={RouterEndpoints.notFound} element={<NotFoundPage/>}/>

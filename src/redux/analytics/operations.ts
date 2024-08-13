@@ -1,5 +1,5 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
-import {getCompanyMembersResults} from "../../api/api_analytics";
+import {getCompanyMembersResults, getMyQuizzesResults} from "../../api/api_analytics";
 
 
 export const fetchCompanyMembersResults = createAsyncThunk(
@@ -14,14 +14,14 @@ export const fetchCompanyMembersResults = createAsyncThunk(
   }
 );
 
-// export const fetchQuizById = createAsyncThunk(
-//   "quizzes/getQuizById",
-//   async (id: string, thunkAPI) => {
-//     try {
-//       const response = await getQuizById(id);
-//       return response.data;
-//     } catch (error: any) {
-//       return thunkAPI.rejectWithValue(error.response.data.detail);
-//     }
-//   }
-// );
+export const fetchMyQuizzesResults = createAsyncThunk(
+  "analytics/fetchMyQuizzesResults",
+  async (_, thunkAPI) => {
+    try {
+      const response = await getMyQuizzesResults();
+      return response.data;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error.response.data.detail);
+    }
+  }
+);

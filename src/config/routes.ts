@@ -18,6 +18,7 @@ export const RouterEndpoints = {
     requests: "requests",
     admins: "admins",
     quizzes: "quizzes",
+    quiz: "quiz",
     quizView: "quiz/view",
     analytics: "analytics",
     members_results: "members_results",

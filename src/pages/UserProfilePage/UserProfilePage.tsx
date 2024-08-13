@@ -41,6 +41,8 @@ import {UserType} from "../../types/usersTypes";
 import BaseModalWindow from "../../components/BaseModalWindow/BaseModalWindow";
 import {selectGlobalRating} from "../../redux/results/selectors";
 import {fetchGlobalRating} from "../../redux/results/operations";
+import UserTestsList from "../../components/UsersTestsList/UserTestsList";
+import {fetchMyQuizzesResults} from "../../redux/analytics/operations";
 
 const UserProfilePage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -67,6 +69,7 @@ const UserProfilePage: React.FC = () => {
     if (id) {
       dispatch(fetchUserById(id));
       dispatch(fetchGlobalRating());
+      dispatch(fetchMyQuizzesResults());
     }
   }, [id, dispatch]);
 
@@ -122,9 +125,11 @@ const UserProfilePage: React.FC = () => {
       ) : (
         <>
           <Grid container direction="column" alignItems="center">
-            <Typography variant="h5" gutterBottom>
-              User Profile
-            </Typography>
+            {userById?.id === currentUser?.id &&
+              <Typography variant="h5" gutterBottom>
+                User Profile
+              </Typography>
+            }
             <Grid item xs={12}>
               <Typography variant="h6" gutterBottom>
                 Global Rating
@@ -137,7 +142,7 @@ const UserProfilePage: React.FC = () => {
                 max={10}
               />
               <Typography variant="body1" gutterBottom>
-                {rating} / 10
+                {rating * 100 / 10} / 10
               </Typography>
             </Grid>
             {userById?.id === currentUser?.id &&
@@ -219,6 +224,7 @@ const UserProfilePage: React.FC = () => {
                 </Button>
               </Box>}
           </Grid>
+          <UserTestsList/>
 
           {/* Edit username modal */}
           <Modal

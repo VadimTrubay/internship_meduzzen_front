@@ -1,4 +1,4 @@
-export const formatTimestamp = (timestampStr: Date) => {
+export const formatTimestamp = (timestampStr: string) => {
     const date = new Date(timestampStr);
     const time = date.toTimeString().split(' ')[0];
     const day = String(date.getDate()).padStart(2, '0');

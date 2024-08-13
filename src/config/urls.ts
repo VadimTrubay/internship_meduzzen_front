@@ -36,7 +36,7 @@ export const mainUrls = {
     deleteInvite: (actionId: string) => `${actions}/${actionId}/invite`,
     acceptInvite: (actionId: string) => `${actions}/${actionId}/invite/accept`,
     declineInvite: (actionId: string) => `${actions}/${actionId}/invite/decline`,
-    sendRequest: (companyId: string | null, userId: string | null) => `${actions}/company/${companyId}/request/user/${userId}`,
+    sendRequest: (companyId: string, userId: string) => `${actions}/company/${companyId}/request/user/${userId}`,
     deleteRequest: (actionId: string) => `${actions}/${actionId}/request`,
     acceptRequest: (actionId: string) => `${actions}/${actionId}/request/accept`,
     declineRequest: (actionId: string) => `${actions}/${actionId}/request/decline`,
@@ -63,8 +63,8 @@ export const mainUrls = {
     companyRating: (companyId: string) => `${results}/company/${companyId}/rating`,
   },
   analytics: {
+    myQuizzesAnalytics: `${analytics}/my/quizzes`,
+    myQuizzesResults: `${analytics}/my/quizzes/results`,
     companyMembersResults: (companyId: string) => `${analytics}/company/${companyId}/members_results`,
-    // sendResults: (quizId: string) => `${results}/create/${quizId}`,
-    // companyRating: (companyId: string) => `${results}/company/${companyId}/rating`,
   },
 }
