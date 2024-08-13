@@ -69,7 +69,7 @@ const UserTestsList: React.FC = () => {
                       {results.company_name}
                     </TableCell>
                     <TableCell sx={{padding: "3px"}} align="center">
-                      {results.average_score * 100} %
+                      {results.average_score * 1000 / 10} %
                     </TableCell>
                     <TableCell sx={{padding: "3px"}} align="center">
                       {formatTimestamp(results.last_attempt)}

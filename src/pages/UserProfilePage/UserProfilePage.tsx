@@ -125,25 +125,26 @@ const UserProfilePage: React.FC = () => {
       ) : (
         <>
           <Grid container direction="column" alignItems="center">
-            {userById?.id === currentUser?.id &&
-              <Typography variant="h5" gutterBottom>
-                User Profile
-              </Typography>
-            }
+            <Typography variant="h5" gutterBottom>
+              User Profile
+            </Typography>
             <Grid item xs={12}>
-              <Typography variant="h6" gutterBottom>
-                Global Rating
-              </Typography>
-              <Rating
-                name="global-rating"
-                value={rating * 10}
-                precision={0.1}
-                readOnly
-                max={10}
-              />
-              <Typography variant="body1" gutterBottom>
-                {rating * 100 / 10} / 10
-              </Typography>
+              {(userById?.id === currentUser?.id) && (
+                <> <Typography variant="h6" gutterBottom>
+                  Global Rating
+                </Typography>
+                  <Rating
+                    name="global-rating"
+                    value={rating * 10}
+                    precision={0.1}
+                    readOnly
+                    max={10}
+                  />
+                  <Typography variant="body1" gutterBottom>
+                    {rating * 100 / 10} / 10
+                  </Typography>
+                </>
+              )}
             </Grid>
             {userById?.id === currentUser?.id &&
               <Box marginRight={2}>
@@ -224,9 +225,13 @@ const UserProfilePage: React.FC = () => {
                 </Button>
               </Box>}
           </Grid>
-          <UserTestsList/>
+          {
+            userById?.id === currentUser?.id &&
+            <UserTestsList/>
+          }
 
-          {/* Edit username modal */}
+          {/* Edit username modal */
+          }
           <Modal
             open={openEditUsernameModal}
             onClose={handleCloseEditUsernameModal}
@@ -259,7 +264,8 @@ const UserProfilePage: React.FC = () => {
             </Box>
           </Modal>
 
-          {/* Edit password modal */}
+          {/* Edit password modal */
+          }
           <Modal
             open={openEditPasswordModal}
             onClose={handleCloseEditPasswordModal}
@@ -323,7 +329,8 @@ const UserProfilePage: React.FC = () => {
             </Box>
           </Modal>
 
-          {/* Delete modal */}
+          {/* Delete modal */
+          }
           <BaseModalWindow
             openModal={openDeleteModal}
             closeModal={closeModal}
@@ -337,7 +344,8 @@ const UserProfilePage: React.FC = () => {
           />
         </>
       )
-  );
+  )
+    ;
 };
 
 export default UserProfilePage;
