@@ -17,7 +17,7 @@ export interface memberType {
   user_username: string;
   company_name: string;
   role: string;
-  last_quiz_attempt: Date;
+  last_quiz_attempt: string;
 }
 
 export interface myRequestsType {

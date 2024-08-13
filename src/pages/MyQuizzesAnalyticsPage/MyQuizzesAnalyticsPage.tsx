@@ -13,6 +13,7 @@ import {
 import {useSelector} from "react-redux";
 import Box from "@mui/material/Box";
 import {selectMyQuizzesResults} from "../../redux/analytics/selectors";
+import {myQuizzesResultsType} from "../../types/analyticsTypes";
 
 ChartJS.register(
   BarElement,
@@ -24,7 +25,7 @@ ChartJS.register(
 );
 
 const MyQuizzesAnalyticsPage: React.FC = () => {
-  const quizzesResults = useSelector(selectMyQuizzesResults);
+  const quizzesResults = useSelector(selectMyQuizzesResults) as myQuizzesResultsType[];
 
   const labels = quizzesResults.map(quiz => quiz.quiz_name);
   const averageScores = quizzesResults.map(quiz => quiz.average_score * 100);
