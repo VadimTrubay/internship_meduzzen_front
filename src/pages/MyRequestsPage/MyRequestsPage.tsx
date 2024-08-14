@@ -22,7 +22,6 @@ import {memberType} from "../../types/actionsTypes";
 import {UserType} from "../../types/usersTypes";
 import {selectUser} from "../../redux/auth/selectors";
 import {deleteRequest, fetchMyRequests} from "../../redux/actions/operations";
-import toast from "react-hot-toast";
 
 
 const columns = [
@@ -38,11 +37,11 @@ const MyRequestsPage: React.FC = () => {
   const [openDeleteRequestModal, setOpenDeleteRequestModal] = useState<boolean>(false);
   const [selectedActionId, setSelectedActionId] = useState<string | null>(null);
   const loading = useSelector<boolean>(selectLoading);
-  const error = useSelector<string>(selectError);
+
 
   useEffect(() => {
     dispatch(fetchMyRequests());
-  }, [dispatch, error]);
+  }, [dispatch]);
 
   const handleOpenDeleteRequestModal = (requestId: string) => {
     setSelectedActionId(requestId);
@@ -58,11 +57,6 @@ const MyRequestsPage: React.FC = () => {
     if (selectedActionId !== null) {
       dispatch(deleteRequest(selectedActionId));
       dispatch(fetchMyRequests());
-      if (error) {
-        toast.error(`Error deleting`);
-      } else {
-        toast.success(`Request deleted successfully`);
-      }
     }
     handleCloseDeleteRequestModal();
   };
@@ -140,7 +134,7 @@ const MyRequestsPage: React.FC = () => {
             </Typography>
             <StyledBox>
               <Button onClick={handleDeleteRequest} type="button">
-                <DoneIcon sx={{fontSize: 40, color: "red"}}/>
+                <DoneIcon sx={{fontSize: 50, color: "red"}}/>
               </Button>
             </StyledBox>
           </Box>

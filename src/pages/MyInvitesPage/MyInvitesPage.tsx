@@ -22,7 +22,6 @@ import {acceptInvite, fetchMyInvites, declineInvite} from "../../redux/actions/o
 import {memberType} from "../../types/actionsTypes";
 import {UserType} from "../../types/usersTypes";
 import {selectUser} from "../../redux/auth/selectors";
-import toast from "react-hot-toast";
 
 
 const columns = [
@@ -40,12 +39,11 @@ const MyInvitesPage: React.FC = () => {
   const [openDeclineInviteModal, setOpenDeclineInviteModal] = useState<boolean>(false);
   const [selectedActionId, setSelectedActionId] = useState<string | null>(null);
   const loading = useSelector<boolean>(selectLoading);
-  const error = useSelector<string>(selectError);
 
 
   useEffect(() => {
     dispatch(fetchMyInvites());
-  }, [dispatch, error]);
+  }, [dispatch]);
 
   const handleOpenAcceptInviteModal = (inviteId: string) => {
     setSelectedActionId(inviteId);
@@ -71,11 +69,6 @@ const MyInvitesPage: React.FC = () => {
     if (selectedActionId !== null) {
       dispatch(acceptInvite(selectedActionId));
       dispatch(fetchMyInvites());
-      if (error) {
-        toast.error(`Error accepting`);
-      } else {
-        toast.success(`Invite accept successfully`);
-      }
     }
     handleCloseAcceptInviteModal();
   };
@@ -84,11 +77,6 @@ const MyInvitesPage: React.FC = () => {
     if (selectedActionId !== null) {
       dispatch(declineInvite(selectedActionId));
       dispatch(fetchMyInvites());
-      if (error) {
-        toast.error(`Error declining`);
-      } else {
-        toast.success(`Invite decline successfully`);
-      }
     }
     handleCloseDeclineInviteModal();
   };
@@ -176,7 +164,7 @@ const MyInvitesPage: React.FC = () => {
             </Typography>
             <StyledBox>
               <Button onClick={handleAcceptInvite} type="button">
-                <DoneIcon sx={{fontSize: 40, color: "green"}}/>
+                <DoneIcon sx={{fontSize: 50, color: "green"}}/>
               </Button>
             </StyledBox>
           </Box>
@@ -199,7 +187,7 @@ const MyInvitesPage: React.FC = () => {
             </Typography>
             <StyledBox>
               <Button onClick={handleDeclineInvite} type="button">
-                <DoneIcon sx={{fontSize: 40, color: "red"}}/>
+                <DoneIcon sx={{fontSize: 50, color: "red"}}/>
               </Button>
             </StyledBox>
           </Box>

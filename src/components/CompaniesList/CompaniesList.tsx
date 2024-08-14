@@ -1,8 +1,7 @@
-import React, {ChangeEvent, useEffect, useState} from "react";
+import React, {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {
   Box, Button, LinearProgress, Modal,
-  Pagination,
   Table,
   TableBody,
   TableCell,
@@ -11,8 +10,6 @@ import {
   TableRow, Typography
 } from "@mui/material";
 import Paper from "@mui/material/Paper";
-import {fetchCompanies, fetchCompanyById} from "../../redux/companies/operations";
-import {selectTotalCount} from "../../redux/companies/selectors";
 import {selectLoading} from "../../redux/companies/selectors";
 import {AppDispatch} from "../../redux/store";
 import {CompaniesListProps, CompanyType} from "../../types/companiesTypes";
@@ -20,15 +17,13 @@ import Avatar from "@mui/material/Avatar";
 import {NavLink} from "react-router-dom";
 import {FaEye, FaEyeSlash} from "react-icons/fa";
 import {selectUser} from "../../redux/auth/selectors";
-import {selectError} from "../../redux/actions/selectors";
 import styles from "./CompaniesList.module.css";
 import {style, StyledBox, Text} from "../../utils/BaseModal.styled";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import DoneIcon from "@mui/icons-material/Done";
-import toast from "react-hot-toast";
 import {createRequest, fetchMyRequests} from "../../redux/actions/operations";
-import {selectMyRequests} from "../../redux/actions/selectors";
 import {mainUrls} from "../../config/urls";
+
 
 const columns = [
   {id: "avatar", label: "Avatar", minWidth: 50},
@@ -38,33 +33,15 @@ const columns = [
   {id: "options", label: "Options", minWidth: 50},
 ];
 
+
 const CompaniesList: React.FC<CompaniesListProps> = ({companies}) => {
   const dispatch = useDispatch<AppDispatch>();
   const user = useSelector(selectUser);
-  const totalCount: number = useSelector(selectTotalCount);
-  const myRequests = useSelector(selectMyRequests);
   const loading = useSelector<boolean>(selectLoading);
   const [openCreateMyRequestModal, setOpenCreateMyRequestModal] = useState<boolean>(false);
   const [selectedCompanyId, setSelectedCompanyId] = useState<string | null>(null);
   const [selectedCompanyOwner, setSelectedCompanyOwner] = useState<string | null>(null);
-  const error = useSelector<string>(selectError);
-  const [skip, setSkip] = useState<number>(1);
-  const limit = 10;
 
-  const countPage = Math.ceil(totalCount / limit);
-  const handleChangePage = (event: ChangeEvent<unknown>, page: number) => {
-    setSkip(page);
-  };
-
-  const handleGetCompany = (companyId: string) => {
-    if (companyId) {
-      dispatch(fetchCompanyById(companyId));
-    }
-  };
-
-  useEffect(() => {
-    dispatch(fetchCompanies({skip, limit}));
-  }, [dispatch, skip, myRequests, error]);
 
   const handleOpenCreateMyRequestModal = (companyId: string, companyOwnerId: string) => {
     setSelectedCompanyOwner(companyOwnerId);
@@ -81,11 +58,6 @@ const CompaniesList: React.FC<CompaniesListProps> = ({companies}) => {
     if (selectedCompanyId !== null) {
       dispatch(createRequest({userId: selectedCompanyOwner, companyId: selectedCompanyId}));
       dispatch(fetchMyRequests());
-      if (error) {
-        toast.error(`User already requested`);
-      } else {
-        toast.success(`Request created successfully`);
-      }
     }
     handleCloseCreateMyRequestModal();
   };
@@ -114,15 +86,14 @@ const CompaniesList: React.FC<CompaniesListProps> = ({companies}) => {
               </TableRow>
             </TableHead>
             <TableBody className={styles.tableHead}>
-              {companies?.filter((company: CompanyType) => company.owner_id === user.id || company.visible)
+              {companies?.filter((company: CompanyType) => company?.owner_id === user?.id || company?.visible)
                 .map((company: CompanyType) => (
-                  <TableRow key={company.id} className={styles.tableRow}>
+                  <TableRow key={company?.id} className={styles.tableRow}>
                     <TableCell component="th" scope="row" sx={{padding: "3px"}}>
                       <Avatar className={styles.avatar}/>
                     </TableCell>
                     <TableCell sx={{padding: "3px"}} align="center">
-                      <NavLink className={styles.link} to={mainUrls.companies.byId(company.id)}
-                               onClick={() => handleGetCompany(company.id)}>
+                      <NavLink className={styles.link} to={mainUrls.companies.byId(company.id)}>
                         {company.name}
                       </NavLink>
                     </TableCell>
@@ -135,7 +106,7 @@ const CompaniesList: React.FC<CompaniesListProps> = ({companies}) => {
                     <TableCell align="center">
                       {user?.id !== company?.owner_id &&
                         <Button
-                          onClick={() => handleOpenCreateMyRequestModal(company.id, company?.owner_id)}
+                          onClick={() => handleOpenCreateMyRequestModal(company?.id, company?.owner_id)}
                           variant="outlined"
                           color="success"
                           sx={{marginRight: 1}}
@@ -149,14 +120,7 @@ const CompaniesList: React.FC<CompaniesListProps> = ({companies}) => {
             </TableBody>
           </Table>
         </TableContainer>
-        <Box sx={{display: "flex", justifyContent: "center", marginTop: 4}}>
-          <Pagination
-            count={countPage}
-            page={skip}
-            onChange={handleChangePage}
-            color={"primary"}
-          />
-        </Box>
+
         {/* Create My Request Modal */}
         <Modal
           open={openCreateMyRequestModal}
@@ -174,7 +138,7 @@ const CompaniesList: React.FC<CompaniesListProps> = ({companies}) => {
             </Typography>
             <StyledBox>
               <Button onClick={handleCreateMyRequest} type="button">
-                <DoneIcon sx={{fontSize: 40, color: "green"}}/>
+                <DoneIcon sx={{fontSize: 50, color: "green"}}/>
               </Button>
             </StyledBox>
           </Box>

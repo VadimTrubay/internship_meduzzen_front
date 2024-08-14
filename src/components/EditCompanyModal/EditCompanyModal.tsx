@@ -20,7 +20,7 @@ export interface EditCompanyModalType {
   name: string;
   description: string;
   visible: string;
-  style_done: string;
+  style_done: any;
 }
 
 const EditCompanyModal: React.FC<EditCompanyModalType> = ({
@@ -55,7 +55,7 @@ const EditCompanyModal: React.FC<EditCompanyModalType> = ({
               id="name"
               name="name"
               variant="standard"
-              color="success"
+              color="primary"
               value={formikEditCompany.values.name}
               onChange={formikEditCompany.handleChange}
               onBlur={formikEditCompany.handleBlur}
@@ -69,7 +69,7 @@ const EditCompanyModal: React.FC<EditCompanyModalType> = ({
               id="description"
               name="description"
               variant="standard"
-              color="success"
+              color="primary"
               value={formikEditCompany.values.description}
               onChange={formikEditCompany.handleChange}
               onBlur={formikEditCompany.handleBlur}
@@ -84,7 +84,7 @@ const EditCompanyModal: React.FC<EditCompanyModalType> = ({
                 <Checkbox
                   id="visible"
                   name="visible"
-                  color="success"
+                  color="primary"
                   checked={formikEditCompany.values.visible}
                   onChange={formikEditCompany.handleChange}
                 />
@@ -92,7 +92,7 @@ const EditCompanyModal: React.FC<EditCompanyModalType> = ({
               label="Visible"
             />
             <Button type="submit">
-              <DoneIcon className={style_done}/>
+              <DoneIcon sx={style_done}/>
             </Button>
           </StyledBox>
         </Box>

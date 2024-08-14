@@ -19,11 +19,11 @@ import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import DoneIcon from "@mui/icons-material/Done";
 import {AppDispatch} from "../../redux/store";
 import {memberType} from "../../types/actionsTypes";
-import toast from "react-hot-toast";
 import {selectLoading} from "../../redux/actions/selectors";
 import {selectCompanyById} from "../../redux/companies/selectors";
 import {CompanyType} from "../../types/companiesTypes";
 import {acceptRequest, declineRequest, fetchCompanyRequests} from "../../redux/actions/operations";
+import {useParams} from "react-router-dom";
 
 
 const columns = [
@@ -35,18 +35,20 @@ const columns = [
 
 const CompanyRequestsPage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const {id} = useParams<{id: string}>();
   const company = useSelector(selectCompanyById) as CompanyType;
   const companyRequests = useSelector(selectCompanyRequests) as memberType[];
   const [openAcceptRequestModal, setOpenAcceptRequestModal] = useState<boolean>(false)
   const [openDeclineRequestModal, setOpenDeclineRequestModal] = useState<boolean>(false);
   const [selectedActionId, setSelectedActionId] = useState<string | null>(null);
   const loading = useSelector<boolean>(selectLoading);
-  const error = useSelector<string>(selectError);
 
 
   useEffect(() => {
-    dispatch(fetchCompanyRequests(company?.id));
-  }, [dispatch, error]);
+    if (id){
+      dispatch(fetchCompanyRequests(id));
+    }
+  }, [id, dispatch])
 
   const handleOpenAcceptRequestModal = (requestId: string) => {
     setSelectedActionId(requestId);
@@ -71,11 +73,6 @@ const CompanyRequestsPage: React.FC = () => {
   const handleAcceptRequest = () => {
     if (selectedActionId !== null) {
       dispatch(acceptRequest(selectedActionId));
-      if (error) {
-        toast.error(`Error accepting`);
-      } else {
-        toast.success(`Request accept successfully`);
-      }
     }
     handleCloseAcceptRequestModal();
   };
@@ -83,11 +80,6 @@ const CompanyRequestsPage: React.FC = () => {
   const handleDeclineRequest = () => {
     if (selectedActionId !== null) {
       dispatch(declineRequest(selectedActionId));
-      if (error) {
-        toast.error(`Error declining`);
-      } else {
-        toast.success(`Request decline successfully`);
-      }
     }
     handleCloseDeclineRequestModal();
   };
@@ -175,7 +167,7 @@ const CompanyRequestsPage: React.FC = () => {
             </Typography>
             <StyledBox>
               <Button onClick={handleAcceptRequest} type="button">
-                <DoneIcon sx={{fontSize: 40, color: "green"}}/>
+                <DoneIcon sx={{fontSize: 50, color: "green"}}/>
               </Button>
             </StyledBox>
           </Box>
@@ -198,7 +190,7 @@ const CompanyRequestsPage: React.FC = () => {
             </Typography>
             <StyledBox>
               <Button onClick={handleDeclineRequest} type="button">
-                <DoneIcon sx={{fontSize: 40, color: "red"}}/>
+                <DoneIcon sx={{fontSize: 50, color: "red"}}/>
               </Button>
             </StyledBox>
           </Box>

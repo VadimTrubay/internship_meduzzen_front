@@ -1,9 +1,8 @@
-import axios, {AxiosResponse} from "axios";
-import {RegisterType, UserAuthorizationType} from "../types/authTypes";
-import {createAxiosInstance} from "../utils/createAxiosInstance";
-import {GetThunkAPI} from "@reduxjs/toolkit";
-import {AsyncThunkConfig} from "@reduxjs/toolkit/dist/createAsyncThunk";
-import {mainUrls} from "../config/urls";
+
+import {AxiosResponse} from 'axios';
+import {RegisterType, UserAuthorizationType} from '../types/authTypes';
+import {mainUrls} from '../config/urls';
+import axiosInstance from "../utils/createAxiosInstance";
 
 
 export const register = async (credentials: RegisterType): Promise<AxiosResponse> => {
@@ -15,6 +14,5 @@ export const login = async (credentials: UserAuthorizationType): Promise<AxiosRe
 };
 
 export const me = async (): Promise<AxiosResponse> => {
-  const axiosInstance = createAxiosInstance(thunkAPI);
   return await axiosInstance.get(mainUrls.auth.me);
 };

@@ -1,3 +1,9 @@
+.addQuizButton {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
 .tableRow {
   background-color: #c9c9c9;
 }
@@ -39,26 +45,30 @@
   cursor: pointer;
 }
 
-.title_delete {
-  background-color: #ff0000;
+.title_add {
+  background-color: var(--brand-color-contactbook);
   color: #ffffff;
   border-radius: 3px;
   margin-top: 10px;
   margin-bottom: 10px;
 }
 
-.title_change_role {
-  background-color: #496cbd;
+.title_delete {
+  background-color: #bd3a3a;
   color: #ffffff;
   border-radius: 3px;
   margin-top: 10px;
   margin-bottom: 10px;
+}
+
+.add {
+  color: #006fff;
+  font-size: 40px;
 }
 
 .close {
   display: flex;
   justify-content: flex-end;
-  color: var(--brand-color-contactbook);
   cursor: pointer;
 }
 

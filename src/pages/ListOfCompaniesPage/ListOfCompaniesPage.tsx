@@ -1,31 +1,41 @@
-import React, {useState} from "react";
+import React, {ChangeEvent, useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import Button from "@mui/material/Button";
-import {Box, Grid, Modal, TextField, Typography, FormControlLabel, Checkbox} from "@mui/material";
+import {Box, Grid, Modal, TextField, Typography, FormControlLabel, Checkbox, Pagination} from "@mui/material";
 import {AppDispatch} from "../../redux/store";
 import CompaniesList from "../../components/CompaniesList/CompaniesList";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import DoneIcon from "@mui/icons-material/Done";
 import {useFormik} from "formik";
 import {validationSchemaAddCompany} from "../../validate/validationSchemaAddCompany";
-import toast from "react-hot-toast";
 import {style, StyledBox, Text} from "../../utils/BaseModal.styled";
-import {addCompany} from "../../redux/companies/operations";
+import {addCompany, fetchCompanies} from "../../redux/companies/operations";
 import {initialValues} from "../../initialValues/initialValues";
 import styles from "./ListOfCompaniesPage.module.css";
-import {selectError, selectUser} from "../../redux/auth/selectors";
-import {selectCompanies} from "../../redux/companies/selectors";
-import {CompaniesListProps} from "../../types/companiesTypes";
+import {selectUser} from "../../redux/auth/selectors";
+import {selectCompanies, selectTotalCount} from "../../redux/companies/selectors";
+import {CompanyType} from "../../types/companiesTypes";
 import {UserType} from "../../types/usersTypes";
+
 
 const ListOfCompaniesPage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const [openAddCompanyModal, setOpenAddCompanyModal] = useState<boolean>(false);
   const user = useSelector(selectUser) as UserType;
-  const {companies} = useSelector(selectCompanies) as CompaniesListProps[];
-  const error = useSelector<string>(selectError);
+  const totalCount: number = useSelector(selectTotalCount);
+  const [openAddCompanyModal, setOpenAddCompanyModal] = useState<boolean>(false);
+  const companies = useSelector(selectCompanies) as CompanyType[];
   const [showOption, setShowOption] = useState<number>(1);
+  const [skip, setSkip] = useState<number>(1);
+  const limit = 10;
 
+  const countPage = Math.ceil(totalCount / limit);
+  const handleChangePage = (event: ChangeEvent<unknown>, page: number) => {
+    setSkip(page);
+  };
+
+  useEffect(() => {
+    dispatch(fetchCompanies({skip, limit}));
+  }, [dispatch, skip]);
 
   const handleOpenAddCompanyModal = () => {
     setOpenAddCompanyModal(true);
@@ -43,11 +53,6 @@ const ListOfCompaniesPage: React.FC = () => {
     onSubmit: (values) => {
       if (formikAddCompany.isValid) {
         dispatch(addCompany(values));
-        if (error) {
-          toast.error(`Error adding`);
-        } else {
-          toast.success(`Company added successfully`);
-        }
       }
       handleCloseAddCompanyModal();
     },
@@ -120,6 +125,14 @@ const ListOfCompaniesPage: React.FC = () => {
       </Box>
       <CompaniesList companies={filteredCompanies}/>
 
+      <Box sx={{display: "flex", justifyContent: "center", marginTop: 4}}>
+        <Pagination
+          count={countPage}
+          page={skip}
+          onChange={handleChangePage}
+          color={"primary"}
+        />
+      </Box>
       {/* Add company modal */}
       <Modal
         open={openAddCompanyModal}
@@ -179,7 +192,7 @@ const ListOfCompaniesPage: React.FC = () => {
               label="Visible"
             />
             <Button type="submit">
-              <DoneIcon sx={{fontSize: 40, color: "inherit"}}/>
+              <DoneIcon sx={{fontSize: 50, color: "inherit"}}/>
             </Button>
           </StyledBox>
         </Box>

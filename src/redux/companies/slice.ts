@@ -1,18 +1,20 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {
   deleteCompanyById,
   fetchCompanyById,
   fetchCompanies,
   updateCompany,
-  addCompany
+  addCompany,
 } from "./operations";
-import { initialCompaniesType, CompanyUpdateType, CompanyType } from "../../types/companiesTypes";
-
+import {initialCompaniesType} from "../../types/companiesTypes";
+import toast from "react-hot-toast";
 
 const initialCompanies: initialCompaniesType = {
-  items: [],
+  items: {
+    companies: [],
+    total_count: 0,
+  },
   companyById: null,
-  totalCount: 0,
   loading: false,
   error: null,
 };
@@ -21,61 +23,47 @@ const handlePending = (state: initialCompaniesType) => {
   state.loading = true;
 };
 
-const handleRejected = (
-  state: initialCompaniesType,
-  action: PayloadAction<any>
-) => {
+const handleRejected = (state: initialCompaniesType, action: PayloadAction<any>) => {
   state.loading = false;
   state.error = action.payload;
+  toast.error(action.payload);
 };
 
-const handleFetchCompaniesFulfilled = (
-  state: initialCompaniesType,
-  action: PayloadAction<any>
-) => {
+const handleFetchCompaniesFulfilled = (state: initialCompaniesType, action: PayloadAction<any>) => {
   state.loading = false;
   state.error = null;
   state.items = action.payload;
-  state.totalCount = action.payload.total_count;
 };
 
-const handleAddCompanyFulfilled = (
-  state: initialCompaniesType,
-  action: PayloadAction<CompanyType>
-) => {
+const handleAddCompanyFulfilled = (state: initialCompaniesType, action: PayloadAction<any>) => {
   state.loading = false;
   state.error = null;
   state.items.companies.push(action.payload);
+  toast.success(`Company added successfully`);
 };
 
-const handleGetCompanyByIdFulfilled = (
-  state: initialCompaniesType,
-  action: PayloadAction<null>
-) => {
+const handleGetCompanyByIdFulfilled = (state: initialCompaniesType, action: PayloadAction<any>) => {
   state.loading = false;
   state.error = null;
   state.companyById = action.payload;
 };
 
-const handleUpdateCompanyFulfilled = (
-  state: initialCompaniesType,
-  action: PayloadAction<CompanyUpdateType>
-) => {
+const handleUpdateCompanyFulfilled = (state: initialCompaniesType, action: PayloadAction<any>) => {
   state.loading = false;
   state.error = null;
-  const index = state.items.companies.findIndex(company => company.id === action.payload.id);
+  const index = state.items.companies.findIndex((company) => company.id === action.payload.id);
   if (index !== -1) {
-    state.items[index] = { ...state.items[index], ...action.payload };
+    state.items.companies[index] = {...state.items.companies[index], ...action.payload};
   }
+  toast.success(`Company updated successfully`);
 };
 
-const handleDeleteCompanyByIdFulfilled = (
-  state: initialCompaniesType,
-  action: PayloadAction<CompanyType>
-) => {
+const handleDeleteCompanyByIdFulfilled = (state: initialCompaniesType, action: PayloadAction<any>) => {
   state.loading = false;
   state.error = null;
-  state.items = state.items.companies.filter(company => company.id !== action.payload.id);
+  state.items.companies = state.items.companies.filter((company) => company.id !== action.payload.id);
+  state.companyById = null;
+  toast.success(`Company deleted successfully`);
 };
 
 const companiesSlice = createSlice({
@@ -98,7 +86,7 @@ const companiesSlice = createSlice({
       .addCase(updateCompany.rejected, handleRejected)
       .addCase(deleteCompanyById.pending, handlePending)
       .addCase(deleteCompanyById.fulfilled, handleDeleteCompanyByIdFulfilled)
-      .addCase(deleteCompanyById.rejected, handleRejected)
+      .addCase(deleteCompanyById.rejected, handleRejected),
 });
 
 export const companiesReducer = companiesSlice.reducer;

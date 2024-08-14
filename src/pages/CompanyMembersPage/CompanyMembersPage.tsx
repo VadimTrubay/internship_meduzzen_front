@@ -5,7 +5,7 @@ import {
 } from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
 import {memberType} from "../../types/actionsTypes";
-import {selectMembers, selectLoading, selectError} from "../../redux/actions/selectors";
+import {selectMembers, selectLoading} from "../../redux/actions/selectors";
 import styles from "./CompanyMembersPage.module.css";
 import {
   addAdminRole,
@@ -20,10 +20,9 @@ import {selectUsers} from "../../redux/users/selectors";
 import {selectCompanyById} from "../../redux/companies/selectors";
 import {UserType} from "../../types/usersTypes";
 import {CompanyType} from "../../types/companiesTypes";
-import toast from "react-hot-toast";
 import {fetchUsers} from "../../redux/users/operations";
 import {selectUser} from "../../redux/auth/selectors";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {mainUrls} from "../../config/urls";
 import BaseModalWindow from "../../components/BaseModalWindow/BaseModalWindow";
 
@@ -37,6 +36,7 @@ const columns = [
 
 const CompanyMembersPage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const {id} = useParams<{ id: string }>();
   const members = useSelector(selectMembers) as memberType[];
   const users = useSelector(selectUsers) as UserType[];
   const currentUser = useSelector(selectUser) as UserType;
@@ -50,16 +50,15 @@ const CompanyMembersPage: React.FC = () => {
   const navigate = useNavigate();
   const skip = 1;
   const limit = 100;
-  const error = useSelector<boolean>(selectError);
 
 
   useEffect(() => {
-    dispatch(fetchUsers({skip, limit}));
-  }, [dispatch, error]);
-
-  useEffect(() => {
-    dispatch(fetchMembers(company.id));
-  }, [dispatch, currentMember]);
+    if (id) {
+      dispatch(fetchMembers(id));
+      dispatch(fetchUsers({skip, limit}));
+      dispatch(fetchAdmins(company.id));
+    }
+  }, [id, dispatch, currentMember]);
 
   const handleOpenDeleteModal = (member: memberType) => {
     setCurrentMember(member);
@@ -74,13 +73,9 @@ const CompanyMembersPage: React.FC = () => {
   };
 
   const handleDeleteMember = () => {
-    if (currentMember) {
-      dispatch(deleteMember(currentMember.id));
-      if (error) {
-        toast.error(`Error deleting`);
-      } else {
-        toast.success(`Member deleted successfully`);
-      }
+    if (currentMember && id) {
+      dispatch(deleteMember(currentMember?.action_id));
+      dispatch(fetchMembers(id));
     }
     closeModal();
   };
@@ -91,13 +86,9 @@ const CompanyMembersPage: React.FC = () => {
   };
 
   const handleLeave = () => {
-    if (currentMember) {
-      dispatch(leaveFromCompany(currentMember.id));
-      if (error) {
-        toast.error(`Error leaving from company`);
-      } else {
-        toast.success(`Member left successfully`);
-      }
+    if (currentMember && id) {
+      dispatch(leaveFromCompany(currentMember?.action_id));
+      dispatch(fetchMembers(id));
     }
     closeModal();
   };
@@ -116,12 +107,8 @@ const CompanyMembersPage: React.FC = () => {
       if (currentMember?.role === "admin") {
         dispatch(deleteAdminRole({companyId: currentMember?.company_id, userId: currentMember?.user_id}));
       }
-      if (error) {
-        toast.error(`Error change role from user`);
-      } else {
-        toast.success(`Change role successfully`);
-      }
     }
+    dispatch(fetchAdmins(company.id));
     closeModal();
   };
 
@@ -136,24 +123,13 @@ const CompanyMembersPage: React.FC = () => {
   const handleInviteUser = (userId: string) => {
     if (userId && company) {
       dispatch(createInvite({userId: userId, companyId: company.id}));
-      if (error) {
-        toast.error(`User already invited`);
-      } else {
-        toast.success(`Invite created successfully`);
-      }
     }
     handleCloseMenu();
   };
 
   const handleCompanyAdmins = () => {
     if (company) {
-      dispatch(fetchAdmins(company.id));
       navigate(mainUrls.actions.adminsCompany(company.id))
-      if (error) {
-        toast.error(`Error get admins from company`);
-      } else {
-        toast.success(`Get admins from company successfully`);
-      }
     }
   };
 
@@ -215,15 +191,15 @@ const CompanyMembersPage: React.FC = () => {
                   <TableCell align="center">{member?.user_username}</TableCell>
                   <TableCell align="center">{member?.role}</TableCell>
                   <TableCell align="center">
-                    {currentUser?.id === company?.owner_id &&
-                      <Button
+                    {currentUser?.id !== member?.user_id && currentUser?.id === company?.owner_id ?
+                      (<Button
                         onClick={() => handleOpenChangeRoleModal(member)}
                         variant="outlined"
                         color="primary"
                         sx={{marginRight: 1}}
                       >
                         Change Role
-                      </Button>
+                      </Button>) : null
                     }
                   </TableCell>
                   <TableCell sx={{padding: "3px"}} align="center">
@@ -236,7 +212,7 @@ const CompanyMembersPage: React.FC = () => {
                       >
                         Delete member
                       </Button>
-                    ) : currentUser?.id === member?.user_id ? (
+                    ) : currentUser?.id === member?.user_id && currentUser?.id !== company?.owner_id ? (
                       <Button
                         onClick={() => handleOpenLeaveModal(member)}
                         variant="outlined"
@@ -267,7 +243,7 @@ const CompanyMembersPage: React.FC = () => {
           e.preventDefault();
           handleDeleteMember();
         }}
-        style_done={styles.done_leave}
+        style_done={{color: "red", fontSize: 50}}
       />
 
       {/* Leave modal */}
@@ -283,7 +259,7 @@ const CompanyMembersPage: React.FC = () => {
           e.preventDefault();
           handleLeave();
         }}
-        style_done={styles.done_leave}
+        style_done={{color: "red", fontSize: 50}}
       />
 
       {/* Change role modal */}
@@ -299,7 +275,7 @@ const CompanyMembersPage: React.FC = () => {
           e.preventDefault();
           handleChangeRole();
         }}
-        style_done={styles.done_change_role}
+        style_done={{color: "primary", fontSize: 50}}
       />
     </>
   );

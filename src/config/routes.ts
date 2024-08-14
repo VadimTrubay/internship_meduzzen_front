@@ -16,6 +16,8 @@ export const RouterEndpoints = {
     invites: "invites",
     requests: "requests",
     admins: "admins",
+    quizzes: "quizzes",
+    quizView: "quiz/view",
     my: "my",
 
     terms: "terms",

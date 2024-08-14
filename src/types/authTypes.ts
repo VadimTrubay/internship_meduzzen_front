@@ -12,7 +12,6 @@ export interface authType {
   email: string;
   password: string;
   new_password: string;
-  is_admin: boolean;
 }
 
 export interface authUserType {
@@ -20,7 +19,6 @@ export interface authUserType {
   username: string;
   email: string;
   password: string;
-  is_admin: boolean;
 }
 
 export interface UsernameUpdateType {
@@ -57,4 +55,14 @@ export interface RegisterType {
   username: string;
   email: string;
   password: string;
+}
+
+export interface IUsernameUpdateType {
+  username: string;
+}
+
+export interface IPasswordUpdateType {
+  password: string;
+  new_password: string;
+  confirmPassword: string;
 }

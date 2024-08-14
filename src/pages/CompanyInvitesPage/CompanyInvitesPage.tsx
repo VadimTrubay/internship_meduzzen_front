@@ -1,8 +1,8 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {
   Box, Button,
   Grid,
-  LinearProgress, Modal,
+  LinearProgress,
   Table, TableBody,
   TableCell,
   TableContainer,
@@ -14,17 +14,14 @@ import {useDispatch, useSelector} from "react-redux";
 import {selectCompanyInvites, selectError} from "../../redux/actions/selectors";
 import Paper from "@mui/material/Paper";
 import styles from "./CompanyInvitesPage.module.css";
-import {style, StyledBox, Text} from "../../utils/BaseModal.styled";
-import HighlightOffIcon from "@mui/icons-material/HighlightOff";
-import DoneIcon from "@mui/icons-material/Done";
 import {AppDispatch} from "../../redux/store";
 import {memberType} from "../../types/actionsTypes";
-import toast from "react-hot-toast";
 import {selectLoading} from "../../redux/actions/selectors";
 import {selectCompanyById} from "../../redux/companies/selectors";
 import {CompanyType} from "../../types/companiesTypes";
 import {deleteInvite, fetchCompanyInvites} from "../../redux/actions/operations";
 import BaseModalWindow from "../../components/BaseModalWindow/BaseModalWindow";
+import {useParams} from "react-router-dom";
 
 
 const columns = [
@@ -35,13 +32,19 @@ const columns = [
 
 const CompanyInvitesPage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const {id} = useParams<{id: string}>();
   const company = useSelector(selectCompanyById) as CompanyType;
   const companyInvites = useSelector(selectCompanyInvites) as memberType[];
   const [openDeleteInviteModal, setOpenDeleteInviteModal] = useState<boolean>(false);
   const [selectedActionId, setSelectedActionId] = useState<string | null>(null);
   const loading = useSelector<boolean>(selectLoading);
-  const error = useSelector<string>(selectError);
 
+
+  useEffect(() => {
+    if (id){
+      dispatch(fetchCompanyInvites(id));
+    }
+  }, [id, dispatch])
 
   const handleOpenDeleteInviteModal = (inviteId: string) => {
     setSelectedActionId(inviteId);
@@ -55,14 +58,9 @@ const CompanyInvitesPage: React.FC = () => {
 
 
   const handleDeleteInvite = () => {
-    if (selectedActionId !== null) {
+    if (id && selectedActionId !== null) {
       dispatch(deleteInvite(selectedActionId));
-      dispatch(fetchCompanyInvites(company.id));
-      if (error) {
-        toast.error(`Error deleting`);
-      } else {
-        toast.success(`Invite deleted successfully`);
-      }
+      dispatch(fetchCompanyInvites(id));
     }
     closeModal();
   };
@@ -133,7 +131,7 @@ const CompanyInvitesPage: React.FC = () => {
           title={"Delete Invite"}
           text={"Are you sure you want to delete this invite?"}
           onSubmit={handleDeleteInvite}
-          style_done={styles.done_leave}
+          style_done={{color: "red", fontSize: 50}}
         />
       </>
     )
