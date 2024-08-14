@@ -18,7 +18,7 @@ import {selectAdmins, selectLoading, selectMembers} from "../../redux/actions/se
 import {selectCompanyById} from "../../redux/companies/selectors";
 import {CompanyType} from "../../types/companiesTypes";
 import BaseModalWindow from "../../components/BaseModalWindow/BaseModalWindow";
-import {NavLink, useParams} from "react-router-dom";
+import {NavLink, useNavigate, useParams} from "react-router-dom";
 import {selectQuizById, selectQuizzes} from "../../redux/quizzes/selectors";
 import {addQuiz, deleteQuiz, fetchQuizById, fetchQuizzes, updateQuiz} from "../../redux/quizzes/operations";
 import AddQuizModal from "../../components/AddQuizModal/AddQuizModal";
@@ -51,6 +51,7 @@ const CompanyQuizzesPage: React.FC = () => {
   const quizById = useSelector(selectQuizById) as QuizByIdResponseType;
   const admins = useSelector(selectAdmins) as memberType[];
   const members = useSelector(selectMembers) as memberType[];
+  const navigate = useNavigate();
   const [openAddQuizModal, setOpenAddQuizModal] = useState<boolean>(false);
   const [openEditQuizModal, setOpenEditQuizModal] = useState<boolean>(false);
   const [openDeleteQuizModal, setOpenDeleteQuizModal] = useState<boolean>(false);
@@ -111,6 +112,7 @@ const CompanyQuizzesPage: React.FC = () => {
         dispatch(addQuiz({companyId: company?.id, data: values}));
         if (id != null) {
           dispatch(fetchQuizzes(id));
+          navigate(mainUrls.companies.byId(id))
         }
       }
       handleCloseAddQuizModal();
@@ -148,9 +150,7 @@ const CompanyQuizzesPage: React.FC = () => {
             <Typography variant="h5" gutterBottom>
               Company Quizzes
             </Typography>
-            <Typography variant="h6">
-              Quizzes: "{company?.name}"
-            </Typography>
+            <Typography variant="h6">"{company?.name}"</Typography>
             <Box className={styles.addQuizButton}>
               {(currentUser?.id === companyById?.owner_id || adminsListId.includes(currentUser?.id)) && (
                 <Button variant="contained" onClick={handleOpenAddQuizModal}>
@@ -179,7 +179,7 @@ const CompanyQuizzesPage: React.FC = () => {
               </TableHead>
               <TableBody className={styles.tableHead}>
                 {quizzes?.map((quiz: QuizResponseType, index) => (
-                  <TableRow key={index} className={styles.tableRow}>
+                  <TableRow key={quiz.id} className={styles.tableRow}>
                     <TableCell sx={{padding: "3px"}} align="center">
                       {(currentUser?.id === companyById?.owner_id || membersListId.includes(currentUser?.id)) ? (
                         <NavLink className={styles.link} to={mainUrls.quizzes.viewQuiz(quiz.id)}>

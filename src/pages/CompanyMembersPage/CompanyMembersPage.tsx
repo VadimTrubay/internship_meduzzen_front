@@ -5,7 +5,7 @@ import {
 } from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
 import {memberType} from "../../types/actionsTypes";
-import {selectMembers, selectLoading} from "../../redux/actions/selectors";
+import {selectMembers, selectLoading, selectAdmins} from "../../redux/actions/selectors";
 import styles from "./CompanyMembersPage.module.css";
 import {
   addAdminRole,
@@ -25,6 +25,7 @@ import {selectUser} from "../../redux/auth/selectors";
 import {useNavigate, useParams} from "react-router-dom";
 import {mainUrls} from "../../config/urls";
 import BaseModalWindow from "../../components/BaseModalWindow/BaseModalWindow";
+import {formatTimestamp} from "../../utils/convertDate";
 
 const columns = [
   {id: "avatar", label: "Avatar", minWidth: 50},
@@ -32,6 +33,7 @@ const columns = [
   {id: "role", label: "Role", minWidth: 80},
   {id: "change_role", label: "Change role", minWidth: 80},
   {id: "options", label: "Options", minWidth: 80},
+  {id: "last_quiz_run", label: "Last quiz run", minWidth: 80},
 ];
 
 const CompanyMembersPage: React.FC = () => {
@@ -39,6 +41,8 @@ const CompanyMembersPage: React.FC = () => {
   const {id} = useParams<{ id: string }>();
   const members = useSelector(selectMembers) as memberType[];
   const users = useSelector(selectUsers) as UserType[];
+  const admins = useSelector(selectAdmins) as memberType[];
+  const companyById = useSelector(selectCompanyById) as CompanyType;
   const currentUser = useSelector(selectUser) as UserType;
   const [currentMember, setCurrentMember] = useState<memberType | null>(null);
   const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
@@ -51,6 +55,8 @@ const CompanyMembersPage: React.FC = () => {
   const skip = 1;
   const limit = 100;
 
+
+  const adminsListId = admins.map(admin => admin.user_id);
 
   useEffect(() => {
     if (id) {
@@ -142,7 +148,7 @@ const CompanyMembersPage: React.FC = () => {
           <Typography variant="h5" gutterBottom>
             Company Members
           </Typography>
-          <Typography variant="h6">Company: "{company?.name}"</Typography>
+          <Typography variant="h6">"{company?.name}"</Typography>
         </Grid>
         {currentUser?.id === company?.owner_id && (
           <Box className={styles.inviteMemberButton}>
@@ -221,8 +227,12 @@ const CompanyMembersPage: React.FC = () => {
                       </Button>
                     ) : null}
                   </TableCell>
+                  <TableCell align="center">
+                    {(currentUser?.id === companyById?.owner_id || adminsListId.includes(currentUser?.id)) &&
+                      formatTimestamp(member.last_quiz_attempt)}
+                    </TableCell>
                 </TableRow>
-              ))}
+                ))}
             </TableBody>
           </Table>
         </TableContainer>
@@ -276,7 +286,7 @@ const CompanyMembersPage: React.FC = () => {
         style_done={{color: "primary", fontSize: 50}}
       />
     </>
-  );
+);
 };
 
 export default CompanyMembersPage;

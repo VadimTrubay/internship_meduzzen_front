@@ -10,6 +10,7 @@ export const RouterEndpoints = {
     users: "users",
     companies: "companies",
 
+    my: "my",
     actions: "actions",
     company: "company",
     members: "members",
@@ -17,8 +18,10 @@ export const RouterEndpoints = {
     requests: "requests",
     admins: "admins",
     quizzes: "quizzes",
+    quiz: "quiz",
     quizView: "quiz/view",
-    my: "my",
+    analytics: "analytics",
+    members_results: "members_results",
 
     terms: "terms",
     notFound: "*",

@@ -23,7 +23,7 @@ import {AppDispatch} from "../../redux/store";
 import {useNavigate, useParams} from "react-router-dom";
 import {fetchQuizById} from "../../redux/quizzes/operations";
 import {sendResults} from "../../redux/results/operations";
-import {resultsResponseType, sendResultsRequestType} from "../../types/resultsTypes";
+import {resultsResponseType} from "../../types/resultsTypes";
 import {selectQuizResults} from "../../redux/results/selectors";
 import {mainUrls} from "../../config/urls";
 import {selectCompanyById} from "../../redux/companies/selectors";
@@ -37,7 +37,7 @@ const CompanyQuizPage: React.FC = () => {
   const quiz = useSelector(selectQuizById);
   const result = useSelector(selectQuizResults) as resultsResponseType;
   const company = useSelector(selectCompanyById) as CompanyType;
-  const [answers, setAnswers] = useState<sendResultsRequestType>({});
+  const [answers, setAnswers] = useState({});
   const [submitted, setSubmitted] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
   const loading = useSelector<boolean>(selectLoading);
@@ -49,11 +49,11 @@ const CompanyQuizPage: React.FC = () => {
   }, [dispatch, id]);
 
 
-  const handleChange = (questionId, option) => {
+  const handleChange = (questionId: string, option: string) => {
     setAnswers((prevAnswers) => {
       const currentAnswers = prevAnswers[questionId] || [];
       const newAnswers = currentAnswers.includes(option)
-        ? currentAnswers.filter((answer) => answer !== option)
+        ? currentAnswers.filter((answer: string) => answer !== option)
         : [...currentAnswers, option];
 
       return {
@@ -64,7 +64,7 @@ const CompanyQuizPage: React.FC = () => {
   };
 
   const allQuestionsAnswered = quiz?.questions?.every(
-    (question) => answers[question.id]?.length > 0
+    (question: string) => answers[question.id]?.length > 0
   );
 
   const handleSubmit = async () => {

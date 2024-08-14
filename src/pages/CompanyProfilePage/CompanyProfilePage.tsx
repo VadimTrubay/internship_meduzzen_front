@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Box, Button, Grid, LinearProgress, Typography} from "@mui/material";
+import {Box, Button, Grid, LinearProgress, Typography, Paper} from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import {useDispatch, useSelector} from "react-redux";
 import {selectCompanyById, selectLoading} from "../../redux/companies/selectors";
@@ -23,11 +23,10 @@ import EditCompanyModal from "../../components/EditCompanyModal/EditCompanyModal
 import {fetchQuizzes} from "../../redux/quizzes/operations";
 import {IoPeopleCircleOutline} from "react-icons/io5";
 import {MdQuiz, MdRequestQuote} from "react-icons/md";
-import Paper from "@mui/material/Paper";
 import {IoMdAnalytics} from "react-icons/io";
 import {selectAdmins} from "../../redux/actions/selectors";
 import {memberType} from "../../types/actionsTypes";
-
+import {fetchCompanyMembersResults} from "../../redux/analytics/operations";
 
 const CompanyProfilePage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -40,14 +39,12 @@ const CompanyProfilePage: React.FC = () => {
   const admins = useSelector(selectAdmins) as memberType[];
   const loading = useSelector<boolean>(selectLoading);
 
-
   const adminsListId = admins.map(admin => admin.user_id);
 
   const handleOpenEditCompanyModal = () => setOpenEditCompanyModal(true);
   const handleCloseEditCompanyModal = () => {
     formikEditCompany.resetForm();
     setOpenEditCompanyModal(false);
-
   };
   const handleOpenDeleteModal = () => setOpenDeleteModal(true);
 
@@ -57,13 +54,13 @@ const CompanyProfilePage: React.FC = () => {
       dispatch(fetchMembers(id));
       dispatch(fetchAdmins(id));
     }
-  }, [id, dispatch])
+  }, [id, dispatch]);
 
   useEffect(() => {
     if (companyById) {
       formikEditCompany.setValues(companyById);
     }
-  }, [companyById])
+  }, [companyById]);
 
   const formikEditCompany = useFormik({
     initialValues: initialValueUpdateCompany,
@@ -77,6 +74,13 @@ const CompanyProfilePage: React.FC = () => {
       handleCloseEditCompanyModal();
     },
   });
+
+  const handleCompanyMembersResults = () => {
+    if (id) {
+      dispatch(fetchCompanyMembersResults(id));
+      navigate(mainUrls.analytics.companyMembersResults(id));
+    }
+  };
 
   const handleDeleteCompany = () => {
     if (companyById) {
@@ -94,16 +98,17 @@ const CompanyProfilePage: React.FC = () => {
   };
 
   const handleOpenCompanyInvites = () => {
-    dispatch(fetchCompanyInvites(companyById?.id))
+    dispatch(fetchCompanyInvites(companyById?.id));
     navigate(mainUrls.actions.companyInvites(companyById?.id));
   };
 
   const handleOpenCompanyQuizzes = () => {
-    dispatch(fetchQuizzes(companyById?.id))
+    dispatch(fetchQuizzes(companyById?.id));
     navigate(mainUrls.quizzes.companyQuizzes(companyById?.id));
   };
+
   const handleOpenCompanyRequests = () => {
-    dispatch(fetchCompanyRequests(companyById?.id))
+    dispatch(fetchCompanyRequests(companyById?.id));
     navigate(mainUrls.actions.companyRequests(companyById?.id));
   };
 
@@ -112,163 +117,155 @@ const CompanyProfilePage: React.FC = () => {
     setOpenDeleteModal(false);
   };
 
-  return (
-    loading ?
-      (
-        <Box>
-          <LinearProgress/>
-        </Box>
-      ) : (
-        <Grid container spacing={4}>
+  return loading ? (
+    <Box>
+      <LinearProgress/>
+    </Box>
+  ) : (
+    <>
+      <Grid container justifyContent="center" alignItems="center" spacing={3}>
+        <Grid item xs={12}>
+          <Typography variant="h5" gutterBottom align="center">
+            Company Profile
+          </Typography>
+        </Grid>
 
-          <Grid item xs={12}>
-            <Typography variant="h5" gutterBottom>
-              Company Profile
-            </Typography>
-          </Grid>
+        {/* Left: Profile */}
+        <Grid item xs={12} md={4}>
+          <Paper elevation={3} style={{padding: "20px"}}>
+            <Box display="flex" justifyContent="center" mb={2}>
+              <Avatar/>
+            </Box>
+            <Box textAlign="center">
+              <Typography variant="h6" fontWeight="bold">
+                Name:
+              </Typography>
+              <Typography color="textSecondary">{companyById?.name}</Typography>
+            </Box>
+            <Box textAlign="center" mt={2}>
+              <Typography variant="h6" fontWeight="bold">
+                Description:
+              </Typography>
+              <Typography color="textSecondary">{companyById?.description}</Typography>
+            </Box>
+            <Box textAlign="center" mt={2}>
+              <Typography variant="h6" fontWeight="bold">
+                Visible:
+              </Typography>
+              <Typography color="textSecondary">
+                {companyById?.visible ? <FaEye/> : <FaEyeSlash/>}
+              </Typography>
+            </Box>
+            {currentUser?.id === companyById?.owner_id && (
+              <Box display="flex" justifyContent="center" mt={2}>
+                <Button
+                  onClick={handleOpenEditCompanyModal}
+                  variant="outlined"
+                  startIcon={<EditIcon/>}
+                  color="primary"
+                  sx={{marginRight: 2}}
+                >
+                  Edit
+                </Button>
+                <Button
+                  onClick={handleOpenDeleteModal}
+                  variant="outlined"
+                  startIcon={<DeleteIcon/>}
+                  color="error"
+                >
+                  Delete
+                </Button>
+              </Box>
+            )}
+          </Paper>
+        </Grid>
 
-          {/*Left: Profile */}
-          <Grid item xs={6} md={4}>
-            <Grid container direction="column" alignItems="center" spacing={1}>
-              <Paper elevation={6} style={{padding: "20px"}}>
-                <Box display="flex" justifyContent="center">
-                  <Avatar/>
-                </Box>
-                <Grid item>
-                  <Typography variant="h6" fontWeight="bold">
-                    Name:
-                  </Typography>
-                  <Typography color="textSecondary">
-                    {companyById ? companyById?.name : null}
-                  </Typography>
-                </Grid>
-                <Grid item>
-                  <Typography variant="h6" fontWeight="bold">
-                    Description:
-                  </Typography>
-                  <Typography color="textSecondary">
-                    {companyById ? companyById?.description : null}
-                  </Typography>
-                </Grid>
-                <Grid item>
-                  <Typography variant="h6" fontWeight="bold">
-                    Visible:
-                  </Typography>
-                  <Typography color="textSecondary">
-                    {companyById ? companyById?.visible ? <FaEye/> : <FaEyeSlash/> : null}
-                  </Typography>
-                </Grid>
-                {currentUser?.id === companyById?.owner_id &&
-                  <Box sx={{marginTop: 2}}>
-                    <Button
-                      onClick={handleOpenEditCompanyModal}
-                      variant="outlined"
-                      startIcon={<EditIcon/>}
-                      color="primary"
-                      sx={{marginRight: 2}}
-                    >
-                      Edit
-                    </Button>
-                    <Button
-                      onClick={handleOpenDeleteModal}
-                      variant="outlined"
-                      startIcon={<DeleteIcon/>}
-                      color="error"
-                    >
-                      Delete
-                    </Button>
-                  </Box>
-                }
-              </Paper>
-            </Grid>
-          </Grid>
-
-          {/* Right: buttons actions */}
-          <Grid item xs={6} md={2}>
-            <Grid container direction="column" alignItems="flex-start" spacing={2}>
-              <Button
-                variant="outlined"
-                color="primary"
-                sx={{margin: 1}}
-                onClick={() => handleOpenCompanyMembers()}
-              >
-                <IoPeopleCircleOutline style={{marginRight: '5px'}} size={24}/>
-                Members
-              </Button>
-              <Button
-                variant="outlined"
-                color="primary"
-                sx={{margin: 1}}
-                onClick={() => handleOpenCompanyQuizzes()}
-              >
-                <MdQuiz style={{marginRight: '5px'}} size={24}/>
-                Quizzes
-              </Button>
-              {currentUser?.id === companyById?.owner_id &&
-                <>
-                  <Button
-                    variant="outlined"
-                    color="primary"
-                    sx={{margin: 1}}
-                    onClick={() => handleOpenCompanyInvites()}
-                  >
-                    <FaInvision style={{marginRight: '5px'}} size={24}/>
-                    Invites
-                  </Button>
-                  <Button
-                    variant="outlined"
-                    color="primary"
-                    sx={{margin: 1}}
-                    onClick={() => handleOpenCompanyRequests()}
-                  >
-                    <MdRequestQuote style={{marginRight: '5px'}} size={24}/>
-                    Requests
-                  </Button>
-                </>
-              }
-              {(currentUser?.id === companyById?.owner_id || adminsListId.includes(currentUser?.id)) && (
+        {/* Right: buttons actions */}
+        <Grid item xs={12} md={2}>
+          <Grid container direction="column" spacing={2}>
+            <Button
+              variant="outlined"
+              color="primary"
+              sx={{width: "100%", marginBottom: 1}}
+              onClick={handleOpenCompanyMembers}
+            >
+              <IoPeopleCircleOutline style={{marginRight: "5px"}} size={24}/>
+              Members
+            </Button>
+            <Button
+              variant="outlined"
+              color="primary"
+              sx={{width: "100%", marginBottom: 1}}
+              onClick={handleOpenCompanyQuizzes}
+            >
+              <MdQuiz style={{marginRight: "5px"}} size={24}/>
+              Quizzes
+            </Button>
+            {currentUser?.id === companyById?.owner_id && (
+              <>
                 <Button
                   variant="outlined"
                   color="primary"
-                  sx={{margin: 1}}
-                  // onClick={() => handleOpenCompanyRequests()}
+                  sx={{width: "100%", marginBottom: 1}}
+                  onClick={handleOpenCompanyInvites}
                 >
-                  <IoMdAnalytics style={{marginRight: '5px'}} size={24}/>
-                  Analytics
+                  <FaInvision style={{marginRight: "5px"}} size={24}/>
+                  Invites
                 </Button>
-              )}
-            </Grid>
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  sx={{width: "100%", marginBottom: 1}}
+                  onClick={handleOpenCompanyRequests}
+                >
+                  <MdRequestQuote style={{marginRight: "5px"}} size={24}/>
+                  Requests
+                </Button>
+              </>
+            )}
+            {(currentUser?.id === companyById?.owner_id || adminsListId.includes(currentUser?.id)) && (
+              <Button
+                variant="outlined"
+                color="primary"
+                sx={{width: "100%", marginBottom: 1}}
+                onClick={handleCompanyMembersResults}
+              >
+                <IoMdAnalytics style={{marginRight: "5px"}} size={24}/>
+                Analytics
+              </Button>
+            )}
           </Grid>
-
-          {/* Edit modal */}
-          <EditCompanyModal
-            openModal={openEditCompanyModal}
-            closeModal={handleCloseEditCompanyModal}
-            style_close={styles.close}
-            color_off={"primary"}
-            style_title={styles.title_add_company}
-            title={"Edit company"}
-            formikEditCompany={formikEditCompany}
-            name={"Name:"}
-            description={"Description:"}
-            visible={"Visible:"}
-            style_done={{color: "primary", fontSize: 50}}
-          />
-
-          {/* Delete modal */}
-          <BaseModalWindow
-            openModal={openDeleteModal}
-            closeModal={closeModal}
-            style_close={styles.close}
-            color_off={"error"}
-            style_title={styles.title_delete}
-            title={"Delete company"}
-            text={"Are you sure you want to delete this company?"}
-            onSubmit={handleDeleteCompany}
-            style_done={{color: "red", fontSize: 50}}
-          />
         </Grid>
-      )
+
+        {/* Edit modal */}
+        <EditCompanyModal
+          openModal={openEditCompanyModal}
+          closeModal={handleCloseEditCompanyModal}
+          style_close={styles.close}
+          color_off={"primary"}
+          style_title={styles.title_add_company}
+          title={"Edit company"}
+          formikEditCompany={formikEditCompany}
+          name={"Name:"}
+          description={"Description:"}
+          visible={"Visible:"}
+          style_done={{color: "primary", fontSize: 50}}
+        />
+
+        {/* Delete modal */}
+        <BaseModalWindow
+          openModal={openDeleteModal}
+          closeModal={closeModal}
+          style_close={styles.close}
+          color_off={"error"}
+          style_title={styles.title_delete}
+          title={"Delete company"}
+          text={"Are you sure you want to delete this company?"}
+          onSubmit={handleDeleteCompany}
+          style_done={{color: "red", fontSize: 50}}
+        />
+      </Grid>
+    </>
   );
 };
 
