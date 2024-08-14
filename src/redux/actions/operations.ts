@@ -1,9 +1,9 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import {
-  getMembers, removeMember, sendInvite, getMyInvites, getMyRequests,
-  acceptInviteApi, declineInviteApi, getCompanyInvites, getCompanyRequests,
+  getMembersApi, removeMemberApi, getMyInvitesApi, getMyRequestsApi,
+  acceptInviteApi, declineInviteApi, getCompanyInvitesApi, getCompanyRequestsApi,
   deleteInviteApi, deleteRequestApi, leaveFromCompanyApi,
-  acceptRequestApi, declineRequestApi, addAdminRoleApi, removeAdminRole, getAdmins, sendRequestApi
+  acceptRequestApi, declineRequestApi, addAdminRoleApi, removeAdminRoleApi, getAdminsApi, sendRequestApi, sendInviteApi
 } from '../../api/api_actions';
 import {changeRoleType, sendInviteType, sendRequestType} from '../../types/actionsTypes';
 
@@ -11,7 +11,7 @@ export const fetchMembers = createAsyncThunk(
   'actions/fetchMembers',
   async (companyId: string, thunkAPI) => {
     try {
-      const response = await getMembers(companyId);
+      const response = await getMembersApi(companyId);
       return response.data;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.response.data.detail);
@@ -23,7 +23,7 @@ export const fetchAdmins = createAsyncThunk(
   'actions/fetchAdmins',
   async (companyId: string, thunkAPI) => {
     try {
-      const response = await getAdmins(companyId);
+      const response = await getAdminsApi(companyId);
       return response.data;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.response.data.detail);
@@ -35,7 +35,7 @@ export const fetchMyInvites = createAsyncThunk(
   'actions/fetchMyInvites',
   async (_, thunkAPI) => {
     try {
-      const response = await getMyInvites();
+      const response = await getMyInvitesApi();
       return response.data;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.response.data.detail);
@@ -47,7 +47,7 @@ export const fetchMyRequests = createAsyncThunk(
   'actions/fetchMyRequests',
   async (_, thunkAPI) => {
     try {
-      const response = await getMyRequests();
+      const response = await getMyRequestsApi();
       return response.data;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.response.data.detail);
@@ -59,7 +59,7 @@ export const fetchCompanyInvites = createAsyncThunk(
   'actions/fetchCompanyInvites',
   async (companyId: string, thunkAPI) => {
     try {
-      const response = await getCompanyInvites(companyId);
+      const response = await getCompanyInvitesApi(companyId);
       return response.data;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.response.data.detail);
@@ -71,7 +71,7 @@ export const fetchCompanyRequests = createAsyncThunk(
   'actions/fetchCompanyRequests',
   async (companyId: string, thunkAPI) => {
     try {
-      const response = await getCompanyRequests(companyId);
+      const response = await getCompanyRequestsApi(companyId);
       return response.data;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.response.data.detail);
@@ -83,7 +83,7 @@ export const createInvite = createAsyncThunk(
   'actions/createInvite',
   async (sendInviteData: sendInviteType, thunkAPI) => {
     try {
-      const response = await sendInvite(sendInviteData);
+      const response = await sendInviteApi(sendInviteData);
       return response.data;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.response.data.detail);
@@ -191,7 +191,7 @@ export const deleteMember = createAsyncThunk(
   'actions/deleteMember',
   async (actionId: string, thunkAPI) => {
     try {
-      const response = await removeMember(actionId);
+      const response = await removeMemberApi(actionId);
       return response.data;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.response.data.detail);
@@ -215,7 +215,7 @@ export const deleteAdminRole = createAsyncThunk(
   'actions/deleteAdminRole',
   async (sendInviteData: changeRoleType, thunkAPI) => {
     try {
-      const response = await removeAdminRole(sendInviteData);
+      const response = await removeAdminRoleApi(sendInviteData);
       return response.data;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.response.data.detail);

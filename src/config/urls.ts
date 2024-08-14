@@ -3,6 +3,7 @@ export const users = "/users";
 export const companies = "/companies";
 export const actions = "/actions";
 export const quizzes = "/quizzes";
+export const results = "/results";
 
 
 export const mainUrls = {
@@ -48,11 +49,16 @@ export const mainUrls = {
     removeAdminRole: (companyId: string, userId: string) => `${actions}/company/${companyId}/remove/admin/user/${userId}`,
   },
   quizzes: {
-    viewQuiz:  (quizId: string) => `${quizzes}/quiz/view/${quizId}`,
+    viewQuiz: (quizId: string) => `${quizzes}/quiz/view/${quizId}`,
     byId: (quizId: string) => `${quizzes}/quiz/${quizId}`,
     submit: (companyId: string) => `${quizzes}/company/${companyId}`,
     companyQuizzes: (companyId: string) => `${quizzes}/company/${companyId}`,
     deleteQuiz: (quizId: string) => `${quizzes}/quiz/${quizId}`,
 
+  },
+  results: {
+    sendResults: (quizId: string) => `${results}/create/${quizId}`,
+    companyRating: (companyId: string) => `${results}/company/${companyId}/rating`,
+    globalRating: `${results}/global_rating`,
   },
 }

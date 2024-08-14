@@ -14,7 +14,7 @@ import {useDispatch, useSelector} from "react-redux";
 import Paper from "@mui/material/Paper";
 import styles from "./CompanyQuizzesPage.module.css";
 import {AppDispatch} from "../../redux/store";
-import {selectAdmins, selectLoading} from "../../redux/actions/selectors";
+import {selectAdmins, selectLoading, selectMembers} from "../../redux/actions/selectors";
 import {selectCompanyById} from "../../redux/companies/selectors";
 import {CompanyType} from "../../types/companiesTypes";
 import BaseModalWindow from "../../components/BaseModalWindow/BaseModalWindow";
@@ -28,7 +28,6 @@ import {validationSchemaQuiz} from "../../validate/validationSchemaQuiz";
 import {QuizByIdResponseType, QuizResponseType} from "../../types/quizzesTypes";
 import {selectUser} from "../../redux/auth/selectors";
 import {UserType} from "../../types/usersTypes";
-import {fetchAdmins} from "../../redux/actions/operations";
 import {memberType} from "../../types/actionsTypes";
 import EditQuizModal from "../../components/EditQuizModal/EditQuizModal";
 import {mainUrls} from "../../config/urls";
@@ -51,6 +50,7 @@ const CompanyQuizzesPage: React.FC = () => {
   const companyById = useSelector(selectCompanyById) as CompanyType;
   const quizById = useSelector(selectQuizById) as QuizByIdResponseType;
   const admins = useSelector(selectAdmins) as memberType[];
+  const members = useSelector(selectMembers) as memberType[];
   const [openAddQuizModal, setOpenAddQuizModal] = useState<boolean>(false);
   const [openEditQuizModal, setOpenEditQuizModal] = useState<boolean>(false);
   const [openDeleteQuizModal, setOpenDeleteQuizModal] = useState<boolean>(false);
@@ -58,12 +58,19 @@ const CompanyQuizzesPage: React.FC = () => {
   const loading = useSelector<boolean>(selectLoading);
 
   const adminsListId = admins.map(admin => admin.user_id);
+  const membersListId = members.map(member => member.user_id);
 
   useEffect(() => {
     if (quizById) {
       formikEditQuiz.setValues(quizById);
     }
   }, [quizById])
+
+  useEffect(() => {
+    if (companyById) {
+      dispatch(fetchQuizzes(companyById?.id));
+    }
+  }, [])
 
   const handleOpenAddQuizModal = () => setOpenAddQuizModal(true);
   const handleCloseAddQuizModal = () => {
@@ -101,7 +108,7 @@ const CompanyQuizzesPage: React.FC = () => {
     validationSchema: validationSchemaQuiz,
     onSubmit: (values) => {
       if (formikAddQuiz.isValid) {
-        dispatch(addQuiz({companyId: company?.id, quizData: values}));
+        dispatch(addQuiz({companyId: company?.id, data: values}));
         if (id != null) {
           dispatch(fetchQuizzes(id));
         }
@@ -171,12 +178,16 @@ const CompanyQuizzesPage: React.FC = () => {
                 </TableRow>
               </TableHead>
               <TableBody className={styles.tableHead}>
-                {quizzes?.map((quiz: QuizResponseType) => (
-                  <TableRow key={quiz.id} className={styles.tableRow}>
+                {quizzes?.map((quiz: QuizResponseType, index) => (
+                  <TableRow key={index} className={styles.tableRow}>
                     <TableCell sx={{padding: "3px"}} align="center">
-                      <NavLink className={styles.link} to={mainUrls.quizzes.viewQuiz(quiz.id)}>
-                        {quiz.name}
-                      </NavLink>
+                      {(currentUser?.id === companyById?.owner_id || membersListId.includes(currentUser?.id)) ? (
+                        <NavLink className={styles.link} to={mainUrls.quizzes.viewQuiz(quiz.id)}>
+                          {quiz.name}
+                        </NavLink>
+                      ) : (
+                        quiz.name
+                      )}
                     </TableCell>
                     <TableCell sx={{padding: "3px"}} align="center">
                       {quiz.description}

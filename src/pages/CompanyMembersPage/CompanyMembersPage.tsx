@@ -54,9 +54,7 @@ const CompanyMembersPage: React.FC = () => {
 
   useEffect(() => {
     if (id) {
-      dispatch(fetchMembers(id));
       dispatch(fetchUsers({skip, limit}));
-      dispatch(fetchAdmins(company.id));
     }
   }, [id, dispatch, currentMember]);
 

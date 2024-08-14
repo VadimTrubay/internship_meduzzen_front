@@ -16,8 +16,7 @@ export const getCompanyById = async (id: string): Promise<AxiosResponse> => {
 };
 
 export const editCompany = async (companyData: CompanyUpdateType): Promise<AxiosResponse> => {
-  const {id} = companyData;
-  return await axiosInstance.patch(mainUrls.companies.byId(id), companyData);
+  return await axiosInstance.patch(mainUrls.companies.byId(companyData.id), companyData);
 };
 
 export const removeCompany = async (id: string): Promise<AxiosResponse> => {

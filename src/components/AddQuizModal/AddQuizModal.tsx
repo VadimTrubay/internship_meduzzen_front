@@ -65,19 +65,18 @@ const AddQuizModal: React.FC<AddQuizModalType> = ({
     }
   };
 
-  const handleCorrectAnswerChange = (questionIndex: number, optionIndex: number) => {
+const handleCorrectAnswerChange = (questionIndex: number, optionIndex: number) => {
     const questions = [...formikAddQuiz.values.questions];
     const optionValue = questions[questionIndex].answer_options[optionIndex];
-    const correctAnswerIndex = questions[questionIndex].correct_answer.indexOf(optionValue);
 
-    if (correctAnswerIndex > -1) {
-      questions[questionIndex].correct_answer.splice(correctAnswerIndex, 1);
-    } else {
-      questions[questionIndex].correct_answer.push(optionValue);
-    }
+    questions[questionIndex].correct_answer = questions[questionIndex].answer_options.filter((option, idx) => {
+        return idx === optionIndex
+            ? !questions[questionIndex].correct_answer.includes(optionValue)
+            : questions[questionIndex].correct_answer.includes(option);
+    });
 
     formikAddQuiz.setFieldValue("questions", questions);
-  };
+};
 
   return (
     <Modal
