@@ -8,11 +8,11 @@ export const sendResultsApi = async (resultsData: sendResultsRequestType): Promi
   return await axiosInstance.post(mainUrls.results.sendResults(resultsData.quiz_id), resultsData.data);
 };
 
-export const getCompanyRating = async (companyId: string): Promise<AxiosResponse> => {
+export const getCompanyRatingApi = async (companyId: string): Promise<AxiosResponse> => {
   return await axiosInstance.get(mainUrls.results.companyRating(companyId));
 };
 
-export const getGlobalRating = async (): Promise<AxiosResponse> => {
+export const getGlobalRatingApi = async (): Promise<AxiosResponse> => {
   return await axiosInstance.get(mainUrls.results.globalRating);
 };
 

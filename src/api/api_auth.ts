@@ -1,4 +1,3 @@
-
 import {AxiosResponse} from 'axios';
 import {RegisterType, UserAuthorizationType} from '../types/authTypes';
 import {mainUrls} from '../config/urls';
@@ -13,6 +12,6 @@ export const login = async (credentials: UserAuthorizationType): Promise<AxiosRe
   return await axiosInstance.post(mainUrls.auth.login, credentials);
 };
 
-export const me = async (): Promise<AxiosResponse> => {
+export const getMeApi = async (): Promise<AxiosResponse> => {
   return await axiosInstance.get(mainUrls.auth.me);
 };

@@ -4,19 +4,19 @@ import axiosInstance from "../utils/createAxiosInstance";
 import {QuizCompanyIdRequestType, QuizByIdResponseType} from "../types/quizzesTypes";
 
 
-export const submitQuiz = async (quizData: QuizCompanyIdRequestType): Promise<AxiosResponse> => {
+export const submitQuizApi = async (quizData: QuizCompanyIdRequestType): Promise<AxiosResponse> => {
   return await axiosInstance.post(mainUrls.quizzes.submit(quizData.companyId), quizData.data);
 };
 
-export const getCompanyQuizzes = async (companyId: string): Promise<AxiosResponse> => {
+export const getCompanyQuizzesApi = async (companyId: string): Promise<AxiosResponse> => {
   return await axiosInstance.get(mainUrls.quizzes.companyQuizzes(companyId));
 };
 
-export const getQuizById = async (id: string): Promise<AxiosResponse> => {
+export const getQuizByIdApi = async (id: string): Promise<AxiosResponse> => {
   return await axiosInstance.get(mainUrls.quizzes.byId(id));
 };
 
-export const editQuiz = async (quizData: QuizByIdResponseType): Promise<AxiosResponse> => {
+export const editQuizApi = async (quizData: QuizByIdResponseType): Promise<AxiosResponse> => {
   return await axiosInstance.patch(mainUrls.quizzes.byId(quizData.id), quizData);
 };
 
