@@ -6,6 +6,6 @@ import {mainUrls} from "../config/urls";
 
 axios.defaults.baseURL = baseURL;
 
-export const getHealthCheck = async (): Promise<AxiosResponse<HealthCheckTypes>> => {
+export const getHealthCheckApi = async (): Promise<AxiosResponse<HealthCheckTypes>> => {
   return await axios.get(mainUrls.healthcheck);
 };

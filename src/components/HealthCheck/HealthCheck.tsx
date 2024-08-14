@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import Typography from "@mui/material/Typography";
-import {getHealthCheck} from '../../api/api_healthcheck';
+import {getHealthCheckApi} from '../../api/api_healthcheck';
 import {HealthCheckTypes} from '../../types/healthCheckTypes';
 import {LinearProgress} from "@mui/material";
 
@@ -10,7 +10,7 @@ const HealthCheck: React.FC = () => {
   useEffect(() => {
     const fetchHealthCheck = async () => {
       try {
-        const response = await getHealthCheck();
+        const response = await getHealthCheckApi();
         setHealthCheckData(response.data);
       } catch (error) {
         console.error('Error fetching health check data:', error);
