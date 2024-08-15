@@ -22,3 +22,8 @@ export interface resultsResponseType {
   total_questions: number,
   correct_answers: number
 }
+
+export interface exportDataType {
+  companyId: string,
+  userId: string,
+}

@@ -26,14 +26,17 @@ import {useNavigate, useParams} from "react-router-dom";
 import {mainUrls} from "../../config/urls";
 import BaseModalWindow from "../../components/BaseModalWindow/BaseModalWindow";
 import {formatTimestamp} from "../../utils/convertDate";
+import {FaCloudDownloadAlt} from "react-icons/fa";
+import {fetchUserCompanyResults} from "../../redux/results/operations";
 
 const columns = [
-  {id: "avatar", label: "Avatar", minWidth: 50},
-  {id: "username", label: "Name", minWidth: 120},
-  {id: "role", label: "Role", minWidth: 80},
+  {id: "avatar", label: "Avatar", minWidth: 30},
+  {id: "username", label: "Name", minWidth: 100},
+  {id: "role", label: "Role", minWidth: 30},
   {id: "change_role", label: "Change role", minWidth: 80},
   {id: "options", label: "Options", minWidth: 80},
   {id: "last_quiz_run", label: "Last quiz run", minWidth: 80},
+  {id: "download_results", label: "Download results", minWidth: 50},
 ];
 
 const CompanyMembersPage: React.FC = () => {
@@ -49,12 +52,10 @@ const CompanyMembersPage: React.FC = () => {
   const [openLeaveModal, setOpenLeaveModal] = useState<boolean>(false);
   const [openChangeRoleModal, setOpenChangeRoleModal] = useState<boolean>(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const company = useSelector(selectCompanyById) as CompanyType;
   const loading = useSelector<boolean>(selectLoading);
   const navigate = useNavigate();
   const skip = 1;
   const limit = 100;
-
 
   const adminsListId = admins.map(admin => admin.user_id);
 
@@ -62,7 +63,7 @@ const CompanyMembersPage: React.FC = () => {
     if (id) {
       dispatch(fetchUsers({skip, limit}));
     }
-  }, [id, dispatch, currentMember]);
+  }, [id, dispatch]);
 
   const handleOpenDeleteModal = (member: memberType) => {
     setCurrentMember(member);
@@ -104,15 +105,15 @@ const CompanyMembersPage: React.FC = () => {
 
   const handleChangeRole = () => {
     if (currentMember) {
-      dispatch(fetchMembers(company?.id))
       if (currentMember?.role === "user") {
         dispatch(addAdminRole({companyId: currentMember?.company_id, userId: currentMember?.user_id}));
       }
       if (currentMember?.role === "admin") {
         dispatch(deleteAdminRole({companyId: currentMember?.company_id, userId: currentMember?.user_id}));
       }
+      dispatch(fetchAdmins(companyById.id));
     }
-    dispatch(fetchAdmins(company.id));
+    dispatch(fetchMembers(companyById.id));
     closeModal();
   };
 
@@ -125,17 +126,21 @@ const CompanyMembersPage: React.FC = () => {
   };
 
   const handleInviteUser = (userId: string) => {
-    if (userId && company) {
-      dispatch(createInvite({userId: userId, companyId: company.id}));
+    if (userId && companyById) {
+      dispatch(createInvite({userId: userId, companyId: companyById.id}));
     }
     handleCloseMenu();
   };
 
   const handleCompanyAdmins = () => {
-    if (company) {
-      navigate(mainUrls.actions.adminsCompany(company.id))
+    if (companyById) {
+      navigate(mainUrls.actions.adminsCompany(companyById.id))
     }
   };
+
+  const handleDownloadUserCompanyResults = (userId: string) => {
+    dispatch(fetchUserCompanyResults({userId: userId, companyId: companyById.id}));
+  }
 
   return loading ? (
     <Box>
@@ -148,9 +153,9 @@ const CompanyMembersPage: React.FC = () => {
           <Typography variant="h5" gutterBottom>
             Company Members
           </Typography>
-          <Typography variant="h6">"{company?.name}"</Typography>
+          <Typography variant="h6">"{companyById?.name}"</Typography>
         </Grid>
-        {currentUser?.id === company?.owner_id && (
+        {currentUser?.id === companyById?.owner_id && (
           <Box className={styles.inviteMemberButton}>
             <Button variant="outlined" onClick={handleOpenMenu} color="success" sx={{marginRight: 1}}>
               + Invite member
@@ -159,7 +164,7 @@ const CompanyMembersPage: React.FC = () => {
               Company Admins
             </Button>
             <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleCloseMenu}>
-              {users?.filter((user: UserType) => user?.id !== company?.owner_id)
+              {users?.filter((user: UserType) => user?.id !== companyById?.owner_id)
                 .map((user: UserType) => (
                   <MenuItem key={user?.id} onClick={() => handleInviteUser(user?.id)}>
                     {user?.username}
@@ -195,19 +200,19 @@ const CompanyMembersPage: React.FC = () => {
                   <TableCell align="center">{member?.user_username}</TableCell>
                   <TableCell align="center">{member?.role}</TableCell>
                   <TableCell align="center">
-                    {currentUser?.id !== member?.user_id && currentUser?.id === company?.owner_id ?
-                      (<Button
+                    {currentUser?.id !== member?.user_id && currentUser?.id === companyById?.owner_id ? (
+                      <Button
                         onClick={() => handleOpenChangeRoleModal(member)}
                         variant="outlined"
                         color="primary"
                         sx={{marginRight: 1}}
                       >
                         Change Role
-                      </Button>) : null
-                    }
+                      </Button>
+                    ) : null}
                   </TableCell>
                   <TableCell sx={{padding: "3px"}} align="center">
-                    {currentUser?.id === company?.owner_id && currentUser?.id !== member?.user_id ? (
+                    {currentUser?.id === companyById?.owner_id && currentUser?.id !== member?.user_id ? (
                       <Button
                         onClick={() => handleOpenDeleteModal(member)}
                         variant="outlined"
@@ -216,7 +221,7 @@ const CompanyMembersPage: React.FC = () => {
                       >
                         Delete member
                       </Button>
-                    ) : currentUser?.id === member?.user_id && currentUser?.id !== company?.owner_id ? (
+                    ) : currentUser?.id === member?.user_id && currentUser?.id !== companyById?.owner_id ? (
                       <Button
                         onClick={() => handleOpenLeaveModal(member)}
                         variant="outlined"
@@ -228,11 +233,22 @@ const CompanyMembersPage: React.FC = () => {
                     ) : null}
                   </TableCell>
                   <TableCell align="center">
-                    {(currentUser?.id === companyById?.owner_id || adminsListId.includes(currentUser?.id)) &&
-                      formatTimestamp(member.last_quiz_attempt)}
-                    </TableCell>
+                    {formatTimestamp(member.last_quiz_attempt)}
+                  </TableCell>
+                  <TableCell align="center">
+                    {currentUser?.id === companyById?.owner_id || adminsListId.includes(currentUser?.id) ? (
+                      <Button
+                        onClick={() => handleDownloadUserCompanyResults(member.user_id)}
+                        variant="outlined"
+                        startIcon={<FaCloudDownloadAlt/>}
+                        color="primary"
+                      >
+                        Results
+                      </Button>
+                    ) : null}
+                  </TableCell>
                 </TableRow>
-                ))}
+              ))}
             </TableBody>
           </Table>
         </TableContainer>
@@ -286,7 +302,7 @@ const CompanyMembersPage: React.FC = () => {
         style_done={{color: "primary", fontSize: 50}}
       />
     </>
-);
+  );
 };
 
 export default CompanyMembersPage;

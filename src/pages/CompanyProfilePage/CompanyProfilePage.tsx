@@ -3,7 +3,7 @@ import {Box, Button, Grid, LinearProgress, Typography, Paper} from "@mui/materia
 import Avatar from "@mui/material/Avatar";
 import {useDispatch, useSelector} from "react-redux";
 import {selectCompanyById, selectLoading} from "../../redux/companies/selectors";
-import {FaEye, FaEyeSlash, FaInvision} from "react-icons/fa";
+import {FaCloudDownloadAlt, FaEye, FaEyeSlash, FaInvision} from "react-icons/fa";
 import styles from "../UserProfilePage/UserProfilePage.module.css";
 import {deleteCompanyById, fetchCompanyById, updateCompany} from "../../redux/companies/operations";
 import {useFormik} from "formik";
@@ -27,6 +27,7 @@ import {IoMdAnalytics} from "react-icons/io";
 import {selectAdmins} from "../../redux/actions/selectors";
 import {memberType} from "../../types/actionsTypes";
 import {fetchCompanyMembersResults} from "../../redux/analytics/operations";
+import {fetchCompanyResults, fetchMyResults} from "../../redux/results/operations";
 
 const CompanyProfilePage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -74,6 +75,12 @@ const CompanyProfilePage: React.FC = () => {
       handleCloseEditCompanyModal();
     },
   });
+
+  const handleDownloadCompanyResults = () => {
+    if (id) {
+      dispatch(fetchCompanyResults(id));
+    }
+  }
 
   const handleCompanyMembersResults = () => {
     if (id) {
@@ -224,15 +231,25 @@ const CompanyProfilePage: React.FC = () => {
               </>
             )}
             {(currentUser?.id === companyById?.owner_id || adminsListId.includes(currentUser?.id)) && (
-              <Button
-                variant="outlined"
-                color="primary"
-                sx={{width: "100%", marginBottom: 1}}
-                onClick={handleCompanyMembersResults}
-              >
-                <IoMdAnalytics style={{marginRight: "5px"}} size={24}/>
-                Analytics
-              </Button>
+              <>
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  sx={{width: "100%", marginBottom: 1}}
+                  onClick={handleCompanyMembersResults}
+                >
+                  <IoMdAnalytics style={{marginRight: "5px"}} size={24}/>
+                  Analytics
+                </Button>
+                <Button
+                  onClick={handleDownloadCompanyResults}
+                  variant="outlined"
+                  startIcon={<FaCloudDownloadAlt/>}
+                  color="primary"
+                >
+                  All Results
+                </Button>
+              </>
             )}
           </Grid>
         </Grid>
@@ -266,7 +283,8 @@ const CompanyProfilePage: React.FC = () => {
         />
       </Grid>
     </>
-  );
+  )
+    ;
 };
 
 export default CompanyProfilePage;

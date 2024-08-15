@@ -59,8 +59,12 @@ export const mainUrls = {
   },
   results: {
     globalRating: `${results}/global_rating`,
+    exportMyResults: `${results}/export/me?file_format=csv`,
+    exportCompanyResults: (companyId: string) => `${results}/export/company/${companyId}?file_format=csv`,
+    exportUserCompanyResults: (companyId: string, userId: string) => `${results}/export/company/${companyId}/user/${userId}?file_format=csv`,
     sendResults: (quizId: string) => `${results}/create/${quizId}`,
     companyRating: (companyId: string) => `${results}/company/${companyId}/rating`,
+
   },
   analytics: {
     myQuizzesAnalytics: `${analytics}/my/quizzes`,

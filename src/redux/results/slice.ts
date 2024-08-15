@@ -1,5 +1,12 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {fetchCompanyRating, fetchGlobalRating, sendResults} from "./operations";
+import {
+  fetchCompanyRating,
+  fetchCompanyResults,
+  fetchGlobalRating,
+  fetchMyResults,
+  fetchUserCompanyResults,
+  sendResults
+} from "./operations";
 import toast from "react-hot-toast";
 import {initialResultsType} from "../../types/resultsTypes";
 
@@ -41,6 +48,21 @@ const handleSendResultsFulfilled = (state: initialResultsType, action: PayloadAc
   toast.success(`Results send successfully`);
 };
 
+const handleFetchMyResultsFulfilled = (state: initialResultsType, action: PayloadAction<any>) => {
+  state.loading = false;
+  state.error = null;
+};
+
+const handleFetchCompanyResultsFulfilled = (state: initialResultsType, action: PayloadAction<any>) => {
+  state.loading = false;
+  state.error = null;
+};
+
+const
+  handleFetchUserCompanyResultsFulfilled = (state: initialResultsType, action: PayloadAction<any>) => {
+  state.loading = false;
+  state.error = null;
+};
 
 const resultsSlice = createSlice({
   name: "results",
@@ -57,6 +79,15 @@ const resultsSlice = createSlice({
       .addCase(fetchGlobalRating.pending, handlePending)
       .addCase(fetchGlobalRating.fulfilled, handleFetchGlobalRatingFulfilled)
       .addCase(fetchGlobalRating.rejected, handleRejected)
+      .addCase(fetchMyResults.pending, handlePending)
+      .addCase(fetchMyResults.fulfilled, handleFetchMyResultsFulfilled)
+      .addCase(fetchMyResults.rejected, handleRejected)
+      .addCase(fetchCompanyResults.pending, handlePending)
+      .addCase(fetchCompanyResults.fulfilled, handleFetchCompanyResultsFulfilled)
+      .addCase(fetchCompanyResults.rejected, handleRejected)
+      .addCase(fetchUserCompanyResults.pending, handlePending)
+      .addCase(fetchUserCompanyResults.fulfilled, handleFetchUserCompanyResultsFulfilled)
+      .addCase(fetchUserCompanyResults.rejected, handleRejected)
 });
 
 export const resultsReducer = resultsSlice.reducer;
