@@ -4,7 +4,7 @@ import {
   acceptInviteApi, declineInviteApi, getCompanyInvitesApi, getCompanyRequestsApi,
   deleteInviteApi, deleteRequestApi, leaveFromCompanyApi,
   acceptRequestApi, declineRequestApi, addAdminRoleApi, removeAdminRoleApi, getAdminsApi, sendRequestApi, sendInviteApi
-} from '../../api/api_actions';
+} from '../../api/apiActions';
 import {changeRoleType, sendInviteType, sendRequestType} from '../../types/actionsTypes';
 
 export const fetchMembers = createAsyncThunk(

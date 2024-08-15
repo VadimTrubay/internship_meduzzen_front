@@ -7,8 +7,7 @@ import {
   getMyResultsApi,
   getUserCompanyResultsApi,
   sendResultsApi
-} from "../../api/api_results";
-import {QuizCompanyIdRequestType} from "../../types/quizzesTypes";
+} from "../../api/apiResults";
 import {downloadFileData} from "../../utils/downloadFile";
 
 

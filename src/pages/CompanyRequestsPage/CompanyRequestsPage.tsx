@@ -11,7 +11,7 @@ import {
   Typography
 } from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
-import {selectCompanyRequests, selectError} from "../../redux/actions/selectors";
+import {selectCompanyRequests} from "../../redux/actions/selectors";
 import Paper from "@mui/material/Paper";
 import styles from "./CompanyRequestsPage.module.css";
 import {style, StyledBox, Text} from "../../utils/BaseModal.styled";

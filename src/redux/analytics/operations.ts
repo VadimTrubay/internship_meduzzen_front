@@ -1,5 +1,5 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
-import {getCompanyMembersResultsApi, getMyQuizzesResultsApi} from "../../api/api_analytics";
+import {getCompanyMembersResultsApi, getMyQuizzesResultsApi} from "../../api/apiAnalytics";
 
 
 export const fetchCompanyMembersResults = createAsyncThunk(

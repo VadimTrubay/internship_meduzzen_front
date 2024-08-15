@@ -5,7 +5,7 @@ import {
   submitQuizApi,
   getQuizByIdApi,
   editQuizApi
-} from "../../api/api_quizzes";
+} from "../../api/apiQuizzes";
 import {QuizCompanyIdRequestType, QuizByIdResponseType} from "../../types/quizzesTypes";
 
 
