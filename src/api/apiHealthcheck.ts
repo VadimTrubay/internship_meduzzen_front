@@ -1,6 +1,6 @@
 import axios, {AxiosResponse} from "axios";
 import {HealthCheckTypes} from "../types/healthCheckTypes";
-import {baseURL} from "../utils/process_base_url"
+import {baseURL} from "../utils/processBaseUrl"
 import {mainUrls} from "../config/urls";
 
 
