@@ -18,6 +18,7 @@ import {actionsReducer} from "./actions/slice";
 import {quizzesReducer} from "./quizzes/slice";
 import {resultsReducer} from "./results/slice";
 import {analyticsReducer} from "./analytics/slice";
+import {notificationsReducer} from "./notifications/slice";
 
 
 const authPersistConfig = {
@@ -37,7 +38,8 @@ export const store = configureStore({
     actions: actionsReducer,
     quizzes: quizzesReducer,
     results: resultsReducer,
-    analytics: analyticsReducer
+    analytics: analyticsReducer,
+    notifications: notificationsReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

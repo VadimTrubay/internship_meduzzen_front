@@ -5,6 +5,7 @@ export const actions = "/actions";
 export const quizzes = "/quizzes";
 export const results = "/results";
 export const analytics = "/analytics";
+export const notifications = "/notifications";
 
 
 export const mainUrls = {
@@ -70,5 +71,9 @@ export const mainUrls = {
     myQuizzesAnalytics: `${analytics}/my/quizzes`,
     myQuizzesResults: `${analytics}/my/quizzes/results`,
     companyMembersResults: (companyId: string) => `${analytics}/company/${companyId}/members_results`,
+  },
+  notifications: {
+    all: `${notifications}/me`,
+    markAsRead: (notificationId: string) => `${notifications}/${notificationId}/mark_as_read`,
   },
 }

@@ -35,5 +35,9 @@
 
 .container_back {
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
+}
+
+.notifications {
+  margin-right: 20px;
 }
