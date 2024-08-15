@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import Typography from "@mui/material/Typography";
-import {getHealthCheckApi} from '../../api/api_healthcheck';
+import {getHealthCheckApi} from '../../api/apiHealthcheck';
 import {HealthCheckTypes} from '../../types/healthCheckTypes';
 import {LinearProgress} from "@mui/material";
 

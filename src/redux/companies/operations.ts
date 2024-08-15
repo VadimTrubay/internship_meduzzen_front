@@ -6,7 +6,7 @@ import {
   getCompanyByIdApi,
   removeCompanyApi,
   submitCompanyApi
-} from '../../api/api_companies';
+} from '../../api/apiCompanies';
 
 export const addCompany = createAsyncThunk(
   "companies/addCompany",

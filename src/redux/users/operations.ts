@@ -7,7 +7,7 @@ import {
   getUserByIdApi,
   getUsersApi,
   removeUserApi
-} from '../../api/api_users';
+} from '../../api/apiUsers';
 
 export const fetchUsers = createAsyncThunk(
   "users/fetchUsers",

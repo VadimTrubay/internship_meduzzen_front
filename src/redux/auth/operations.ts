@@ -1,7 +1,7 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import {RegisterType, UserAuthorizationType} from '../../types/authTypes';
-import {clearAuthHeader, setAuthHeader} from '../../utils/auth_utils';
-import {login, getMeApi, register} from '../../api/api_auth';
+import {clearAuthHeader, setAuthHeader} from '../../utils/authUtils';
+import {login, getMeApi, register} from '../../api/apiAuth';
 
 export const signUp = createAsyncThunk(
   "auth/signUp",
