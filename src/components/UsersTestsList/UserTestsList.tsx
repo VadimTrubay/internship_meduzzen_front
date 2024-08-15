@@ -1,7 +1,7 @@
 import React from "react";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {
-  Box,
+  Box, Button,
   LinearProgress,
   Table,
   TableBody,
@@ -18,6 +18,9 @@ import {myQuizzesResultsType} from "../../types/analyticsTypes";
 import {formatTimestamp} from "../../utils/convertDate";
 import {mainUrls} from "../../config/urls";
 import {NavLink} from "react-router-dom";
+import {FaCloudDownloadAlt} from "react-icons/fa";
+import {AppDispatch} from "../../redux/store";
+import {fetchMyResults} from "../../redux/results/operations";
 
 const columns = [
   {id: "name", label: "Name", minWidth: 150},
@@ -27,9 +30,14 @@ const columns = [
 ];
 
 const UserTestsList: React.FC = () => {
+  const dispatch = useDispatch<AppDispatch>();
+
   const loading = useSelector<boolean>(selectLoading);
   const myQuizzesResults = useSelector(selectMyQuizzesResults) as myQuizzesResultsType[];
 
+  const handleDownloadMyResults = () => {
+    dispatch(fetchMyResults())
+  };
 
   return (
     loading ?
@@ -42,6 +50,16 @@ const UserTestsList: React.FC = () => {
           <Typography variant="h6" marginTop={3}>
             Tests List
           </Typography>
+          <Box align="center" margin={1}>
+            <Button
+              onClick={handleDownloadMyResults}
+              variant="outlined"
+              startIcon={<FaCloudDownloadAlt/>}
+              color="primary"
+            >
+              Download My Results
+            </Button>
+          </Box>
           <TableContainer className={styles.table}>
             <Table stickyHeader aria-label="sticky table">
               <TableHead>

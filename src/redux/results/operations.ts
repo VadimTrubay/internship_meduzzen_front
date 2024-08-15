@@ -1,6 +1,15 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
-import {sendResultsRequestType} from "../../types/resultsTypes";
-import {getCompanyRatingApi, getGlobalRatingApi, sendResultsApi} from "../../api/api_results";
+import {exportDataType, sendResultsRequestType} from "../../types/resultsTypes";
+import {
+  getCompanyRatingApi,
+  getCompanyResultsApi,
+  getGlobalRatingApi,
+  getMyResultsApi,
+  getUserCompanyResultsApi,
+  sendResultsApi
+} from "../../api/api_results";
+import {QuizCompanyIdRequestType} from "../../types/quizzesTypes";
+import {downloadFileData} from "../../utils/downloadFile";
 
 
 export const sendResults = createAsyncThunk(
@@ -39,3 +48,41 @@ export const fetchGlobalRating = createAsyncThunk(
   }
 );
 
+export const fetchMyResults = createAsyncThunk(
+  "results/fetchMyResults",
+  async (_, thunkAPI) => {
+    try {
+      const response = await getMyResultsApi();
+      downloadFileData(response)
+      return {};
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error.message || 'An error occurred');
+    }
+  }
+);
+
+export const fetchCompanyResults = createAsyncThunk(
+  "results/fetchCompanyResults",
+  async (id: string, thunkAPI) => {
+    try {
+      const response = await getCompanyResultsApi(id);
+      downloadFileData(response)
+      return {};
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error.message || 'An error occurred');
+    }
+  }
+);
+
+export const fetchUserCompanyResults = createAsyncThunk(
+  "results/fetchUserCompanyResults",
+  async (exportData: exportDataType, thunkAPI) => {
+    try {
+      const response = await getUserCompanyResultsApi(exportData);
+      downloadFileData(response)
+      return {};
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error.message || 'An error occurred');
+    }
+  }
+);
