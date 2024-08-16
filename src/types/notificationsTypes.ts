@@ -8,5 +8,5 @@ export interface notificationType {
   id: string,
   text: string,
   is_read: boolean,
-  company_member_id: string
+  user_id: string
 }

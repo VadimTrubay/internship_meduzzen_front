@@ -4,7 +4,7 @@ import {LayoutProps} from "../../types/layoutTypes";
 import LinearProgress from "@mui/material/LinearProgress";
 import Box from "@mui/material/Box";
 import Navigation from "../Navigation/Navigation";
-import Header from "../Header/Header.jsx";
+import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
 import styles from "../Layout/Layout.module.css";
 import {TiArrowBack} from "react-icons/ti";

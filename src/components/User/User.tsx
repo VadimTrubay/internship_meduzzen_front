@@ -1,7 +1,7 @@
 import React from "react";
 import TableCell from "@mui/material/TableCell";
 import Avatar from "@mui/material/Avatar";
-import {NavLink, useNavigate} from "react-router-dom";
+import {NavLink} from "react-router-dom";
 import styles from "./User.module.css";
 import {mainUrls} from "../../config/urls";
 import {UserProps} from "../../types/usersTypes";
