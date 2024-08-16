@@ -33,6 +33,7 @@
     "react-router-dom": "^6.24.1",
     "redux-persist": "^6.0.0",
     "styled-components": "^6.1.11",
+    "uuid": "^10.0.0",
     "yup": "^1.4.0"
   },
   "devDependencies": {
