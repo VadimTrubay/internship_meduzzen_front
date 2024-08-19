@@ -9,6 +9,7 @@ import Footer from "../Footer/Footer";
 import styles from "../Layout/Layout.module.css";
 import {TiArrowBack} from "react-icons/ti";
 import {Toaster} from "react-hot-toast";
+import NotificationMenu from "../NotificationMenu/NotificationMenu";
 
 
 export const Layout = ({children}: LayoutProps) => {
@@ -22,6 +23,9 @@ export const Layout = ({children}: LayoutProps) => {
         <TiArrowBack className={styles.back} onClick={() => {
           navigate(-1)
         }}/>
+        <div className={styles.notifications}>
+          <NotificationMenu />
+        </div>
       </div>
       <Suspense fallback={
         <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
