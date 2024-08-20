@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 
 
 const initialAnalytics: initialAnalyticsType = {
-  companyMembersResults: {},
+  companyMembersResults: { data: {} },
   myQuizzesResults: [],
   loading: false,
   error: null,
