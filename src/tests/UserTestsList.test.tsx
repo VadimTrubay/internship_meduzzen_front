@@ -20,7 +20,6 @@ jest.mock('../redux/analytics/selectors', () => ({
   selectMyQuizzesResults: jest.fn(),
 }));
 
-// Mock the fetchMyResults action
 jest.mock('../redux/results/operations', () => ({
   fetchMyResults: jest.fn(),
 }));

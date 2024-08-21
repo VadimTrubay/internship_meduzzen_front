@@ -6,10 +6,11 @@ import User from "../components/User/User";
 import {Table, TableBody, TableRow} from "@mui/material";
 
 
-const mockUser: { id: string; email: string; username: string } = {
+const mockUser: { id: string; email: string; username: string; password: string } = {
   id: '1',
   username: 'testuser',
   email: 'testuser@example.com',
+  password: 'testpassword',
 };
 
 describe('User component', () => {
