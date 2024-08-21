@@ -128,6 +128,7 @@ const AddQuizModal: React.FC<AddQuizModalType> = ({
             {title_name}
           </Typography>
           <TextField
+            data-testid="quiz-name"
             id="name"
             name="name"
             variant="outlined"

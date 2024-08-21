@@ -1,5 +1,5 @@
 import React from 'react';
-import {render, screen, fireEvent} from '@testing-library/react';
+import {render, screen, fireEvent, within} from '@testing-library/react';
 import '@testing-library/jest-dom';
 import {Provider} from 'react-redux';
 import {configureStore} from '@reduxjs/toolkit';
@@ -48,10 +48,16 @@ describe('CompaniesList component', () => {
       </Provider>
     );
 
-    expect(screen.getByText('Mock Company 1')).toBeInTheDocument();
-    expect(screen.getByText('Mock Description 1')).toBeInTheDocument();
-    expect(screen.getByText('Mock Company 2')).toBeInTheDocument();
-    expect(screen.getByText('Mock Description 2')).toBeInTheDocument();
+    const table = screen.getByRole('table');
+    const firstRow = within(table).getByText(/Mock Company 1/i);
+    expect(firstRow).toBeInTheDocument();
+    const firstDesc = within(table).getByText(/Mock Description 1/i);
+    expect(firstDesc).toBeInTheDocument();
+
+    const secondRow = within(table).getByText(/Mock Company 2/i);
+    expect(secondRow).toBeInTheDocument();
+    const secondDesc = within(table).getByText(/Mock Description 2/i);
+    expect(secondDesc).toBeInTheDocument();
   });
 
   test('shows create request button for companies not owned by the user', () => {
@@ -61,7 +67,9 @@ describe('CompaniesList component', () => {
       </Provider>
     );
 
-    expect(screen.getByText('Create Request')).toBeInTheDocument();
+    expect(screen.getByText((content, element) =>
+      content.startsWith('Create Request')
+    )).toBeInTheDocument();
   });
 
   test('opens and closes modal on button click', () => {
@@ -71,9 +79,9 @@ describe('CompaniesList component', () => {
       </Provider>
     );
 
-    fireEvent.click(screen.getByText('Create Request'));
-    expect(screen.getByText('Create Request')).toBeInTheDocument();
+    fireEvent.click(screen.getByText(/Create Request/i));
+    expect(screen.getByText(/Create Request/i)).toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', {name: /close/i}));
-    expect(screen.queryByText('Create Request')).not.toBeInTheDocument();
+    expect(screen.queryByText(/Create Request/i)).not.toBeInTheDocument();
   });
 });

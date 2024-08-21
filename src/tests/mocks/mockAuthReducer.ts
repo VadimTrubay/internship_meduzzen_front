@@ -5,6 +5,8 @@ const initialState = {
     id: 'user1',
     username: 'testuser',
     email: 'testuser@example.com',
+    password: 'testpassword',
+    new_password: 'newtestpassword'
   },
   access_token: 'mock_access_token',
   isLoggedIn: true,
