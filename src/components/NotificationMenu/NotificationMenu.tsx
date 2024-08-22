@@ -18,7 +18,7 @@ const NotificationMenu = () => {
   useEffect(() => {
     const intervalId = setInterval(() => {
       dispatch(fetchMyNotifications());
-    }, 50000);
+    }, 500000);
 
     return () => clearInterval(intervalId);
   }, [dispatch]);
