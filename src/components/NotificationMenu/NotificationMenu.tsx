@@ -18,7 +18,7 @@ const NotificationMenu = () => {
   useEffect(() => {
     const intervalId = setInterval(() => {
       dispatch(fetchMyNotifications());
-    }, 10000);
+    }, 600000);
 
     return () => clearInterval(intervalId);
   }, [dispatch]);
@@ -62,7 +62,7 @@ const NotificationMenu = () => {
         }}
       >
         <List>
-          {notifications.map(notification => (
+          {notifications?.map(notification => (
             <ListItem
               key={notification.id}
               button
@@ -79,7 +79,7 @@ const NotificationMenu = () => {
             </ListItem>
           ))}
         </List>
-        {notifications.length === 0 && (
+        {notifications?.length === 0 && (
           <MenuItem>No notifications</MenuItem>
         )}
       </Menu>
