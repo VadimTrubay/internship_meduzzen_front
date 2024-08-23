@@ -4,7 +4,7 @@ import {
   deleteQuizApi,
   submitQuizApi,
   getQuizByIdApi,
-  editQuizApi
+  editQuizApi, sendExelFileApi
 } from "../../api/apiQuizzes";
 import {QuizCompanyIdRequestType, QuizByIdResponseType} from "../../types/quizzesTypes";
 
@@ -62,6 +62,18 @@ export const deleteQuiz = createAsyncThunk(
   async (id: string, thunkAPI) => {
     try {
       const response = await deleteQuizApi(id);
+      return response.data;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error.response.data.detail);
+    }
+  }
+);
+
+export const sendExelFile = createAsyncThunk(
+  "quizzes/sendExelFile",
+  async ({ companyId, file }: { companyId: string; file: FormData }, thunkAPI) => {
+    try {
+      const response = await sendExelFileApi(companyId, file);
       return response.data;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.response.data.detail);

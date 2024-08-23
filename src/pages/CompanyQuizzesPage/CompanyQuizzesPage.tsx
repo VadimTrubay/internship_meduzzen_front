@@ -20,7 +20,14 @@ import {CompanyType} from "../../types/companiesTypes";
 import BaseModalWindow from "../../components/BaseModalWindow/BaseModalWindow";
 import {NavLink, useNavigate, useParams} from "react-router-dom";
 import {selectQuizById, selectQuizzes} from "../../redux/quizzes/selectors";
-import {addQuiz, deleteQuiz, fetchQuizById, fetchQuizzes, updateQuiz} from "../../redux/quizzes/operations";
+import {
+  addQuiz,
+  deleteQuiz,
+  fetchQuizById,
+  fetchQuizzes,
+  sendExelFile,
+  updateQuiz
+} from "../../redux/quizzes/operations";
 import AddQuizModal from "../../components/AddQuizModal/AddQuizModal";
 import {useFormik} from "formik";
 import {initialValueAddQuiz, initialValueEditQuiz} from "../../initialValues/initialValues";
@@ -31,6 +38,8 @@ import {UserType} from "../../types/usersTypes";
 import {memberType} from "../../types/actionsTypes";
 import EditQuizModal from "../../components/EditQuizModal/EditQuizModal";
 import {mainUrls} from "../../config/urls";
+import {FaCloudDownloadAlt} from "react-icons/fa";
+import FileUploadModal from "../../components/FileUploadModal/FileUploadModal";
 
 
 const columns = [
@@ -55,11 +64,26 @@ const CompanyQuizzesPage: React.FC = () => {
   const [openAddQuizModal, setOpenAddQuizModal] = useState<boolean>(false);
   const [openEditQuizModal, setOpenEditQuizModal] = useState<boolean>(false);
   const [openDeleteQuizModal, setOpenDeleteQuizModal] = useState<boolean>(false);
+  const [openFileUploadModal, setOpenFileUploadModal] = useState(false);
   const [selectedQuizId, setSelectedQuizId] = useState<string | null>(null);
   const loading = useSelector<boolean>(selectLoading);
 
   const adminsListId = admins.map(admin => admin.user_id);
   const membersListId = members.map(member => member.user_id);
+
+  const handleOpenFileUploadModal = () => {
+    setOpenFileUploadModal(true);
+
+  };
+  const handleCloseFileUploadModal = () => {
+    setOpenFileUploadModal(false);
+
+  };
+  const handleFileUpload = (file: File) => {
+    const formData = new FormData();
+    formData.append("file", file);
+    dispatch(sendExelFile({companyId: id, file: formData}));
+  };
 
   useEffect(() => {
     if (quizById) {
@@ -153,9 +177,19 @@ const CompanyQuizzesPage: React.FC = () => {
             <Typography variant="h6">"{company?.name}"</Typography>
             <Box className={styles.addQuizButton}>
               {(currentUser?.id === companyById?.owner_id || adminsListId.includes(currentUser?.id)) && (
-                <Button variant="contained" onClick={handleOpenAddQuizModal}>
-                  + Add Quiz
-                </Button>
+                <>
+                  <Button sx={{marginRight: "5px"}} variant="contained" onClick={handleOpenAddQuizModal}>
+                    + Add Quiz
+                  </Button>
+                  <Button
+                    onClick={handleOpenFileUploadModal}
+                    variant="contained"
+                    startIcon={<FaCloudDownloadAlt/>}
+                    color="primary"
+                  >
+                    Import Exel
+                  </Button>
+                </>
               )}
             </Box>
           </Grid>
@@ -226,7 +260,8 @@ const CompanyQuizzesPage: React.FC = () => {
           </TableContainer>
         </Paper>
 
-        {/* Add Quiz Modal */}
+        {/* Add Quiz Modal */
+        }
         <AddQuizModal
           openModal={openAddQuizModal}
           closeModal={handleCloseAddQuizModal}
@@ -242,7 +277,8 @@ const CompanyQuizzesPage: React.FC = () => {
           title_answer_options={"Answer options:"}
         />
 
-        {/* Edit Quiz Modal */}
+        {/* Edit Quiz Modal */
+        }
         <EditQuizModal
           openModal={openEditQuizModal}
           closeModal={handleCloseEditQuizModal}
@@ -258,7 +294,8 @@ const CompanyQuizzesPage: React.FC = () => {
           title_answer_options={"Answer options:"}
         />
 
-        {/* Delete Quiz Modal */}
+        {/* Delete Quiz Modal */
+        }
         <BaseModalWindow
           openModal={openDeleteQuizModal}
           closeModal={closeModal}
@@ -270,9 +307,18 @@ const CompanyQuizzesPage: React.FC = () => {
           onSubmit={handleDeleteQuiz}
           style_done={{color: "red", fontSize: 50}}
         />
+
+        {/* File Upload Modal */
+        }
+        <FileUploadModal
+          openModal={openFileUploadModal}
+          closeModal={handleCloseFileUploadModal}
+          onSubmit={handleFileUpload}
+        />
       </>
     )
-  );
+  )
+    ;
 };
 
 export default CompanyQuizzesPage;

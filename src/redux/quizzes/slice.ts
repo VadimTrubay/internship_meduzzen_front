@@ -1,5 +1,5 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {deleteQuiz, fetchQuizzes, addQuiz, fetchQuizById, updateQuiz} from "./operations";
+import {deleteQuiz, fetchQuizzes, addQuiz, fetchQuizById, updateQuiz, sendExelFile} from "./operations";
 import {initialQuizzesType} from "../../types/quizzesTypes";
 import toast from "react-hot-toast";
 
@@ -61,6 +61,12 @@ const handleDeleteQuizFulfilled = (state: initialQuizzesType, action: PayloadAct
   toast.success(`Quiz deleted successfully`);
 };
 
+const handleSendExelFile = (state: initialQuizzesType) => {
+  state.loading = false;
+  state.error = null;
+  toast.success(`Exel File imported successfully`);
+};
+
 const quizzesSlice = createSlice({
   name: "quizzes",
   initialState: initialQuizzes,
@@ -81,7 +87,10 @@ const quizzesSlice = createSlice({
       .addCase(updateQuiz.rejected, handleRejected)
       .addCase(deleteQuiz.pending, handlePending)
       .addCase(deleteQuiz.fulfilled, handleDeleteQuizFulfilled)
-      .addCase(deleteQuiz.rejected, handleRejected),
+      .addCase(deleteQuiz.rejected, handleRejected)
+      .addCase(sendExelFile.pending, handlePending)
+      .addCase(sendExelFile.fulfilled, handleSendExelFile)
+      .addCase(sendExelFile.rejected, handleRejected),
 });
 
 export const quizzesReducer = quizzesSlice.reducer;
