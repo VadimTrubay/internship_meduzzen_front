@@ -79,7 +79,7 @@ const NotificationMenu = () => {
             </ListItem>
           ))}
         </List>
-        {notifications?.length === 0 && (
+        {notifications.length === 0 && (
           <MenuItem>No notifications</MenuItem>
         )}
       </Menu>

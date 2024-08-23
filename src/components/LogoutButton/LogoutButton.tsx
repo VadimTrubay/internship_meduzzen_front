@@ -12,7 +12,6 @@ export const LogoutButton = () => {
 
   const handleBaseLogout = () => {
     if (isAuthenticated) {
-      // @ts-ignore
       logout({ returnTo: window.location.origin });
       dispatch(logOut());
     } else {
