@@ -62,8 +62,9 @@ const CompanyMembersPage: React.FC = () => {
   useEffect(() => {
     if (id) {
       dispatch(fetchUsers({skip, limit}));
+      dispatch(fetchMembers(id));
     }
-  }, [id, dispatch]);
+  }, [id]);
 
   const handleOpenDeleteModal = (member: memberType) => {
     setCurrentMember(member);
@@ -77,26 +78,32 @@ const CompanyMembersPage: React.FC = () => {
     setCurrentMember(null);
   };
 
-  const handleDeleteMember = () => {
-    if (currentMember && id) {
-      dispatch(deleteMember(currentMember?.action_id));
-      dispatch(fetchMembers(id));
-    }
-    closeModal();
-  };
+const handleDeleteMember = () => {
+  if (currentMember) {
+    dispatch(deleteMember(currentMember?.action_id)).then(() => {
+      if (id) {
+        dispatch(fetchMembers(id));
+      }
+    });
+  }
+  closeModal();
+};
 
   const handleOpenLeaveModal = (member: memberType) => {
     setCurrentMember(member);
     setOpenLeaveModal(true);
   };
 
-  const handleLeave = () => {
-    if (currentMember && id) {
-      dispatch(leaveFromCompany(currentMember?.action_id));
-      dispatch(fetchMembers(id));
-    }
-    closeModal();
-  };
+const handleLeave = () => {
+  if (currentMember) {
+    dispatch(leaveFromCompany(currentMember?.action_id)).then(() => {
+      if (id) {
+        dispatch(fetchMembers(id));
+      }
+    });
+  }
+  closeModal();
+};
 
   const handleOpenChangeRoleModal = (member: memberType) => {
     setCurrentMember(member);

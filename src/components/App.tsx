@@ -1,5 +1,4 @@
 import React, {lazy, useEffect} from "react";
-import "modern-normalize";
 import styles from "./App.module.css";
 import {Navigate, Route, Routes} from "react-router-dom";
 import {Layout} from "./Layout/Layout";
@@ -66,7 +65,6 @@ const App = () => {
           path={RouterEndpoints.login}
           element={isLoggedIn ? <Navigate to={RouterEndpoints.index}/> : <UserAuthorizationPage/>}
         />
-        {/*{isLoggedIn && ( <>*/}
         <Route
           path={RouterEndpoints.users}
           element={!isLoggedIn ? <Navigate to={RouterEndpoints.login}/> : <ListOfUsersPage/>}
@@ -123,7 +121,6 @@ const App = () => {
           path={`${RouterEndpoints.analytics}/${RouterEndpoints.my}/${RouterEndpoints.quizzes}`}
           element={!isLoggedIn ? <Navigate to={RouterEndpoints.login}/> : <MyQuizzesAnalyticsPage/>}
         />
-        {/*</>)}*/}
         <Route path={RouterEndpoints.notFound} element={<NotFoundPage/>}/>
         <Route path={RouterEndpoints.terms} element={<TermsPage/>}/>
         <Route path={RouterEndpoints.notFound} element={<NotFoundPage/>}/>

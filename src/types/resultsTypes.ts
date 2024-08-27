@@ -16,7 +16,7 @@ export interface sendResultsRequestType {
 }
 
 export interface resultsResponseType {
-  company_member_id: string,
+  user_id: string,
   quiz_id: string,
   score: number,
   total_questions: number,

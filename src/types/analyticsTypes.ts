@@ -6,8 +6,10 @@ export interface initialAnalyticsType {
 }
 
 export interface CompanyMembersResultsType {
-  [memberId: string]: {
-    [timestamp: string]: number;
+  data: {
+    [memberId: string]: {
+      [timestamp: string]: number;
+    };
   };
 }
 

@@ -16,21 +16,52 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import {StyledBox, styleQuizModal} from "../../utils/BaseModal.styled";
 import Paper from "@mui/material/Paper";
 import {AddQuizModalType} from "../../types/quizzesTypes";
+import toast from "react-hot-toast";
 
 const AddQuizModal: React.FC<AddQuizModalType> = ({
-                                                    openModal,
-                                                    closeModal,
-                                                    style_close,
-                                                    color_off,
-                                                    style_title,
-                                                    formikAddQuiz,
-                                                    title,
-                                                    title_name,
-                                                    title_description,
-                                                    title_frequency_days,
-                                                    title_questions,
-                                                    title_answer_options,
-                                                  }) => {
+  openModal,
+  closeModal,
+  style_close,
+  color_off,
+  style_title,
+  formikAddQuiz,
+  title,
+  title_name,
+  title_description,
+  title_frequency_days,
+  title_questions,
+  title_answer_options,
+}) => {
+
+  const validateAnswers = () => {
+    const questions = formikAddQuiz.values.questions;
+    for (const question of questions) {
+      const answerOptions = question.answer_options;
+
+      const optionCount = answerOptions.reduce((acc, option) => {
+        acc[option] = (acc[option] || 0) + 1;
+        return acc;
+      }, {});
+
+      const duplicates = Object.values(optionCount).some(count => count >= 2);
+
+      if (duplicates) {
+        return `Все варианты ответа должны быть уникальными. Пожалуйста, измените дублирующиеся ответы.`;
+      }
+    }
+    return null;
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const validationError = validateAnswers();
+    if (validationError) {
+      toast.error(validationError);
+    } else {
+      formikAddQuiz.handleSubmit();
+    }
+  };
+
   const pushQuestion = () => {
     formikAddQuiz.setFieldValue("questions", [
       ...formikAddQuiz.values.questions,
@@ -65,18 +96,18 @@ const AddQuizModal: React.FC<AddQuizModalType> = ({
     }
   };
 
-const handleCorrectAnswerChange = (questionIndex: number, optionIndex: number) => {
+  const handleCorrectAnswerChange = (questionIndex: number, optionIndex: number) => {
     const questions = [...formikAddQuiz.values.questions];
     const optionValue = questions[questionIndex].answer_options[optionIndex];
 
     questions[questionIndex].correct_answer = questions[questionIndex].answer_options.filter((option, idx) => {
-        return idx === optionIndex
-            ? !questions[questionIndex].correct_answer.includes(optionValue)
-            : questions[questionIndex].correct_answer.includes(option);
+      return idx === optionIndex
+        ? !questions[questionIndex].correct_answer.includes(optionValue)
+        : questions[questionIndex].correct_answer.includes(option);
     });
 
     formikAddQuiz.setFieldValue("questions", questions);
-};
+  };
 
   return (
     <Modal
@@ -92,11 +123,12 @@ const handleCorrectAnswerChange = (questionIndex: number, optionIndex: number) =
         <Typography id="modal-modal-title" variant="h5" component="h2" sx={{textAlign: "center", width: "100%"}}>
           <div className={style_title}>{title}</div>
         </Typography>
-        <MuiBox component="form" onSubmit={formikAddQuiz.handleSubmit} sx={{width: "100%"}}>
+        <MuiBox component="form" onSubmit={handleSubmit} sx={{width: "100%"}}>
           <Typography variant="h5" sx={{display: "flex", justifyContent: "left", marginTop: 2}}>
             {title_name}
           </Typography>
           <TextField
+            data-testid="quiz-name"
             id="name"
             name="name"
             variant="outlined"

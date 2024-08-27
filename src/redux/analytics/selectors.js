@@ -1,4 +1,4 @@
-export const selectCompanyMembersResults = (state) => state.analytics.companyMembersResults;
+export const selectCompanyMembersResults = (state) => state.analytics.companyMembersResults.data;
 
 export const selectMyQuizzesResults = (state) => state.analytics.myQuizzesResults;
 
