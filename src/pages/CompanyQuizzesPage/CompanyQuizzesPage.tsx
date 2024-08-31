@@ -83,6 +83,7 @@ const CompanyQuizzesPage: React.FC = () => {
     const formData = new FormData();
     formData.append("file", file);
     dispatch(sendExelFile({companyId: id, file: formData}));
+    dispatch(fetchQuizzes(companyById?.id));
   };
 
   useEffect(() => {
