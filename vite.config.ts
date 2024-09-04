@@ -23,6 +23,9 @@ export default defineConfig(({ mode }) => {
   },
     build: {
     sourcemap: true,
+        rollupOptions: {
+      external: ['luxon']
+    }
   },
     server: {
     host: '0.0.0.0',
