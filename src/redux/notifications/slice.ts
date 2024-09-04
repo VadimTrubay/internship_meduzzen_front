@@ -23,6 +23,7 @@ const handleRejected = (state: initialNotificationsType, action: PayloadAction<a
 const handleFetchMyNotificationsFulfilled = (state: initialNotificationsType, action: PayloadAction<any>) => {
   state.loading = false;
   state.error = null;
+  state.items = [];
   state.items = action.payload;
 };
 
