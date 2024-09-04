@@ -66,6 +66,7 @@ const CompanyQuizzesPage: React.FC = () => {
   const [openDeleteQuizModal, setOpenDeleteQuizModal] = useState<boolean>(false);
   const [openFileUploadModal, setOpenFileUploadModal] = useState(false);
   const [selectedQuizId, setSelectedQuizId] = useState<string | null>(null);
+  const [importFile, setImportFile] = useState<boolean>(false);
   const loading = useSelector<boolean>(selectLoading);
 
   const adminsListId = admins.map(admin => admin.user_id);
@@ -83,8 +84,20 @@ const CompanyQuizzesPage: React.FC = () => {
     const formData = new FormData();
     formData.append("file", file);
     dispatch(sendExelFile({companyId: id, file: formData}));
-    dispatch(fetchQuizzes(companyById?.id));
+    setImportFile(true);
   };
+
+  useEffect(() => {
+    if (importFile) {
+      setTimeout(
+        () => {
+          dispatch(fetchQuizzes(companyById?.id));
+          setImportFile(false);
+        },
+        1000
+      )
+    }
+  }, [importFile])
 
   useEffect(() => {
     if (quizById) {
