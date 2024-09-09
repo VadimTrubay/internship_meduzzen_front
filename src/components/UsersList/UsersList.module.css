@@ -1,0 +1,19 @@
+.tableRow {
+  background-color: #c9c9c9;
+}
+
+.tableRow:nth-of-type(odd) {
+  background-color: #ffffff;
+}
+
+.table {
+  margin: 0 auto;
+  max-width: 900px;
+  min-height: 500px;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.table_head {
+  background-color: var(--brand-color-contactbook);
+}

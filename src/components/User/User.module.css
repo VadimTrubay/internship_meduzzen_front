@@ -1,0 +1,20 @@
+.avatar {
+  background-color: #a1a1a1;
+  border: 1px solid #ffffff;
+  width: 30px;
+  height: 30px;
+  margin: 0 auto;
+}
+
+.link {
+  text-decoration: none;
+  font-size: 18px;
+  color: var(--action-background-color);
+}
+
+.link:hover {
+  text-decoration: none;
+  color: var(--link-hover);
+  font-weight: 600;
+  cursor: pointer;
+}
