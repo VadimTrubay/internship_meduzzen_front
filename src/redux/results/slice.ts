@@ -78,7 +78,7 @@ const resultsSlice = createSlice({
       .addCase(fetchCompanyRating.rejected, handleRejected)
       .addCase(fetchGlobalRating.pending, handlePending)
       .addCase(fetchGlobalRating.fulfilled, handleFetchGlobalRatingFulfilled)
-      .addCase(fetchGlobalRating.rejected, handleRejected)
+      // .addCase(fetchGlobalRating.rejected, handleRejected)
       .addCase(fetchMyResults.pending, handlePending)
       .addCase(fetchMyResults.fulfilled, handleFetchMyResultsFulfilled)
       .addCase(fetchMyResults.rejected, handleRejected)

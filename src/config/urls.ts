@@ -1,3 +1,5 @@
+import {sendExelFileApi} from "../api/apiQuizzes";
+
 export const auth = "/auth";
 export const users = "/users";
 export const companies = "/companies";
@@ -56,7 +58,7 @@ export const mainUrls = {
     submit: (companyId: string) => `${quizzes}/company/${companyId}`,
     companyQuizzes: (companyId: string) => `${quizzes}/company/${companyId}`,
     deleteQuiz: (quizId: string) => `${quizzes}/quiz/${quizId}`,
-
+    sendExelFile: (companyId: string) => `${quizzes}/company/${companyId}/import`,
   },
   results: {
     globalRating: `${results}/global_rating`,

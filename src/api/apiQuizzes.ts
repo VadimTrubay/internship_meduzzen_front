@@ -24,3 +24,11 @@ export const deleteQuizApi = async (quizId: string): Promise<AxiosResponse> => {
   return await axiosInstance.delete(mainUrls.quizzes.deleteQuiz(quizId));
 };
 
+export const sendExelFileApi = async (companyId: string, file: FormData): Promise<AxiosResponse<Blob>> => {
+  return await axiosInstance.post(mainUrls.quizzes.sendExelFile(companyId), file, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+};
+
